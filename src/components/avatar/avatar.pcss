@@ -2,26 +2,22 @@
     border-radius: 100px;
     border: 1px var(--red) solid;
     cursor: pointer;
-    height: 130px;
-    width: 130px;
     display: flex;
     justify-content: center;
     align-items: center;
     background: url("../../assets/icons/image.svg") no-repeat center;
     position: relative;
+    height: 130px;
+    width: 130px;
 
     &.sm {
         height: 50px;
         width: 50px;
     }
 
-    &:hover .avatar__image {
-        background-color: var(--red);
-    }
-
-    &:hover .avatar__hover {
-        background-color: var(--red);
-        opacity: 0.8;
+    &.md {
+        height: 130px;
+        width: 130px;
     }
 
     .avatar__image {
@@ -56,6 +52,13 @@
         }
     }
 
+    &:hover .avatar__image {
+        background-color: var(--red);
+    }
+
+    &:hover .avatar__hover {
+        background-color: var(--red);
+        opacity: 0.8;
+    }
 
 }
-
