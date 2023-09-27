@@ -1,10 +1,10 @@
-import {User} from "../models/user";
+import {IUser} from "../models/IUser.ts";
 
-export const mockUser: User = {
+export const mockUser: IUser = {
     first_name: "Elena",
     second_name: "Family",
     login: "loginElena",
-    nameInChat: "ElenaChat",
+    display_name: "ElenaChat",
     password: "password123",
     phone: "+7985632369",
     email: "email@gmail.com",

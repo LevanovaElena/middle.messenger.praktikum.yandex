@@ -1,4 +1,3 @@
-import "./chat-page.css";
+import "./page-chat.pcss";
 
-export {default as PageChat} from './chat-page.hbs?raw';
-
+export { PageChat as default } from './page-chat.ts';

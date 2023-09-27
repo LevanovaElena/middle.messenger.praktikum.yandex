@@ -1,68 +1,66 @@
-import './styles/main.css';
-// @ts-ignore
-import Handlebars from 'handlebars';
-// @ts-ignore
+import './styles/main.pcss';
 import * as Components from './components';
-// @ts-ignore
 import * as Pages from './pages';
-import {mockUser} from "./mocks/user-profile.mocks";
-import {chat1, mockListChats} from "./mocks/chat.mocks";
-import {message1, mockListMessages} from "./mocks/chat-message.mocks";
-import {urlImages} from "./config";
+import {registerComponent} from "./utils/registerComponents";
+import {Block} from "./utils/Block.ts";
 
-const pages = {
-    "allComponents": [Pages.AllComponentsPage, {
-        chat1: chat1,
-        chatList: mockListChats,
-        message: message1,
-        messageList: mockListMessages,
-        currentUser: mockUser
-    }],
-    "loginPage": [Pages.PageLogin],
-    "pageRegistration": [Pages.PageRegistration],
-    "pageProfile": [Pages.PageProfile, {user: mockUser}],
-    "pageProfileEdit": [Pages.PageProfileEdit, {user: mockUser}],
-    "pagePasswordEdit": [Pages.PagePasswordEdit, {user: mockUser}],
-    "pageChat": [Pages.PageChat, {chatList: mockListChats, messageList: mockListMessages, currentUser: mockUser}],
-    "page500": [Pages.Page500],
-    "page404": [Pages.Page404],
-    "allPages": [Pages.AllPages]
+
+const allComponents = {
+    'Button': Components.Button,
+    'Avatar': Components.Avatar,
+    'Badge': Components.Badge,
+    'Input': Components.Input,
+    'InputShort': Components.InputShort,
+    'InputWide': Components.InputWide,
+    'InputSearch': Components.InputSearch,
+    'Link': Components.Link,
+    'Error': Components.Error,
+    'ChatItem': Components.ChatItem,
+    'ChatList': Components.ChatList,
+    'Message': Components.Message,
+    'MessageList': Components.MessageList,
+    'Loader': Components.Loader,
+    'Modal': Components.Modal,
+    'FormAuth': Components.FormAuth,
+    'FormProfile': Components.FormProfile,
+}
+const pages:{[index: string]:{component:unknown}} = {
+    "allComponents": {
+        component: Pages.AllComponentsPage
+    },
+    "allPages": {component: Pages.AllPages},
+    "loginPage": {component: Pages.LoginPage},
+    "pageRegistration": {component: Pages.PageRegistration},
+    "pageProfile": {component: Pages.PageProfile},
+    "pageProfileEdit": {component: Pages.PageProfileEdit},
+    "pagePasswordEdit": {component: Pages.PagePasswordEdit},
+    "page500": {component: Pages.Page500},
+    "page404": {component: Pages.Page500},
+    "pageChat": {component: Pages.PageChat},
 };
-Object.entries(Components).forEach(([name, component]) => {
-    Handlebars.registerPartial(name, component);
+
+Object.entries(allComponents).forEach(([name, component]) => {
+    registerComponent(name, component);
 });
+
 const navigate = (page: string) => {
-    //@ts-ignore
-    const [source, context] = pages[page];
-    const container = document.getElementById('app')!;
-    container.innerHTML = Handlebars.compile(source)(context);
+    const app = document.getElementById('app');
+    const Component = pages[page].component as unknown as typeof Block;
+    //const props = pages[page].props || {};
+    const component = new Component({events:{}});
+    const htmlElement = component.getContent();
+    if (!app?.firstElementChild) app?.append(document.createElement('div'));
+    if(htmlElement)
+    app?.firstElementChild?.replaceWith(htmlElement);
 }
 document.addEventListener('DOMContentLoaded', () => navigate('allPages'));
-document.addEventListener('click', e => {
-    //@ts-ignore
-    const page = e.target.getAttribute('page');
+document.addEventListener('click', (e: Event) => {
+    if (!e) return;
+    if(!e.target)return;
+    const page =(<HTMLDivElement> e.target).getAttribute('page');
     if (page) {
         navigate(page);
         e.preventDefault();
         e.stopImmediatePropagation();
     }
 });
-// @ts-ignore
-Handlebars.registerHelper("imageUrl", function (options) {
-    const attrs = Object.keys(options.hash)
-        .map(function (key) {
-            if (key === 'src') {
-                const imgUrl = new URL(urlImages + options.hash[key], import.meta.url).href;
-                return key + '="' + imgUrl + '"';
-            }
-            return key + '="' + options.hash[key] + '"';
-        })
-        .join(" ");
-
-    return (
-        "<img " +
-        attrs +
-        ">" + "</>"
-    );
-});
-
