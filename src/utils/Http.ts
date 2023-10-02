@@ -1,3 +1,5 @@
+import {queryStringify} from "./string.utils.ts";
+
 enum METHODS {
     GET = 'GET',
     POST = 'POST',
@@ -15,17 +17,7 @@ type IOptionsRequest = {
 
 type HTTPMethod = (url: string, options?: IOptionsRequest) => Promise<unknown>
 
-/**
- *  Get string of query params from object params
- * @param data
- */
-function queryStringify(data: object) {
-    let result = '?';
-    result = result + Object.entries(data).map(([key, value]) => {
-        return `${key}=${Array.isArray(value) ? value.join(',') : String(value)}`
-    }).join("&")
-    return result;
-}
+
 
 class HTTPTransport {
     get: HTTPMethod = (url, options = {}) => {
