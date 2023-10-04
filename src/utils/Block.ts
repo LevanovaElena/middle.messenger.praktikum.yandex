@@ -203,6 +203,13 @@ export class Block {
         });
     }
 
+    public hide(){
+        console.log('hide')
+    }
+    public show(){
+        console.log('show')
+    }
+
 
 }
 
