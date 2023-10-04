@@ -18,7 +18,7 @@ export class LoginPage extends Block {
                     login,
                     password
                 })
-                if(login&&password)Router.getRouter().go('/chat');
+                if(login&&password)Router.getRouter().go('/messenger');
             }
         }
 

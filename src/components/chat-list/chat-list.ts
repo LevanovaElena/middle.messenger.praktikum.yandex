@@ -27,7 +27,7 @@ export class ChatList extends Block {
         return (`            
             <div class="chat-list">
                 <nav class="chat-list__header">
-                    {{{Link caption="Profile" href="/profile"  linkIcon=true }}}
+                    {{{Link caption="Profile" href="/settings"  linkIcon=true }}}
                 </nav>
                 <div class="chat-list__search">
                     {{{ InputSearch }}}

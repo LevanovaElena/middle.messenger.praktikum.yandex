@@ -42,9 +42,9 @@ export class FormProfile extends Block {
                     {{{ Button caption="${buttonText}" onClick=onClickOkButton }}}
                 </div>`:            
                 `<div class="profile__buttons">
-                    {{{Link caption="Change IUser Data" href='/profile-edit' type='success' linkLine=true  }}}
+                    {{{Link caption="Change IUser Data" href='/settings-edit' type='success' linkLine=true  }}}
                     {{{Link caption="Change Password" href='/password-edit' type='success' linkLine=true  }}}
-                    {{{Link caption="Cancel" href='/chat' type='danger' }}}
+                    {{{Link caption="Cancel" href='/messenger' type='danger' }}}
                 </div>`}
             </div>
             <div class="block-cancel">

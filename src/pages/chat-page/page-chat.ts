@@ -19,7 +19,6 @@ export class PageChat extends Block {
                 messageList:mockListMessages,
                 events:{}
             }
-
             super(props);
     }
 
