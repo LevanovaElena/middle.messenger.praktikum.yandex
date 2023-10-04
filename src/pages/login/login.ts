@@ -1,4 +1,6 @@
 import {IProps,Block} from "../../utils/Block";
+import Router from "../../utils/Router.ts";
+
 
 export interface ILoginPageProps extends IProps {
     onLogin:(event:Event)=>void
@@ -16,6 +18,7 @@ export class LoginPage extends Block {
                     login,
                     password
                 })
+                if(login&&password)Router.getRouter().go('/chat');
             }
         }
 

@@ -207,7 +207,11 @@ export class Block {
         console.log('hide')
     }
     public show(){
-        console.log('show')
+        const app = document.getElementById('app');
+        const htmlElement = this.getContent();
+        if (!app?.firstElementChild) app?.append(document.createElement('div'));
+        if(htmlElement)
+            app?.firstElementChild?.replaceWith(htmlElement);
     }
 
 

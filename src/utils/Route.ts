@@ -2,11 +2,11 @@ import Block, {IProps} from "./Block.ts";
 
 class Route {
     private _pathname: string;
-    private _blockClass: Block;
+    private readonly _blockClass: Block;
     private _block:Block|null=null;
-    private _props: IProps;
+    private readonly _props: IProps;
 
-    constructor(pathname:string, view:Block, props:IProps) {
+    constructor(pathname:string, view:Block, props:object) {
         this._pathname = pathname;
         this._blockClass = view;
         this._block = null;
@@ -43,9 +43,9 @@ class Route {
  * */
     render() {
         if (!this._block) {
-            console.log(this._props,this._blockClass);
-            //this._block = new this._blockClass(this._props);
-            //render(this._props.rootQuery, this._block);
+            // @ts-ignore
+            this._block = new this._blockClass(this._props);
+            this.render();
             return;
         }
 

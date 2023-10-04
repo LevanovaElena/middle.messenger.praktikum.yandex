@@ -1,13 +1,13 @@
-import Block, {IProps} from "./Block.ts";
+import Block from "./Block.ts";
 import Route from "./Route.ts";
 
 class Router {
-    private static __instance: any;
-    private routes: any[] | undefined;
+    private static __instance: Router;
+    private routes: Route[] | undefined;
     private history: History | undefined;
-    private _currentRoute: null | undefined;
-    private _rootQuery: IProps | undefined;
-    constructor(rootQuery:IProps) {
+    private _currentRoute: null | Route=null;
+    private _rootQuery: string | undefined;
+    constructor(rootQuery:string) {
         if (Router.__instance) {
             return Router.__instance;
         }
@@ -20,6 +20,9 @@ class Router {
         Router.__instance = this;
     }
 
+    public static getRouter(){
+        return this.__instance;
+    }
     /**
      * use — регистрирует блок по пути в роут и возвращает себя — чтобы можно было выстроить в цепочку;
      * @param pathname
@@ -56,7 +59,7 @@ class Router {
         }
 
         this._currentRoute = route;
-        route.render(route, pathname);
+        route.render();
     }
 
     /**
@@ -88,3 +91,5 @@ class Router {
         return this.routes?.find(route => route.match(pathname));
     }
 }
+
+export default Router;
