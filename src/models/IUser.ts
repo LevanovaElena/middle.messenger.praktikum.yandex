@@ -9,4 +9,7 @@ export interface IUser {
     avatar?: string;
 }
 
-
+export interface IAuthData {
+    login: string;
+    password: string;
+}

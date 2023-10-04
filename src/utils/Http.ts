@@ -1,4 +1,5 @@
 import {queryStringify} from "./string.utils.ts";
+import {BASE_API_URL} from "../config.ts";
 
 enum METHODS {
     GET = 'GET',
@@ -8,7 +9,7 @@ enum METHODS {
 }
 
 type IOptionsRequest = {
-    data?: string;
+    data?: object;
     method?: METHODS.GET | METHODS.POST | METHODS.PUT | METHODS.DELETE;
     timeout?: number;
     headers?: Record<string, string>;
@@ -20,25 +21,28 @@ type HTTPMethod = (url: string, options?: IOptionsRequest) => Promise<unknown>
 
 
 class HTTPTransport {
+    private readonly baseUrl:string=''
+    constructor(base_url?:string) {
+        this.baseUrl=base_url||BASE_API_URL;
+    }
     get: HTTPMethod = (url, options = {}) => {
-        return this.request(url, {
+        return this.request(this.baseUrl+url+queryStringify(options.params || {}) || '', {
             ...options,
-            data: queryStringify(options.params || {}) || '',
             method: METHODS.GET
         }, options.timeout);
     };
 
     put: HTTPMethod = (url, options = {}) => {
 
-        return this.request(url, {...options, method: METHODS.PUT}, options.timeout);
+        return this.request(this.baseUrl+url, {...options, method: METHODS.PUT,headers:{'Content-Type': 'application/json'}}, options.timeout);
     };
     post: HTTPMethod = (url, options = {}) => {
 
-        return this.request(url, {...options, method: METHODS.POST}, options.timeout);
+        return this.request(this.baseUrl+url, {...options, method: METHODS.POST,headers:{'Content-Type': 'application/json'}}, options.timeout);
     };
     delete: HTTPMethod = (url, options = {}) => {
 
-        return this.request(url, {...options, method: METHODS.DELETE}, options.timeout);
+        return this.request(this.baseUrl+url, {...options, method: METHODS.DELETE}, options.timeout);
     };
 
     request = (url: string, options: IOptionsRequest = {method: METHODS.GET}, timeout = 5000) => {
@@ -48,8 +52,8 @@ class HTTPTransport {
 
             const xhr = new XMLHttpRequest();
             xhr.timeout = timeout;
-            const isGet = method === METHODS.GET;
-            xhr.open(method || METHODS.GET, isGet ? `${url}${data}` : url,);
+            //const isGet = method === METHODS.GET;
+            xhr.open(method || METHODS.GET, url);
 
 
             if (headers) {

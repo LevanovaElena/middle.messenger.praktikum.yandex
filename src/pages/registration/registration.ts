@@ -1,4 +1,6 @@
 import {IProps,Block} from "../../utils/Block.ts";
+import {signup} from "../../services/auth.ts";
+import {IUser} from "../../models/IUser.ts";
 
 export interface IPageRegistrationProps extends IProps {
     onLogin:(event:Event)=>void,
@@ -26,6 +28,19 @@ export class PageRegistration extends Block {
                     phone,
                     email
                 })
+
+                if(password===password2){
+                    const data={
+                        first_name,
+                        second_name,
+                        login,
+                        email,
+                        password,
+                        phone
+                    } as IUser;
+                    signup(data)
+                }
+
             }
         }
 
