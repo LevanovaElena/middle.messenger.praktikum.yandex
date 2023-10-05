@@ -4,6 +4,7 @@ import * as Pages from './pages';
 import {registerComponent} from "./utils/registerComponents";
 import Router from "./utils/Router.ts";
 import Block from "./utils/Block.ts";
+import {BASE_URLS} from "./config.ts";
 
 
 
@@ -33,15 +34,14 @@ Object.entries(allComponents).forEach(([name, component]) => {
 
 const router = new Router(".app");
 
-// Можно обновиться на /user и получить сразу пользователя
-router.use("/", Pages.LoginPage as unknown as Block)
-    .use("/all", Pages.AllComponentsPage as unknown as Block)
-    .use("/login", Pages.LoginPage as unknown as Block)
-    .use("/sign-up", Pages.PageRegistration as unknown as Block)
-    .use("/settings", Pages.PageProfile as unknown as Block)
-    .use("/settings-edit", Pages.PageProfileEdit as unknown as Block)
-    .use("/password-edit", Pages.PagePasswordEdit as unknown as Block)
-    .use("/404", Pages.Page404 as unknown as Block)
-    .use("/500", Pages.Page500 as unknown as Block)
-    .use("/messenger", Pages.PageChat as unknown as Block)
+router.use(BASE_URLS['page-default'], Pages.LoginPage as unknown as Block)
+    .use(BASE_URLS['page-all-components'], Pages.AllComponentsPage as unknown as Block)
+    .use(BASE_URLS['page-login'], Pages.LoginPage as unknown as Block)
+    .use(BASE_URLS['page-sign-up'], Pages.PageRegistration as unknown as Block)
+    .use(BASE_URLS['page-profile'], Pages.PageProfile as unknown as Block)
+    .use(BASE_URLS['page-profile-edit'], Pages.PageProfileEdit as unknown as Block)
+    .use(BASE_URLS['page-password-edit'], Pages.PagePasswordEdit as unknown as Block)
+    .use(BASE_URLS['page-404'], Pages.Page404 as unknown as Block)
+    .use(BASE_URLS['page-500'], Pages.Page500 as unknown as Block)
+    .use(BASE_URLS['page-chat'], Pages.PageChat as unknown as Block)
     .start();

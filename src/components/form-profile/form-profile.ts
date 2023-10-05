@@ -1,6 +1,7 @@
 import {IProps,Block} from "../../utils/Block";
 import {IUser} from "../../models/IUser.ts";
 import {ALL_VALIDATE_FIELDS, IValidateType} from "../../models/IValidateType.ts";
+import {logOut} from "../../services/auth.ts";
 
 interface IFormProfileProps extends IProps{
     user:IUser,
@@ -10,19 +11,23 @@ interface IFormProfileProps extends IProps{
     buttonPage:string,
     buttonCancelPage:string,
     onClickOkButton: (event:Event) => void,
+    onLogOut: (event:Event) => void,
     validate:IValidateType,
 
 }
 export class FormProfile extends Block {
     constructor(props:IFormProfileProps) {
         props.validate= ALL_VALIDATE_FIELDS;
+        props.onLogOut=(event: Event) => {
+            event.preventDefault();
+            logOut().catch((error)=>console.log(error))
+        }
 
         super(props);
     }
 
     protected render(): string {
-        const {user,withButton=false,children='',buttonText='',
-            buttonCancelPage=''}=this._props as IFormProfileProps;
+        const {user,withButton=false,children='',buttonText=''}=this._props as IFormProfileProps;
         const {avatar,first_name,second_name}=user;
 
         return(`
@@ -44,11 +49,11 @@ export class FormProfile extends Block {
                 `<div class="profile__buttons">
                     {{{Link caption="Change IUser Data" href='/settings-edit' type='success' linkLine=true  }}}
                     {{{Link caption="Change Password" href='/password-edit' type='success' linkLine=true  }}}
-                    {{{Link caption="Cancel" href='/messenger' type='danger' }}}
+                    {{{Button caption="Logout" onClick=onLogOut type='link' }}}
                 </div>`}
             </div>
             <div class="block-cancel">
-                {{{ Button type="cancel" page="${buttonCancelPage}" }}}
+                {{{ Button type="cancel" }}}
             </div>
         `)
     }

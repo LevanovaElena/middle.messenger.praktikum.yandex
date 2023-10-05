@@ -45,12 +45,13 @@ class HTTPTransport {
         return this.request(this.baseUrl+url, {...options, method: METHODS.DELETE}, options.timeout);
     };
 
-    request = (url: string, options: IOptionsRequest = {method: METHODS.GET}, timeout = 5000) => {
+    request = (url: string, options: IOptionsRequest = {method: METHODS.GET,}, timeout = 5000) => {
         const {method, headers, data} = options;
 
         return new Promise((resolve, reject) => {
 
             const xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
             xhr.timeout = timeout;
             //const isGet = method === METHODS.GET;
             xhr.open(method || METHODS.GET, url);

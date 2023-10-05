@@ -31,7 +31,7 @@ export class PageProfile extends Block {
     protected render(): string {
         return (`
             <form class="container">
-                {{{ FormProfile user=user withButton=false  children="${this.getChildren()}" ref="form" buttonPage='pageChat' }}}
+                {{{ FormProfile user=user withButton=false  children="${this.getChildren()}" ref="form"  }}}
             </form>`)
     }
 }

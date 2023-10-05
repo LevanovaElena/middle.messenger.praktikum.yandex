@@ -8,10 +8,8 @@ interface IFormAuthProps extends IProps {
     onClickCancelButton: (event:Event) => void,
     captionOk: string,
     captionCancel: string,
-    pageOk:string,
-    pageCancel:string,
     validate:IValidateType,
-    onClickOk:(event:Event) => void,
+    cancelLink:string
 }
 export class FormAuth extends Block {
     constructor(props:IFormAuthProps) {
@@ -24,7 +22,7 @@ export class FormAuth extends Block {
     }
 
     protected render(): string {
-        const {caption='Login',children='',onClickCancelButton,captionOk,captionCancel,pageCancel}=this._props as IFormAuthProps;
+        const {caption='Login',children='',captionOk,captionCancel,cancelLink}=this._props as IFormAuthProps;
         return(`
             <div class="container-form container-shadow">
             <h2 class="container-form__header">
@@ -35,7 +33,7 @@ export class FormAuth extends Block {
             </div>
             <div class="container-form__buttons">
                 {{{ Button caption="${captionOk}"  onClick=onClickOkButton }}}
-                {{{ Link caption="${captionCancel}" page="${pageCancel}" onClick=${onClickCancelButton} }}}
+                {{{ Link caption="${captionCancel}" href="${cancelLink}" }}}
             </div>
         </div>
         `)

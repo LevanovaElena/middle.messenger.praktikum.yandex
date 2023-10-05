@@ -9,22 +9,18 @@ export class AuthApi {
         if (baseUrl) this.baseUrl = baseUrl;
     }
 
-    public async signUp(userData: IUser) {
-        const result = await this.httpTransport.post(this.baseUrl + '/signup', {data: userData});
-        console.log(result);
+    public signUp(userData: IUser) {
+      return this.httpTransport.post(this.baseUrl + '/signup', {data: userData});
     }
 
-    public async signIn(userData: IAuthData) {
-        const result = await this.httpTransport.post(this.baseUrl + '/signin', {data: userData});
-        console.log(result);
+    public  signIn(userData: IAuthData) {
+        return  this.httpTransport.post(this.baseUrl + '/signin', {data: userData});
     }
-    public async getAuthUser() {
-        const result = await this.httpTransport.get(this.baseUrl + '/user');
-        console.log(result);
+    public getAuthUser() {
+        return  this.httpTransport.get(this.baseUrl + '/user');
     }
-    public async logOut() {
-        const result = await this.httpTransport.post(this.baseUrl + '/logout');
-        console.log(result);
+    public logOut() {
+        return  this.httpTransport.post(this.baseUrl + '/logout');
     }
 }
 

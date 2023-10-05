@@ -1,37 +1,54 @@
-import {IProps,Block} from "../../utils/Block";
-import Router from "../../utils/Router.ts";
+import {IProps, Block} from "../../utils/Block";
+import {BASE_URLS} from "../../config.ts";
+import {getUser, signIn} from "../../services/auth.ts";
 
 
 export interface ILoginPageProps extends IProps {
-    onLogin:(event:Event)=>void
+    onLogin: (event: Event) => void;
 }
+
 export class LoginPage extends Block {
     constructor() {
-        const props:ILoginPageProps={
-            events:{},
-            onLogin: (event:Event) => {
+        const props: ILoginPageProps = {
+            events: {},
+            onLogin: (event: Event) => {
                 event.preventDefault();
-                const login =  this.refs.formLogin.getRefs()?.login.value();
-                const password =  this.refs.formLogin.getRefs()?.password.value();
+                const login = this.refs.formLogin.getRefs()?.login.value();
+                const password = this.refs.formLogin.getRefs()?.password.value();
 
                 console.log({
                     login,
                     password
                 })
-                if(login&&password)Router.getRouter().go('/messenger');
+                if (!login) {
+                    return;
+                }
+                if (!password) {
+                    return;
+                }
+                signIn({login, password}).catch((error)=>console.log(error))
             }
         }
 
         super(props);
+        getUser().catch((error)=>console.log(error))
     }
 
     protected render(): string {
-        const children:string=`
+        const children: string = `
         {{{ InputShort label='Login' type='text' name='login' validate=validate.login ref='login' }}}
         {{{ InputShort label='Password' type='password' name='password' validate=validate.password ref='password' }}}`
-        return(`
+        return (`
             <form class="container container-center">
-                {{{ FormAuth caption="Login" captionOk="Login" captionCancel="Cancel" pageOk="allPages" pageCancel="loginPage" onClickOkButton=onLogin children="${children}" ref="formLogin" }}}
+                {{{ FormAuth 
+                        caption="Login" 
+                        captionOk="Login" 
+                        captionCancel="Sign up"                
+                        onClickOkButton=onLogin 
+                        children="${children}" 
+                        ref="formLogin" 
+                        cancelLink="${BASE_URLS['page-sign-up']}"
+                }}}
             </form>`)
     }
 }

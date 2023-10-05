@@ -1,6 +1,7 @@
 import {IProps,Block} from "../../utils/Block.ts";
-import {signup} from "../../services/auth.ts";
+import {signUp} from "../../services/auth.ts";
 import {IUser} from "../../models/IUser.ts";
+import {BASE_URLS} from "../../config.ts";
 
 export interface IPageRegistrationProps extends IProps {
     onLogin:(event:Event)=>void,
@@ -38,7 +39,7 @@ export class PageRegistration extends Block {
                         password,
                         phone
                     } as IUser;
-                    signup(data)
+                    signUp(data)
                 }
 
             }
@@ -64,7 +65,17 @@ export class PageRegistration extends Block {
 
         return (`
             <form class="container container-center">
-                {{{ FormAuth caption="Registration" captionOk="sign up" captionCancel="Cancel" pageOk="allPages" pageCancel="loginPage" onClickOkButton=onLogin children="${this.getChildren()}" ref="form" }}}
+                {{{ FormAuth 
+                    caption="Registration" 
+                    captionOk="sign up" 
+                    captionCancel="Cancel" 
+                    pageOk="allPages" 
+                    pageCancel="loginPage" 
+                    onClickOkButton=onLogin 
+                    children="${this.getChildren()}" 
+                    ref="form" 
+                    cancelLink="${BASE_URLS['page-login']}" 
+                }}}
             </form>`)
     }
 }
