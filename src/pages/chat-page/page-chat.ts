@@ -5,6 +5,8 @@ import {mockListMessages} from "../../mocks/chat-message.mocks.ts";
 import {IChat} from "../../models/IChat.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
+import Router from "../../utils/Router.ts";
+import {BASE_URLS} from "../../config.ts";
 
 export interface IPageChatProps extends IProps {
     currentUser:IUser,
@@ -12,7 +14,9 @@ export interface IPageChatProps extends IProps {
     messageList:IChatMessage[],
 }
 export class PageChat extends Block {
+
         constructor() {
+            console.log('window.user', window.user)
             const props:IPageChatProps={
                 currentUser:mockUser,
                 chatList:mockListChats,
@@ -20,6 +24,7 @@ export class PageChat extends Block {
                 events:{}
             }
             super(props);
+            if(!window.user)    Router.getRouter().go(BASE_URLS['page-login']);
     }
 
     protected render(): string {

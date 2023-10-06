@@ -1,17 +1,16 @@
 import {IProps,Block} from "../../utils/Block.ts";
-import {mockUser} from "../../mocks/user-profile.mocks.ts";
 import {IUser} from "../../models/IUser.ts";
 
 export interface ILoginPageProps extends IProps {
     onChange:(event:Event)=>void,
-    user:IUser
+    user:IUser|null
 }
 export class PagePasswordEdit extends Block {
 
     constructor() {
         const props:ILoginPageProps={
             events:{},
-            user:mockUser,
+            user:window.user,
             onChange: (event: Event) => {
 
                 event.preventDefault();

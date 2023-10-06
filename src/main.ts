@@ -5,6 +5,9 @@ import {registerComponent} from "./utils/registerComponents";
 import Router from "./utils/Router.ts";
 import Block from "./utils/Block.ts";
 import {BASE_URLS} from "./config.ts";
+import {IUser} from "./models/IUser.ts";
+import {initialStateApp} from "./services/app.ts";
+
 
 
 
@@ -31,10 +34,19 @@ Object.entries(allComponents).forEach(([name, component]) => {
     registerComponent(name, component);
 });
 
+declare global {
+    interface Window {
+        user: IUser|null;
+    }
+
+    type Nullable<T> = T | null;
+
+}
+await initialStateApp();
 
 const router = new Router(".app");
 
-router.use(BASE_URLS['page-default'], Pages.LoginPage as unknown as Block)
+router.use(BASE_URLS['page-default'], Pages.PageChat as unknown as Block)
     .use(BASE_URLS['page-all-components'], Pages.AllComponentsPage as unknown as Block)
     .use(BASE_URLS['page-login'], Pages.LoginPage as unknown as Block)
     .use(BASE_URLS['page-sign-up'], Pages.PageRegistration as unknown as Block)

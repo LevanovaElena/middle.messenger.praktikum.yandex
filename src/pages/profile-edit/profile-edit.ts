@@ -1,17 +1,16 @@
 import {IProps,Block} from "../../utils/Block.ts";
-import {mockUser} from "../../mocks/user-profile.mocks.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IPageProfileProps} from "../profile/profile.ts";
 
 export interface IPageProfileEditProps extends IProps {
     onChange:(event:Event)=>void,
-    user:IUser
+    user:IUser|null
 }
 export class PageProfileEdit extends Block {
     constructor() {
         const props:IPageProfileEditProps={
             events:{},
-            user:mockUser,
+            user:window.user,
             onChange: (event: Event) => {
                 event.preventDefault();
                 const login = this.refs.form.getRefs()?.login.value();
@@ -33,15 +32,18 @@ export class PageProfileEdit extends Block {
         }
         super(props);
     }
-
+    public get props(){
+        return this._props as IPageProfileProps;
+    }
     getChildren() {
-        const {email,login,first_name,second_name,display_name,phone}=(this._props as IPageProfileProps).user;
+        if(!this.props.user) return '';
+        const {email,login,first_name,second_name,display_name,phone}=this.props.user;
         return (
             `{{{ InputWide label='Email' type='email' name='email' validate=validate.email ref='email' readOnly=false value='${email}' }}}
             {{{ InputWide label='Login' type='text' name='login' validate=validate.login ref='login' readOnly=false value='${login}'  }}}
             {{{ InputWide label='First Name' type='first_name' name='first_name' validate=validate.name ref='first_name' readOnly=false value='${first_name}'  }}}
             {{{ InputWide label='Second Name' name='second_name' validate=validate.name ref='second_name' readOnly=false value='${second_name}'  }}}
-            {{{ InputWide label='Name in Chat' name='display_name' validate=validate.name ref='display_name' readOnly=false  value='${display_name}' }}}
+            {{{ InputWide label='Name in Chat' name='display_name' validate=validate.name ref='display_name' readOnly=false  value='${display_name||''}' }}}
             {{{ InputWide label='Phone'  name='phone' validate=validate.phone ref='phone' readOnly=false  value='${phone}' }}}
             
             `

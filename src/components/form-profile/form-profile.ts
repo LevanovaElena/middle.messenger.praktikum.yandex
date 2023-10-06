@@ -4,7 +4,7 @@ import {ALL_VALIDATE_FIELDS, IValidateType} from "../../models/IValidateType.ts"
 import {logOut} from "../../services/auth.ts";
 
 interface IFormProfileProps extends IProps{
-    user:IUser,
+    user:IUser|null,
     withButton:boolean,
     children: string,
     buttonText:string,
@@ -16,25 +16,31 @@ interface IFormProfileProps extends IProps{
 
 }
 export class FormProfile extends Block {
+
     constructor(props:IFormProfileProps) {
+
         props.validate= ALL_VALIDATE_FIELDS;
         props.onLogOut=(event: Event) => {
             event.preventDefault();
             logOut().catch((error)=>console.log(error))
         }
+        props.user=window.user;
 
+        console.log(props)
         super(props);
     }
-
+    public get props(){
+        return this._props as IFormProfileProps;
+    }
     protected render(): string {
-        const {user,withButton=false,children='',buttonText=''}=this._props as IFormProfileProps;
-        const {avatar,first_name,second_name}=user;
-
+        const {user,withButton=false,children='',buttonText=''}=this.props;
+        if(!user)return '';
+        const {avatar='',first_name,second_name}=user;
         return(`
       
         <div class="profile">
             <div class="profile__avatar">
-                {{{ Avatar image=${avatar} isLoadAvatar=true }}}
+                {{{ Avatar imageUrl=${avatar} isLoadAvatar=true }}}
                 <h2 class="profile__avatar__name">${first_name} ${second_name}</h2>
             </div>
             ${user ?

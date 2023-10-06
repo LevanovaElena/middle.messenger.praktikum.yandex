@@ -29,9 +29,9 @@ export class LoginPage extends Block {
                 signIn({login, password}).catch((error)=>console.log(error))
             }
         }
-
+        getUser().catch(error=>console.log(error))
         super(props);
-        getUser().catch((error)=>console.log(error))
+        console.log('window.user', window.user)
     }
 
     protected render(): string {
