@@ -1,5 +1,6 @@
 import {IProps,Block} from "../../utils/Block.ts";
 import {IUser} from "../../models/IUser.ts";
+import {updateUserPassword} from "../../services/user-settings.ts";
 
 export interface ILoginPageProps extends IProps {
     onChange:(event:Event)=>void,
@@ -11,17 +12,15 @@ export class PagePasswordEdit extends Block {
         const props:ILoginPageProps={
             events:{},
             user:window.user,
-            onChange: (event: Event) => {
-
+            onChange: async (event: Event) => {
                 event.preventDefault();
                 const oldPassword = this.refs.form.getRefs()?.oldPassword.value();
                 const newPassword = this.refs.form.getRefs()?.newPassword.value();
                 const repeatPassword = this.refs.form.getRefs()?.repeatPassword.value();
 
-                console.log({
+                if (oldPassword && newPassword && newPassword === repeatPassword) await updateUserPassword({
                     oldPassword,
-                    newPassword,
-                    repeatPassword,
+                    newPassword
                 })
             }
         }

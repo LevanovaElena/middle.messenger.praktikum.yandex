@@ -1,6 +1,7 @@
 import {IProps,Block} from "../../utils/Block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IPageProfileProps} from "../profile/profile.ts";
+import {updateUserProfile} from "../../services/user-settings.ts";
 
 export interface IPageProfileEditProps extends IProps {
     onChange:(event:Event)=>void,
@@ -11,7 +12,7 @@ export class PageProfileEdit extends Block {
         const props:IPageProfileEditProps={
             events:{},
             user:window.user,
-            onChange: (event: Event) => {
+            onChange: async (event: Event) => {
                 event.preventDefault();
                 const login = this.refs.form.getRefs()?.login.value();
                 const email = this.refs.form.getRefs()?.email.value();
@@ -20,14 +21,15 @@ export class PageProfileEdit extends Block {
                 const second_name = this.refs.form.getRefs()?.second_name.value();
                 const display_name = this.refs.form.getRefs()?.display_name.value();
 
-                console.log({
+                const userData: IUser = {
                     login,
                     second_name,
                     first_name,
                     display_name,
                     phone,
                     email
-                })
+                }
+                if (login && first_name && second_name && phone && email) await updateUserProfile(userData);
             }
         }
         super(props);

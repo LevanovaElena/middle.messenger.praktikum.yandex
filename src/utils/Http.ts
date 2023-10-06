@@ -16,7 +16,7 @@ type IOptionsRequest = {
     params?: object;
 }
 
-type HTTPMethod = (url: string, options?: IOptionsRequest) => Promise<unknown>
+type HTTPMethod = (url: string, options?: IOptionsRequest) => Promise<XMLHttpRequest>
 
 
 
@@ -25,24 +25,24 @@ class HTTPTransport {
     constructor(base_url?:string) {
         this.baseUrl=base_url||BASE_API_URL;
     }
-    get: HTTPMethod = (url, options = {}) => {
+    get: HTTPMethod = (url, options = {}):Promise<XMLHttpRequest> => {
         return this.request(this.baseUrl+url+queryStringify(options.params || {}) || '', {
             ...options,
             method: METHODS.GET
-        }, options.timeout);
+        }, options.timeout)as Promise<XMLHttpRequest> ;
     };
 
     put: HTTPMethod = (url, options = {}) => {
 
-        return this.request(this.baseUrl+url, {...options, method: METHODS.PUT,headers:{'Content-Type': 'application/json'}}, options.timeout);
+        return this.request(this.baseUrl+url, {...options, method: METHODS.PUT,headers:{'Content-Type': 'application/json'}}, options.timeout) as Promise<XMLHttpRequest>;
     };
-    post: HTTPMethod = (url, options = {}) => {
+    post: HTTPMethod = (url, options = {})=> {
 
-        return this.request(this.baseUrl+url, {...options, method: METHODS.POST,headers:{'Content-Type': 'application/json'}}, options.timeout);
+        return this.request(this.baseUrl+url, {...options, method: METHODS.POST,headers:{'Content-Type': 'application/json'}}, options.timeout) as Promise<XMLHttpRequest>;
     };
     delete: HTTPMethod = (url, options = {}) => {
 
-        return this.request(this.baseUrl+url, {...options, method: METHODS.DELETE}, options.timeout);
+        return this.request(this.baseUrl+url, {...options, method: METHODS.DELETE}, options.timeout) as Promise<XMLHttpRequest>;
     };
 
     request = (url: string, options: IOptionsRequest = {method: METHODS.GET,}, timeout = 5000) => {

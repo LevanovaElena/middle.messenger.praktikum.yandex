@@ -7,7 +7,6 @@ export interface IPageProfileProps extends IProps {
 export class PageProfile extends Block {
 
     constructor() {
-        console.log('window.user', window.user)
         const props:IPageProfileProps= {
             user: window.user,
             events: {}
