@@ -1,6 +1,8 @@
-import  {IProps,Block} from "../../utils/Block";
+import {IProps, Block} from "../../utils/Block";
+import modalController from "../../utils/modal-controller.ts";
+import {Modal} from "../index.ts";
 
-interface IAvatarProps extends IProps{
+interface IAvatarProps extends IProps {
     size: 'sm' | 'md',
     isLoadAvatar: boolean,
     onClickLoadAvatar: () => void,
@@ -9,11 +11,25 @@ interface IAvatarProps extends IProps{
 
 export class Avatar extends Block {
     constructor(props: IAvatarProps) {
-        super(props);
-        this._props.events = {
-            click: props.onClickLoadAvatar || (() => {
-            })
-        }
+        super({
+            ...props,
+            events: {
+                click: () => {
+                    console.log('cancel')
+                    modalController.openModal();
+                }
+            }
+        })
+        modalController.addModal((new Modal({
+            okText: "Save",
+            cancelClick: () => {
+                console.log('cancel')
+                //modalController.closeModal()
+            },
+            okClick: () => console.log('ok'),
+            cancelText: 'Cancel',
+            caption: 'Add Avatar'
+        })) as unknown as Block);
     }
 
     protected render(): string {
@@ -24,8 +40,9 @@ export class Avatar extends Block {
                     <img src='${imageUrl}' alt="image avatar" class="avatar__image"/>` : ``}
                 ${isLoadAvatar ? `
                     <div class="avatar__hover">
-                        <div class="avatar__hover__text">Load New Avatar</div>
+                        <div class="avatar__hover__text">Load New Avatar</div>                        
                     </div>` : ""}
-            </div>`)
+            </div>
+                 `)
     }
 }

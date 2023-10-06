@@ -26,7 +26,6 @@ export class FormProfile extends Block {
         }
         props.user=window.user;
 
-        console.log(props)
         super(props);
     }
     public get props(){

@@ -5,7 +5,6 @@
     gap: 10px;
     padding: 30px;
     min-height: 300px;
-    width: 340px;
     z-index: 100;
 
     .modal__header {
@@ -24,6 +23,19 @@
         align-self: end;
     }
 }
+.dialog::backdrop {
+    background-color: rgb(0 0 0 / 20%);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+.dialog {
+    border: none;
+
+    width: 340px;
+    inset: 0;
+    position: fixed;
+    margin: auto;
+}
 
 .modal-background {
     position: absolute;
@@ -38,4 +50,3 @@
     align-items: center;
     justify-content: center;
 }
-

@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps, Block} from "../../utils/Block";
 
 interface IModalProps extends IProps {
     caption: string,
@@ -10,17 +10,22 @@ interface IModalProps extends IProps {
 
 export class Modal extends Block {
     constructor(props: IModalProps) {
-        super(props);
+        super({
+            ...props
+        })
+        this.props.okClick=() => {
+            console.log('cancel')
+            //modalController.closeModal()
+        }    }
 
-    }
-    public get props(){
+    public get props() {
         return this._props as IModalProps;
     }
+
     protected render(): string {
-        const {  caption='',okText='',cancelText=''} = this.props;
+        const {caption = '', okText = '', cancelText = ''} = this.props;
         return (`
-            <form class="modal-background">
-                <div class="modal container-shadow ">
+                <form class="modal ">
                     <h2 class="modal__header">
                         ${caption}
                     </h2>
@@ -28,11 +33,10 @@ export class Modal extends Block {
                        
                     </div>
                     <div class="modal__footer">
-                         {{{ Button caption="${okText}" onClick=okClick }}}
+                        {{{ Button caption="${okText}" onClick=okClick }}}
                         {{{ Button caption="${cancelText}" onClick=cancelClick }}}
                     </div>
-                </div>
-            </form>
+                </form>
         `)
     }
 }
