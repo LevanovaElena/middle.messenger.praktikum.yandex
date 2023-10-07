@@ -22,16 +22,20 @@ export class ChatItem extends Block {
                     <div class="chat-item__caption__name">
                         ${chat.title}
                     </div>
-                    <div class="chat-item__caption__time">
-                        ${chat.last_message.time}
-                    </div>
+                    ${chat.last_message?`<div class="chat-item__caption__time">
+                        ${chat.last_message?.time}
+                    </div>`:``}
+                    
                 </div>
-                <div class="chat-item__message">
+                 ${chat.last_message?` <div class="chat-item__message">
                     <div class="chat-item__message__content">
-                        <p> ${chat.last_message.content}</p>
+                        <p> ${chat.last_message?.content}</p>
                     </div>
                     {{{ Button type="number" caption=${chat.unread_count}}}}
-                </div>
+                </div>`:` <div class="chat-item__message__content">
+                        <p> no messages</p>
+                    </div>`}
+               
             </li>
         `)
     }

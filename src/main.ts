@@ -6,7 +6,8 @@ import Router from "./utils/Router.ts";
 import Block from "./utils/Block.ts";
 import {BASE_URLS} from "./config.ts";
 import {IUser} from "./models/IUser.ts";
-import {initialStateApp} from "./services/app.ts";
+import { initialStateApp} from "./services/app.ts";
+import {IChat} from "./models/IChat.ts";
 
 
 
@@ -28,6 +29,7 @@ const allComponents = {
     'Loader': Components.Loader,
     'Modal': Components.Modal,
     'ModalAvatar': Components.ModalAvatar,
+    'ModalPrompt': Components.ModalPrompt,
     'FormAuth': Components.FormAuth,
     'FormProfile': Components.FormProfile,
 }
@@ -38,12 +40,14 @@ Object.entries(allComponents).forEach(([name, component]) => {
 declare global {
     interface Window {
         user: IUser|null;
+        chats:IChat[]|null;
     }
 
     type Nullable<T> = T | null;
 
 }
 await initialStateApp();
+
 
 const router = new Router(".app");
 

@@ -1,16 +1,19 @@
 import {IProps, Block} from "../../utils/Block";
+import {ALL_VALIDATE_FIELDS, IValidateType} from "../../models/IValidateType.ts";
 
 interface IModalProps extends IProps {
     caption: string,
     okText: string,
-    okClick: () => void,
+    okClick: (event: Event) => void,
     cancelText: string,
     cancelClick: () => void,
     children?: string,
+    validate?: IValidateType,
 }
 
 export class Modal extends Block {
     constructor(props: IModalProps) {
+        props.validate= ALL_VALIDATE_FIELDS;
         super({
             ...props
         })

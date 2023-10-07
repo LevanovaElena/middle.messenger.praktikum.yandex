@@ -3,10 +3,10 @@ import {IUser} from "./IUser.ts";
 export interface IChat {
     id: number;
     title: string;
-    avatar: string;
+    avatar?: string;
     unread_count: number;
     created_by: number;
-    last_message: ILastMessage;
+    last_message?: ILastMessage;
 }
 
 export interface ILastMessage {
@@ -14,7 +14,3 @@ export interface ILastMessage {
     time: string;
     content: string;
 }
-
-
-
-

@@ -58,11 +58,12 @@ export class MessageList extends Block {
     protected render(): string {
         const { messageList,currentUser,message='' } = this.props;
         const {avatar,display_name}=currentUser;
+        console.log(currentUser)
         return (`
            <div class="message-list">
                 <div class="message-list__header">
                     <div class="message-list__header__avatar">
-                        {{{ Avatar image=${avatar} size='sm'}}}
+                        {{{ Avatar imageUrl='${avatar}' size='sm' }}}
                         <span>${display_name}</span>
                     </div>
                     {{{ Button type="dots"}}}
