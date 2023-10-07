@@ -70,7 +70,7 @@ export class ModalAvatar extends Block {
 
     getChildren() {
         const {oldAvatar = '', newAvatar = ''} = this.props;
-        let result = '';
+        let result: string;
         if (newAvatar) {
             result = `<img src=${BASE_RESOURCES_URL + newAvatar} alt='image avatar' class='modal-avatar__image'/>`
         } else {
