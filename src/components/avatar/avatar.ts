@@ -1,6 +1,7 @@
 import {IProps, Block} from "../../utils/Block";
 import modalController from "../../utils/modal-controller.ts";
-import {Modal} from "../index.ts";
+import { ModalAvatar} from "../index.ts";
+import {BASE_RESOURCES_URL} from "../../config.ts";
 
 interface IAvatarProps extends IProps {
     size: 'sm' | 'md',
@@ -20,15 +21,8 @@ export class Avatar extends Block {
                 }
             }
         })
-        modalController.addModal((new Modal({
-            okText: "Save",
-            cancelClick: () => {
-                console.log('cancel')
-                //modalController.closeModal()
-            },
-            okClick: () => console.log('ok'),
-            cancelText: 'Cancel',
-            caption: 'Add Avatar'
+        modalController.addModal((new ModalAvatar({
+            oldAvatar:window.user?.avatar||''
         })) as unknown as Block);
     }
 
@@ -37,7 +31,7 @@ export class Avatar extends Block {
         return (`
             <div class="avatar ${size}">
                 ${imageUrl ? `
-                    <img src='${imageUrl}' alt="image avatar" class="avatar__image"/>` : ``}
+                    <img src='${BASE_RESOURCES_URL+imageUrl}' alt="image avatar" class="avatar__image"/>` : ``}
                 ${isLoadAvatar ? `
                     <div class="avatar__hover">
                         <div class="avatar__hover__text">Load New Avatar</div>                        

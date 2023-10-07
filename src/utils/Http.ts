@@ -34,11 +34,11 @@ class HTTPTransport {
 
     put: HTTPMethod = (url, options = {}) => {
 
-        return this.request(this.baseUrl+url, {...options, method: METHODS.PUT,headers:{'Content-Type': 'application/json'}}, options.timeout) as Promise<XMLHttpRequest>;
+        return this.request(this.baseUrl+url, {...options, method: METHODS.PUT}, options.timeout) as Promise<XMLHttpRequest>;
     };
     post: HTTPMethod = (url, options = {})=> {
 
-        return this.request(this.baseUrl+url, {...options, method: METHODS.POST,headers:{'Content-Type': 'application/json'}}, options.timeout) as Promise<XMLHttpRequest>;
+        return this.request(this.baseUrl+url, {...options, method: METHODS.POST},options.timeout) as Promise<XMLHttpRequest>;
     };
     delete: HTTPMethod = (url, options = {}) => {
 
@@ -46,7 +46,7 @@ class HTTPTransport {
     };
 
     request = (url: string, options: IOptionsRequest = {method: METHODS.GET,}, timeout = 5000) => {
-        const {method, headers, data} = options;
+        const {method, data,headers} = options;
 
         return new Promise((resolve, reject) => {
 
@@ -76,7 +76,12 @@ class HTTPTransport {
 
             if (method === METHODS.GET || !data) {
                 xhr.send();
-            } else {
+            }
+            else if( data instanceof FormData){
+                xhr.send(data);
+            }
+            else {
+                xhr.setRequestHeader('Content-Type','application/json');
                 xhr.send(JSON.stringify(data));
             }
         });

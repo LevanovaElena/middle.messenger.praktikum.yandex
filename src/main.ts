@@ -27,6 +27,7 @@ const allComponents = {
     'MessageList': Components.MessageList,
     'Loader': Components.Loader,
     'Modal': Components.Modal,
+    'ModalAvatar': Components.ModalAvatar,
     'FormAuth': Components.FormAuth,
     'FormProfile': Components.FormProfile,
 }

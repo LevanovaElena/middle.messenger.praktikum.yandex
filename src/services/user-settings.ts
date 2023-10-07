@@ -21,9 +21,18 @@ const  updateUserPassword=async (newUserPasswords: IPasswords) => {
     Router.getRouter().back();
 }
 
+const  updateUserAvatar=async (newAvatar:FormData) => {
+    const result= await userApi.changeUserAvatar(newAvatar);
+    const error=responseHasError(result);
+    if(error) throw Error(error);
+    setStateUser(JSON.parse(result.responseText));
+    return JSON.parse(result.responseText);
+}
+
 
 
 export {
     updateUserProfile,
-    updateUserPassword
+    updateUserPassword,
+    updateUserAvatar
 }

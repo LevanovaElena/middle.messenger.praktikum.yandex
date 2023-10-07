@@ -7,6 +7,7 @@ export {default as  InputWide } from './input-wide';
 export { default as FormAuth } from './form-auth';
 export {default as  FormProfile } from './form-profile';
 export {default as Modal } from './modal';
+export {default as ModalAvatar } from './modal-avatar';
 export {default as Input } from './input';
 export { default as ChatItem } from './chat-item';
 export { default as  InputSearch } from './input-search';
