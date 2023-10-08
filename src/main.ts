@@ -34,6 +34,7 @@ const allComponents = {
     'FormProfile': Components.FormProfile,
     'MenuItem': Components.MenuItem,
     'MenuMessage': Components.MenuMessage,
+    'MenuChat': Components.MenuChat,
 }
 Object.entries(allComponents).forEach(([name, component]) => {
     registerComponent(name, component);

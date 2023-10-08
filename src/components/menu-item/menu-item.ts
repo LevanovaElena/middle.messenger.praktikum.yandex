@@ -3,7 +3,7 @@ import {IProps,Block} from "../../utils/Block";
 
 export interface IMenuItemProps extends IProps {
     caption:string,
-    icon:'media'|'file'|'location'|'plus'|'delete';
+    icon:'media'|'file'|'location'|'plus'|'delete'|'avatar';
     onClick:()=>void;
 }
 

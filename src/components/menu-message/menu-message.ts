@@ -39,7 +39,7 @@ export class MenuMessage extends Block {
     protected render(): string {
         const {isOpenedMenu = false} = this.props;
         return (`            
-            <nav class='${`menu-message container-shadow ${isOpenedMenu ? 'opened' : 'hide'}`}'>
+            <nav class='${`menu menu-message container-shadow ${isOpenedMenu ? 'opened' : 'hide'}`}'>
                 <ul >
                     {{{ MenuItem caption='Picture or Video' onClick=addMedia icon='media' }}}
                     {{{ MenuItem caption='File' onClick=addFile icon='file' }}}

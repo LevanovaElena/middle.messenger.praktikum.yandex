@@ -19,3 +19,4 @@ export {default as Badge } from './badge';
 export { default as Error } from './error';
 export { default as MenuItem } from './menu-item';
 export { default as MenuMessage } from './menu-message';
+export { default as MenuChat } from './menu-chat';

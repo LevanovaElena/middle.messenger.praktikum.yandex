@@ -12,12 +12,15 @@ interface IMessageListProps extends IProps {
     message?: string;
     onClickSend?: () => void;
     openMenuMessage?: () => void;
+    openMenuChat?: () => void;
     isOpenedMenuMessage: boolean;
+    isOpenedMenuChat: boolean;
 }
 
 export class MessageList extends Block {
     constructor(props: IMessageListProps) {
         props.isOpenedMenuMessage = false;
+        props.isOpenedMenuChat = false;
         props.onBlurMessage = () => this.validate();
         props.onClickSend = () => {
             if (!validateMessage(this.valueMessage())) console.log('Send Message:' + this.valueMessage());
@@ -25,6 +28,10 @@ export class MessageList extends Block {
         }
         props.openMenuMessage = () => {
             this.props.isOpenedMenuMessage = !this.props.isOpenedMenuMessage;
+            this.setProps(this.props);
+        }
+        props.openMenuChat = () => {
+            this.props.isOpenedMenuChat = !this.props.isOpenedMenuChat;
             this.setProps(this.props);
         }
 
@@ -69,7 +76,7 @@ export class MessageList extends Block {
     }
 
     protected render(): string {
-        const {messageList, currentUser, message = '',isOpenedMenuMessage} = this.props;
+        const {messageList, currentUser, message = '',isOpenedMenuMessage,isOpenedMenuChat} = this.props;
         const {avatar, display_name} = currentUser;
         return (`
            <div class="message-list">
@@ -78,7 +85,8 @@ export class MessageList extends Block {
                         {{{ Avatar imageUrl='${avatar}' size='sm' }}}
                         <span>${display_name}</span>
                     </div>
-                    {{{ Button type="dots"}}}
+                    {{{ Button type="dots" onClick=openMenuChat}}}
+                    {{{ MenuChat isOpenedMenu=${isOpenedMenuChat } closeMenu=openMenuChat}}}
                 </div>
                 <ul class="message-list__main">
                     ${this.getListMessages(messageList)}                   
