@@ -32,6 +32,8 @@ const allComponents = {
     'ModalPrompt': Components.ModalPrompt,
     'FormAuth': Components.FormAuth,
     'FormProfile': Components.FormProfile,
+    'MenuItem': Components.MenuItem,
+    'MenuMessage': Components.MenuMessage,
 }
 Object.entries(allComponents).forEach(([name, component]) => {
     registerComponent(name, component);
@@ -41,6 +43,7 @@ declare global {
     interface Window {
         user: IUser|null;
         chats:IChat[]|null;
+        currentChat:IChat|null;
     }
 
     type Nullable<T> = T | null;

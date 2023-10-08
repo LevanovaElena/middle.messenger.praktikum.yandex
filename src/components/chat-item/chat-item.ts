@@ -7,7 +7,7 @@ export interface IChatItemProps extends IProps {
 
 export class ChatItem extends Block {
     constructor(props: IChatItemProps) {
-        super(props);
+        super(props)
     }
 
     public renderForList=this.render;

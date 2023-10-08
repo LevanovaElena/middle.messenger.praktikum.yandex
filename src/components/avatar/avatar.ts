@@ -16,14 +16,15 @@ export class Avatar extends Block {
             ...props,
             events: {
                 click: () => {
-                    console.log('cancel')
+                    if(!props.isLoadAvatar)return;
+                    modalController.addModal((new ModalAvatar({
+                        oldAvatar:window.user?.avatar||''
+                    })) as unknown as Block);
                     modalController.openModal();
                 }
             }
         })
-        modalController.addModal((new ModalAvatar({
-            oldAvatar:window.user?.avatar||''
-        })) as unknown as Block);
+
     }
 
     protected render(): string {

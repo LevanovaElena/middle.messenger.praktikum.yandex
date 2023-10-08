@@ -17,3 +17,5 @@ export {default as  MessageList } from './message-list';
 export {default as Message } from './message';
 export {default as Badge } from './badge';
 export { default as Error } from './error';
+export { default as MenuItem } from './menu-item';
+export { default as MenuMessage } from './menu-message';

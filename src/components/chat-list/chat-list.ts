@@ -32,7 +32,15 @@ export class ChatList extends Block {
             modalController.openModal();
         }
 
-        super(props);
+        super({
+            ...props,
+            events: {
+                click: (e:Event) => {
+                   if(!(e.target as HTMLElement).className.includes('chat-item__caption__name')) return;
+                   console.log('load chat')
+                }
+            }
+        })
         console.log(props.list)
     }
 

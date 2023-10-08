@@ -1,41 +1,52 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps, Block} from "../../utils/Block";
 import {IChatMessage} from "../../models/IChatMessage.ts";
 import {IUser} from "../../models/IUser.ts";
-import { Message} from "../index.ts";
+import {Message} from "../index.ts";
 import {IMessageProps} from "../message/message.ts";
 import {validateMessage} from "../../utils/validates.utils.ts";
 
-interface IMessageListProps extends IProps{
-    messageList:IChatMessage[];
-    currentUser:IUser;
-    onBlurMessage?:()=>void;
-    message?:string;
-    onClickSend?:()=>void;
+interface IMessageListProps extends IProps {
+    messageList: IChatMessage[];
+    currentUser: IUser;
+    onBlurMessage?: () => void;
+    message?: string;
+    onClickSend?: () => void;
+    openMenuMessage?: () => void;
+    isOpenedMenuMessage: boolean;
 }
 
 export class MessageList extends Block {
     constructor(props: IMessageListProps) {
-        props.onBlurMessage= () => this.validate();
-        props.onClickSend= () => {
-            if(!validateMessage(this.valueMessage()))console.log('Send Message:'+this.valueMessage());
+        props.isOpenedMenuMessage = false;
+        props.onBlurMessage = () => this.validate();
+        props.onClickSend = () => {
+            if (!validateMessage(this.valueMessage())) console.log('Send Message:' + this.valueMessage());
             else console.log('Error! Can not send!')
         }
+        props.openMenuMessage = () => {
+            this.props.isOpenedMenuMessage = !this.props.isOpenedMenuMessage;
+            this.setProps(this.props);
+        }
+
         super(props);
     }
-    public get props(){
+
+    public get props() {
         return this._props as IMessageListProps;
     }
+
     public valueMessage() {
         if (!this.validate()) {
             return '';
         }
         return this.refs?.message.value()
     }
+
     private validate() {
-        const value =this.refs?.message.value();
+        const value = this.refs?.message.value();
         const error = validateMessage(value);
 
-        this.props.message=value;
+        this.props.message = value;
         if (error) {
             console.log('Message can not be blank')
             this.setProps(this.props);
@@ -44,21 +55,22 @@ export class MessageList extends Block {
         this.setProps(this.props);
         return true;
     }
-    getListMessages(list:IChatMessage[]):string{
-        if(!list||list.length===0)return '';
-        return list.map(message=>{
-            const messageBlock=new Message({message:message,myMessage:message.main||false} as IMessageProps)
-            return(`
+
+    getListMessages(list: IChatMessage[]): string {
+        if (!list || list.length === 0) return '';
+        return list.map(message => {
+            const messageBlock = new Message({message: message, myMessage: message.main || false} as IMessageProps)
+            return (`
             <div class="message-list__main__message">
                 ${messageBlock.renderForList()}
                 </div>
             `)
         }).join('')
     }
+
     protected render(): string {
-        const { messageList,currentUser,message='' } = this.props;
-        const {avatar,display_name}=currentUser;
-        console.log(currentUser)
+        const {messageList, currentUser, message = '',isOpenedMenuMessage} = this.props;
+        const {avatar, display_name} = currentUser;
         return (`
            <div class="message-list">
                 <div class="message-list__header">
@@ -72,7 +84,8 @@ export class MessageList extends Block {
                     ${this.getListMessages(messageList)}                   
                 </ul>
                 <div class="message-list__footer">
-                    {{{ Button type="paperclip"}}}
+                    {{{ MenuMessage isOpenedMenu=${isOpenedMenuMessage } closeMenu=openMenuMessage}}}
+                    {{{ Button type="paperclip" onClick=openMenuMessage}}}
                     {{{ Input 
                         ref="message"
                         type="text" 
