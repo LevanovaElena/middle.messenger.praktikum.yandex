@@ -13,15 +13,13 @@ const signUp = async (data: IUser) => {
 }
 const signIn= async (data: IAuthData) => {
     const result=await authApi.signIn(data);
-    const error=responseHasError(result as  XMLHttpRequest);
-    if(error) throw Error(error);
+    responseHasError(result as  XMLHttpRequest);
    await initialStateApp();
 }
 
 const getUser= async () => {
     const result=await authApi.getAuthUser() as  XMLHttpRequest;
-    const error=responseHasError(result);
-    if(error) throw Error(error);
+    responseHasError(result);
     return JSON.parse( result.responseText);
 
 }

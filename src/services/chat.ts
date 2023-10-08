@@ -8,8 +8,7 @@ import {IUser} from "../models/IUser.ts";
 const chatApi=new ChatApi('/chats');
 const getChats= async ():Promise<IChat[]> => {
     const result=await chatApi.getChats() as  XMLHttpRequest;
-    const error=responseHasError(result);
-    if(error) throw Error(error);
+    responseHasError(result);
     return JSON.parse( result.responseText);
 }
 const createChat= async (title:string):Promise<IChat> => {

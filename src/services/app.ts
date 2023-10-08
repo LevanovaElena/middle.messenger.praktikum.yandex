@@ -23,14 +23,29 @@ const initialStateApp = async () => {
 
 }
 const initChatPage = async () => {
-    const result = await getChats();
+    let result:IChat[]=[];
+    try {
+        result = await getChats();
+    }
+    catch (error) {
+        window.chats = result;
+    }
     console.log('window.chat_initial', result)
     window.chats = result;
 
 }
 
 const setStateCurrentChat = async (chat: IChat | null) => {
-    if (chat) chat.users = await getChatUsers(String(chat.id));
+    if (chat) {
+        let result:IUser[]=[];
+        try {
+            result = await getChatUsers(String(chat.id));
+        }
+        catch (error) {
+            chat.users = result;
+        }
+        chat.users = result;
+    }
     window.currentChat = chat;
 }
 const setStateUser = (user: IUser) => {

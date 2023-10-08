@@ -1,7 +1,7 @@
 import  {IProps,Block} from "../../utils/Block";
 
 interface IButtonProps extends IProps{
-    type: 'arrow' | 'dots'|'paperclip'|'cancel'|'number',
+    type: 'arrow' | 'dots'|'paperclip'|'cancel'|'number'|'close',
     caption: string,
     page: string,
     onClick: () => void
