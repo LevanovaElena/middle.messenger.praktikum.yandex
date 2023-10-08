@@ -21,6 +21,9 @@ export class UserSettingsApi {
         return this.httpTransport.put(this.baseUrl + '/password', {data: data});
     }
 
+    public searchUser(login: string) {
+        return this.httpTransport.post(this.baseUrl + '/search', {data:{login: login}});
+    }
 }
 
 export default UserSettingsApi

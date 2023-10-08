@@ -1,4 +1,5 @@
 import HTTPTransport from "../utils/Http.ts";
+import {IChatUsersData} from "../models/IChat.ts";
 
 export class ChatApi {
     private httpTransport = new HTTPTransport();
@@ -9,23 +10,27 @@ export class ChatApi {
     }
 
     public getChats() {
-        return  this.httpTransport.get(this.baseUrl);
+        return this.httpTransport.get(this.baseUrl);
     }
 
-    public createChat(title:string) {
-        return  this.httpTransport.post(this.baseUrl,{data:{title: title}});
-    }
-  /*  public signUp(userData: IUser) {
-      return this.httpTransport.post(this.baseUrl + '/signup', {data: userData});
+    public createChat(title: string) {
+        return this.httpTransport.post(this.baseUrl, {data: {title: title}});
     }
 
-    public  signIn(userData: IAuthData) {
-        return  this.httpTransport.post(this.baseUrl + '/signin', {data: userData});
+    public addChatUsers(userData: IChatUsersData) {
+        return this.httpTransport.put(this.baseUrl + '/users', {data: userData});
+    }
+    public deleteChatUsers(userData: IChatUsersData) {
+        return this.httpTransport.delete(this.baseUrl + '/users', {data: userData});
     }
 
-    public logOut() {
-        return  this.httpTransport.post(this.baseUrl + '/logout');
-    }*/
+    public getChatUsers(id: string) {
+        return this.httpTransport.get(this.baseUrl + `/${id}/users`);
+    }
+
+    /*  public logOut() {
+       return  this.httpTransport.post(this.baseUrl + '/logout');
+   }*/
 }
 
 export default ChatApi

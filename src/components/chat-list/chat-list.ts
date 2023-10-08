@@ -6,27 +6,29 @@ import {IUser} from "../../models/IUser.ts";
 import modalController from "../../utils/modal-controller.ts";
 import ModalPrompt from "../modal-prompt";
 import {createChat} from "../../services/chat.ts";
-import {initChatPage} from "../../services/app.ts";
+import {initChatPage, setStateCurrentChat} from "../../services/app.ts";
+
 
 interface IChatListProps extends IProps {
     list: IChat[],
     currentUser: IUser | null,
-    showModalAddChat:()=>void
+    showModalAddChat: () => void,
+    setCurrentChat:(chat:IChat|null)=>void
 }
 
 export class ChatList extends Block {
     constructor(props: IChatListProps) {
         props.currentUser = window.user;
-        props.list=window.chats||[];
-        props.showModalAddChat = ()=>{
+        props.list = window.chats || [];
+        props.showModalAddChat = () => {
             modalController.addModal((new ModalPrompt({
                 caption: 'Add Chat',
                 labelText: 'Title Chat',
                 okText: 'Add Chat',
-                ref:"modal",
-                okClick: (result:string) => {
+                ref: "modal",
+                okClick: (result: string) => {
                     console.log(result);
-                    createChat(result).then(()=>initChatPage())
+                    createChat(result).then(() => initChatPage())
                 },
             })) as unknown as Block);
             modalController.openModal();
@@ -35,19 +37,30 @@ export class ChatList extends Block {
         super({
             ...props,
             events: {
-                click: (e:Event) => {
-                   if(!(e.target as HTMLElement).className.includes('chat-item__caption__name')) return;
-                   console.log('load chat')
+                click: (e: Event) => {
+                    if (!(e.target as HTMLElement).className.includes('chat-item__caption__name')) return;
+
+                    const currentChat = (e.target as HTMLElement).id;
+
+                    setStateCurrentChat(props.list.find(item => item.id === Number(currentChat))||null);
+                    this.props.setCurrentChat(props.list.find(item => item.id === Number(currentChat))||null);
                 }
             }
         })
-        console.log(props.list)
     }
 
+    public get props(){
+        return this._props as IChatListProps;
+    }
     getChats(list: IChat[]): string {
         if (!list || list.length === 0) return '';
         return list.map(chat => {
-            const chatBlock = new ChatItem({chat: chat} as IChatItemProps)
+            const chatBlock = new ChatItem({
+                chat: chat, onClick: () => {
+                    console.log('item chat')
+                    this.props.setCurrentChat(chat);
+                }
+            } as IChatItemProps)
             return (`
                 ${chatBlock.renderForList()}
             `)
@@ -55,7 +68,7 @@ export class ChatList extends Block {
     }
 
     protected render(): string {
-        const {list,currentUser} = this._props as IChatListProps;
+        const {list, currentUser} = this._props as IChatListProps;
 
         return (`            
             <div class="chat-list">

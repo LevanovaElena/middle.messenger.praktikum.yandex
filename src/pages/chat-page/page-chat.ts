@@ -1,30 +1,36 @@
 import {IProps,Block} from "../../utils/Block.ts";
-import {mockListMessages} from "../../mocks/chat-message.mocks.ts";
 import {IChat} from "../../models/IChat.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
 import Router from "../../utils/Router.ts";
 import {BASE_URLS} from "../../config.ts";
-import {initChatPage} from "../../services/app.ts";
+import {initChatPage, setStateCurrentChat} from "../../services/app.ts";
 
 export interface IPageChatProps extends IProps {
     currentUser:IUser|null,
+    currentChat:IChat|null,
     chatList:IChat[],
     messageList:IChatMessage[],
+    setCurrentChat:(chat:IChat)=>void
 }
 export class PageChat extends Block {
 
         constructor() {
             const props: IPageChatProps = {
                 currentUser: window.user||null,
+                currentChat: window.currentChat||null,
                 chatList: [],
-                messageList: mockListMessages,
+                messageList:[],
+                setCurrentChat:(chat:IChat)=>{
+                    setStateCurrentChat(chat);
+                    this.props.currentChat=chat;
+                    this.setProps(this.props)
+                },
                 events: {}
             }
             super(props);
             if (!window.user) Router.getRouter().go(BASE_URLS['page-login']);
             initChatPage();
-            console.log(window.chats)
         }
     public get props(){
         return this._props as IPageChatProps;
@@ -33,10 +39,10 @@ export class PageChat extends Block {
         return (`
            <div class="chat-page">
                 <div class="chat-page__left">
-                    {{{ ChatList list=chatList }}}
+                    {{{ ChatList list=chatList setCurrentChat=setCurrentChat}}}
                 </div>
                 <div class="chat-page__main">
-                    {{{ MessageList messageList=messageList currentUser=currentUser }}}
+                    {{{ MessageList messageList=messageList currentUser=currentUser currentChat=${this.props.currentChat} }}}
                 </div>
             </div>
         `)

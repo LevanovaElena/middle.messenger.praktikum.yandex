@@ -4,10 +4,12 @@ import {IUser} from "../../models/IUser.ts";
 import {Message} from "../index.ts";
 import {IMessageProps} from "../message/message.ts";
 import {validateMessage} from "../../utils/validates.utils.ts";
+import {IChat} from "../../models/IChat.ts";
 
 interface IMessageListProps extends IProps {
     messageList: IChatMessage[];
     currentUser: IUser;
+    currentChat: IChat|null;
     onBlurMessage?: () => void;
     message?: string;
     onClickSend?: () => void;
@@ -21,6 +23,7 @@ export class MessageList extends Block {
     constructor(props: IMessageListProps) {
         props.isOpenedMenuMessage = false;
         props.isOpenedMenuChat = false;
+        props.currentChat = window.currentChat;
         props.onBlurMessage = () => this.validate();
         props.onClickSend = () => {
             if (!validateMessage(this.valueMessage())) console.log('Send Message:' + this.valueMessage());
@@ -76,14 +79,19 @@ export class MessageList extends Block {
     }
 
     protected render(): string {
-        const {messageList, currentUser, message = '',isOpenedMenuMessage,isOpenedMenuChat} = this.props;
-        const {avatar, display_name} = currentUser;
+        const {messageList, message = '',isOpenedMenuMessage,isOpenedMenuChat,currentChat} = this.props;
+
+        if(!currentChat)
+            return (`<div class="message-list__empty">
+                        <p class="">Select a chat to write a message</p>
+                    </div>`)
+        const {avatar,title} = currentChat;
         return (`
            <div class="message-list">
                 <div class="message-list__header">
                     <div class="message-list__header__avatar">
-                        {{{ Avatar imageUrl='${avatar}' size='sm' }}}
-                        <span>${display_name}</span>
+                        {{{ Avatar imageUrl='${avatar||''}' size='sm' }}}
+                        <span>${title}</span>
                     </div>
                     {{{ Button type="dots" onClick=openMenuChat}}}
                     {{{ MenuChat isOpenedMenu=${isOpenedMenuChat } closeMenu=openMenuChat}}}

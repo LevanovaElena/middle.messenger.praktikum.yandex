@@ -23,6 +23,7 @@ const allComponents = {
     'Link': Components.Link,
     'Error': Components.Error,
     'ChatItem': Components.ChatItem,
+    'UserItem': Components.UserItem,
     'ChatList': Components.ChatList,
     'Message': Components.Message,
     'MessageList': Components.MessageList,
@@ -30,6 +31,7 @@ const allComponents = {
     'Modal': Components.Modal,
     'ModalAvatar': Components.ModalAvatar,
     'ModalPrompt': Components.ModalPrompt,
+    'ModalChatUsers': Components.ModalChatUsers,
     'FormAuth': Components.FormAuth,
     'FormProfile': Components.FormProfile,
     'MenuItem': Components.MenuItem,
@@ -50,10 +52,11 @@ declare global {
     type Nullable<T> = T | null;
 
 }
+const router = new Router(".app");
 await initialStateApp();
 
 
-const router = new Router(".app");
+
 
 router.use(BASE_URLS['page-default'], Pages.PageChat as unknown as Block)
     .use(BASE_URLS['page-all-components'], Pages.AllComponentsPage as unknown as Block)

@@ -29,10 +29,16 @@ const  updateUserAvatar=async (newAvatar:FormData) => {
     return JSON.parse(result.responseText);
 }
 
-
+const  searchUsersByLogin=async (login:string) => {
+    const result= await userApi.searchUser(login);
+    const error=responseHasError(result);
+    if(error) throw Error(error);
+    return JSON.parse(result.responseText);
+}
 
 export {
     updateUserProfile,
     updateUserPassword,
-    updateUserAvatar
+    updateUserAvatar,
+    searchUsersByLogin
 }

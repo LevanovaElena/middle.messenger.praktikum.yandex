@@ -3,11 +3,14 @@ import {IChat} from "../../models/IChat.ts";
 
 export interface IChatItemProps extends IProps {
     chat:IChat,
+    onClick:()=>void
 }
 
 export class ChatItem extends Block {
     constructor(props: IChatItemProps) {
-        super(props)
+        super({
+            ...props,
+        })
     }
 
     public renderForList=this.render;
@@ -19,7 +22,7 @@ export class ChatItem extends Block {
                   {{{ Avatar imageUrl=${chat.avatar} isLoadAvatar=false size='sm' }}}
                 </div>
                 <div class="chat-item__caption">
-                    <div class="chat-item__caption__name">
+                    <div class="chat-item__caption__name" id='${chat.id}'>
                         ${chat.title}
                     </div>
                     ${chat.last_message?`<div class="chat-item__caption__time">
