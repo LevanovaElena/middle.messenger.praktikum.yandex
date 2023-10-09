@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps,Block} from "../../core/Block.ts";
 import {chat1, mockListChats} from "../../mocks/chat.mocks.ts";
 import {mockListMessages} from "../../mocks/chat-message.mocks.ts";
 import {mockUser} from "../../mocks/user-profile.mocks.ts";

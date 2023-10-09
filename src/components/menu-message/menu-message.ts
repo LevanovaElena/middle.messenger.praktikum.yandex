@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../utils/Block";
+import {IProps, Block} from "../../core/Block.ts";
 import {IChat} from "../../models/IChat.ts";
 
 
@@ -13,7 +13,7 @@ interface IMenuMessageProps extends IProps {
 
 export class MenuMessage extends Block {
     constructor(props: IMenuMessageProps) {
-        props.currentChat = window.currentChat;
+        props.currentChat = window.store.getState().currentChat;
         props.addMedia = () => {
             console.log('add media!');
             this.props.closeMenu();

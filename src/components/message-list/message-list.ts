@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../utils/Block";
+import {IProps, Block} from "../../core/Block.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
 import {IUser} from "../../models/IUser.ts";
 import {Message} from "../index.ts";
@@ -23,7 +23,7 @@ export class MessageList extends Block {
     constructor(props: IMessageListProps) {
         props.isOpenedMenuMessage = false;
         props.isOpenedMenuChat = false;
-        props.currentChat = window.currentChat;
+        props.currentChat = window.store.getState().currentChat;
         props.onBlurMessage = () => this.validate();
         props.onClickSend = () => {
             if (!validateMessage(this.valueMessage())) console.log('Send Message:' + this.valueMessage());
@@ -80,7 +80,7 @@ export class MessageList extends Block {
 
     protected render(): string {
         const {messageList, message = '',isOpenedMenuMessage,isOpenedMenuChat,currentChat} = this.props;
-
+        const countUsers=currentChat?.users?.length||1;
         if(!currentChat)
             return (`<div class="message-list__empty">
                         <p class="">Select a chat to write a message</p>
@@ -91,7 +91,10 @@ export class MessageList extends Block {
                 <div class="message-list__header">
                     <div class="message-list__header__avatar">
                         {{{ Avatar imageUrl='${avatar||''}' size='sm' }}}
-                        <span>${title}</span>
+                        <div class="message-list__header__title">
+                            <span>${title}</span>
+                            <p>${countUsers+' members'}</p>
+                        </div>
                     </div>
                     {{{ Button type="dots" onClick=openMenuChat}}}
                     {{{ MenuChat isOpenedMenu=${isOpenedMenuChat } closeMenu=openMenuChat}}}

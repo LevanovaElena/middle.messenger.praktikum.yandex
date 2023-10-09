@@ -1,64 +1,90 @@
 import {getUser} from "./auth.ts";
-import Router from "../utils/Router.ts";
+import Router from "../core/router.ts";
 import {BASE_URLS} from "../config.ts";
 import {IUser} from "../models/IUser.ts";
-import {getChats, getChatUsers} from "./chat.ts";
+import {getChats, getChatToken, getChatUsers} from "./chat.ts";
 import {IChat} from "../models/IChat.ts";
 
 const initialStateApp = async () => {
 
-    let result = null;
+    let user = null;
     try {
-        result = await getUser();
+        user = await getUser();
     } catch (error) {
         Router.getRouter().go(BASE_URLS['page-login']);
         return;
     }
-    setStateUser(result);
-    console.log('window.user_initial', window.user, Router.getRouter());
+    setStateUser(user);
+    console.log('user_initial', window.store.getState());
     await initChatPage();
-    /*const chats = await getChats();
-    window.store.set({user: me, chats});
-    navigate('emails')*/
 
 }
 const initChatPage = async () => {
-    let result:IChat[]=[];
+    let chats:IChat[]=[];
     try {
-        result = await getChats();
+        chats = await getChats();
     }
     catch (error) {
-        window.chats = result;
+        setStateChats(chats)
     }
-    console.log('window.chat_initial', result)
-    window.chats = result;
+    console.log('chats_initial', chats)
+    setStateChats(chats)
 
 }
-
+const initChatUsers = async (chat: IChat | null) => {
+    if (!chat) return;
+    let users:IUser[]=[];
+    try {
+        users = await getChatUsers(String(chat.id));
+    }
+    catch (error) {
+        setStateUsers(chat,[])
+    }
+    console.log('users_initial', users);
+    setStateUsers(chat,users)
+}
+const initChatToken = async (chat: IChat | null) => {
+    if (!chat) return;
+    let token='';
+    try {
+        token = await getChatToken(String(chat.id));
+    }
+    catch (error) {
+        setStateToken(chat,token)
+    }
+    console.log('token_initial', token);
+    setStateToken(chat,token)
+}
+const setStateUser = (user: IUser|null) => {
+    window.store.set({user:user});
+}
+const setStateChats = (chats: IChat[]|null) => {
+    window.store.set({chats:chats});
+}
+const setStateUsers = (chat:IChat,users:IUser[]) => {
+    chat.users=[...users];
+    window.store.set({currentChat:chat});
+}
+const setStateToken = (chat:IChat,token:string) => {
+    chat.token=token;
+    window.store.set({currentChat:chat});
+}
 const setStateCurrentChat = async (chat: IChat | null) => {
-    if (chat) {
-        let result:IUser[]=[];
-        try {
-            result = await getChatUsers(String(chat.id));
-        }
-        catch (error) {
-            chat.users = result;
-        }
-        chat.users = result;
-    }
-    window.currentChat = chat;
+    await initChatUsers(chat);
+    await initChatToken(chat);
+    window.store.set({currentChat: chat});
 }
-const setStateUser = (user: IUser) => {
-    window.user = user;
-}
-const setStateUsers = async () => {
-    if (!window.currentChat) return;
-    window.currentChat.users = await getChatUsers(String(window.currentChat.id));
-}
+
+
+
+
 export {
     initialStateApp,
     setStateUser,
     initChatPage,
     setStateCurrentChat,
-    setStateUsers
+    setStateUsers,
+    initChatToken,
+    initChatUsers,
+    setStateToken
 }

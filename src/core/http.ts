@@ -1,4 +1,4 @@
-import {queryStringify} from "./string.utils.ts";
+import {queryStringify} from "../utils/string.utils.ts";
 import {BASE_API_URL} from "../config.ts";
 
 enum METHODS {

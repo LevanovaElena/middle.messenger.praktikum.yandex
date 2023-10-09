@@ -1,7 +1,7 @@
-import {IProps, Block} from "../../utils/Block";
+import {IProps, Block} from "../../core/Block.ts";
 import {updateUserAvatar, updateUserProfile} from "../../services/user-settings.ts";
 import {BASE_RESOURCES_URL} from "../../config.ts";
-import modalController from "../../utils/modal-controller.ts";
+import modalController from "../../core/modal-controller.ts";
 import {addActive, deleteActive,  loadNewFileFromDrag} from "../../utils/load-file.utils.ts";
 
 interface IModalAvatarProps extends IProps {
@@ -21,7 +21,7 @@ export class ModalAvatar extends Block {
             modalController.closeModal();
         }
         props.cancelClick = () => {
-            const user = window.user;
+            const user = window.store.getState().user;
             if (user && this.props.newAvatar) {
                 updateUserProfile({...user, avatar: this.props.oldAvatar}).then(() => {
                     modalController.closeModal();
@@ -39,7 +39,7 @@ export class ModalAvatar extends Block {
                 updateUserAvatar(formData).then(user => {
                     this.props.newAvatar = user.avatar;
                     modalController.addModal((new ModalAvatar({
-                        oldAvatar: window.user?.avatar || ''
+                        oldAvatar: window.store.getState().user?.avatar || ''
                     })) as unknown as Block);
                 });
             }

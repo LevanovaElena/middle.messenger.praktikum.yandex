@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps,Block} from "../../core/Block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {getUserName} from "../../utils/user.utils.ts";
 

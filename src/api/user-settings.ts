@@ -1,4 +1,4 @@
-import HTTPTransport from "../utils/Http.ts";
+import HTTPTransport from "../core/http.ts";
 import {IPasswords, IUser} from "../models/IUser.ts";
 
 export class UserSettingsApi {

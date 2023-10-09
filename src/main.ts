@@ -1,57 +1,37 @@
 import './styles/main.pcss';
 import * as Components from './components';
 import * as Pages from './pages';
-import {registerComponent} from "./utils/registerComponents";
-import Router from "./utils/Router.ts";
-import Block from "./utils/Block.ts";
+import {registerComponent} from "./core/register-components.ts";
+import Router from "./core/router.ts";
+import Block from "./core/Block.ts";
 import {BASE_URLS} from "./config.ts";
-import {IUser} from "./models/IUser.ts";
 import { initialStateApp} from "./services/app.ts";
-import {IChat} from "./models/IChat.ts";
+import {IAppState} from "./models/IAppState.ts";
+import {Store} from "./core/store.ts";
 
+Object.entries(Components).forEach(
+    ([componentName, component]) => registerComponent(componentName, component)
+)
 
-
-
-const allComponents = {
-    'Button': Components.Button,
-    'Avatar': Components.Avatar,
-    'Badge': Components.Badge,
-    'Input': Components.Input,
-    'InputShort': Components.InputShort,
-    'InputWide': Components.InputWide,
-    'InputSearch': Components.InputSearch,
-    'Link': Components.Link,
-    'Error': Components.Error,
-    'ChatItem': Components.ChatItem,
-    'UserItem': Components.UserItem,
-    'ChatList': Components.ChatList,
-    'Message': Components.Message,
-    'MessageList': Components.MessageList,
-    'Loader': Components.Loader,
-    'Modal': Components.Modal,
-    'ModalAvatar': Components.ModalAvatar,
-    'ModalPrompt': Components.ModalPrompt,
-    'ModalChatUsers': Components.ModalChatUsers,
-    'FormAuth': Components.FormAuth,
-    'FormProfile': Components.FormProfile,
-    'MenuItem': Components.MenuItem,
-    'MenuMessage': Components.MenuMessage,
-    'MenuChat': Components.MenuChat,
-}
-Object.entries(allComponents).forEach(([name, component]) => {
-    registerComponent(name, component);
-});
 
 declare global {
     interface Window {
-        user: IUser|null;
-        chats:IChat[]|null;
-        currentChat:IChat|null;
+        store: Store<IAppState>;
     }
 
     type Nullable<T> = T | null;
 
 }
+
+const initState: IAppState = {
+    error: null,
+    user: null,
+    currentChat:null,
+    chats: []
+}
+
+window.store =new Store<IAppState>(initState);
+
 const router = new Router(".app");
 await initialStateApp();
 

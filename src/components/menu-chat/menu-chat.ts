@@ -1,6 +1,6 @@
-import {IProps, Block} from "../../utils/Block";
+import {IProps, Block} from "../../core/Block.ts";
 import {IChat} from "../../models/IChat.ts";
-import modalController from "../../utils/modal-controller.ts";
+import modalController from "../../core/modal-controller.ts";
 import {ModalChatUsers} from "../index.ts";
 
 
@@ -16,7 +16,7 @@ interface IMenuChatProps extends IProps {
 
 export class MenuChat extends Block {
     constructor(props: IMenuChatProps) {
-        props.currentChat = window.currentChat;
+        props.currentChat = window.store.getState().currentChat;
         props.addUser = () => {
             console.log('add user!',props.currentChat);
             modalController.addModal((new ModalChatUsers({
@@ -32,7 +32,7 @@ export class MenuChat extends Block {
         }
         props.deleteUser = () => {
             modalController.addModal((new ModalChatUsers({
-                users: window.currentChat?.users||[],
+                users: window.store.getState().currentChat?.users||[],
                 type:'delete',
                 ref: "modal",
                 okClick: (result: string) => {

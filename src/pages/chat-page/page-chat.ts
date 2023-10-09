@@ -1,9 +1,7 @@
-import {IProps,Block} from "../../utils/Block.ts";
+import {IProps,Block} from "../../core/Block.ts";
 import {IChat} from "../../models/IChat.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
-import Router from "../../utils/Router.ts";
-import {BASE_URLS} from "../../config.ts";
 import {initChatPage, setStateCurrentChat} from "../../services/app.ts";
 
 export interface IPageChatProps extends IProps {
@@ -17,20 +15,20 @@ export class PageChat extends Block {
 
         constructor() {
             const props: IPageChatProps = {
-                currentUser: window.user||null,
-                currentChat: window.currentChat||null,
+                currentUser: window.store.getState().user || null,
+                currentChat: window.store.getState().currentChat || null,
                 chatList: [],
-                messageList:[],
-                setCurrentChat:(chat:IChat)=>{
+                messageList: [],
+                setCurrentChat: (chat: IChat) => {
                     setStateCurrentChat(chat);
-                    this.props.currentChat=chat;
+                    this.props.currentChat = chat;
                     this.setProps(this.props)
                 },
                 events: {}
             }
             super(props);
-            if (!window.user) Router.getRouter().go(BASE_URLS['page-login']);
-            initChatPage();
+            //if (!window.user) Router.getRouter().go(BASE_URLS['page-login']);
+
         }
     public get props(){
         return this._props as IPageChatProps;

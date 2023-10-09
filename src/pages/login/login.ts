@@ -1,7 +1,7 @@
-import {IProps, Block} from "../../utils/Block";
+import {IProps, Block} from "../../core/Block.ts";
 import {BASE_URLS} from "../../config.ts";
 import { signIn} from "../../services/auth.ts";
-import Router from "../../utils/Router.ts";
+import Router from "../../core/router.ts";
 
 
 export interface ILoginPageProps extends IProps {
@@ -27,7 +27,12 @@ export class LoginPage extends Block {
                 if (!password) {
                     return;
                 }
-                signIn({login, password}).catch((error)=>console.log(error)).then(()=>Router.getRouter().go(BASE_URLS['page-chat']))
+                signIn({login, password})
+                    .catch((error)=>console.log('login',error))
+                    .then(()=> {
+                        console.log('loginOk')
+                        Router.getRouter().go(BASE_URLS['page-chat'])
+                    })
             }
         }
        // getUser().catch(error=>console.log(error))

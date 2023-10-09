@@ -1,8 +1,8 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps,Block} from "../../core/Block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {ALL_VALIDATE_FIELDS, IValidateType} from "../../models/IValidateType.ts";
 import {logOut} from "../../services/auth.ts";
-import Router from "../../utils/Router.ts";
+import Router from "../../core/router.ts";
 
 interface IFormProfileProps extends IProps{
     user:IUser|null,
@@ -28,7 +28,7 @@ export class FormProfile extends Block {
             event.preventDefault();
             Router.getRouter().back();
         }
-        props.user=window.user;
+        props.user=window.store.getState().user;
 
         super(props);
     }

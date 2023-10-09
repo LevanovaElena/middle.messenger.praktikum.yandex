@@ -1,5 +1,5 @@
-import {IProps,Block} from "../../utils/Block";
-import Router from "../../utils/Router.ts";
+import {IProps,Block} from "../../core/Block.ts";
+import Router from "../../core/router.ts";
 
 interface ILinkProps extends IProps{
     caption: string,

@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../utils/Block.ts";
+import {IProps,Block} from "../../core/Block.ts";
 import {IUser} from "../../models/IUser.ts";
 
 export interface IPageProfileProps extends IProps {
@@ -8,7 +8,7 @@ export class PageProfile extends Block {
 
     constructor() {
         const props:IPageProfileProps= {
-            user: window.user,
+            user: window.store.getState().user,
             events: {}
         }
 

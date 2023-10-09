@@ -37,10 +37,19 @@ const getChatUsers=async (idChat:string):Promise<IUser[]> => {
     if(error) throw Error(error);
     return JSON.parse( result.responseText);
 }
+const getChatToken=async (idChat:string):Promise<string> => {
+    const result=await chatApi.getChatToken(idChat) as  XMLHttpRequest;
+    const error=responseHasError(result);
+    if(error) throw Error(error);
+    return JSON.parse( result.responseText).token;
+}
+
+
 export {
     getChats,
     createChat,
     addChatUser,
     getChatUsers,
-    deleteChatUsers
+    deleteChatUsers,
+    getChatToken
 }

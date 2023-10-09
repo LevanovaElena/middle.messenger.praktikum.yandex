@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../utils/Block.ts";
+import {IProps,Block} from "../../core/Block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {updateUserPassword} from "../../services/user-settings.ts";
 
@@ -11,7 +11,7 @@ export class PagePasswordEdit extends Block {
     constructor() {
         const props:ILoginPageProps={
             events:{},
-            user:window.user,
+            user:window.store.getState().user,
             onChange: async (event: Event) => {
                 event.preventDefault();
                 const oldPassword = this.refs.form.getRefs()?.oldPassword.value();

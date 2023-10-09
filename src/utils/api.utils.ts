@@ -1,8 +1,8 @@
 import {BASE_URLS} from "../config.ts";
-import Router from "./Router.ts";
-import alertController from "./alert-controller.ts";
+import Router from "../core/router.ts";
+import alertController from "../core/alert-controller.ts";
 import Alert from "../components/alert";
-import Block from "./Block.ts";
+import Block from "../core/Block.ts";
 
 
 export const responseHasError = (response: XMLHttpRequest) => {
@@ -17,7 +17,8 @@ export const responseHasError = (response: XMLHttpRequest) => {
             if (error.includes('Cookie')) {
                 showAlert('Please, login!');
             } else showAlert(error);
-            if (error) throw Error(error);
+            //if (error) throw Error(error);
+            return error;
         }
 
     }

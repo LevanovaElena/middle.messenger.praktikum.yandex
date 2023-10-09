@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../utils/Block.ts";
+import {IProps,Block} from "../../core/Block.ts";
 import {signUp} from "../../services/auth.ts";
 import {IUser} from "../../models/IUser.ts";
 import {BASE_URLS} from "../../config.ts";

@@ -1,9 +1,9 @@
-import {IProps, Block} from "../../utils/Block";
+import {IProps, Block} from "../../core/Block.ts";
 import {IChat} from "../../models/IChat.ts";
 import {ChatItem} from "../index.ts";
 import {IChatItemProps} from "../chat-item/chat-item.ts";
 import {IUser} from "../../models/IUser.ts";
-import modalController from "../../utils/modal-controller.ts";
+import modalController from "../../core/modal-controller.ts";
 import ModalPrompt from "../modal-prompt";
 import {createChat} from "../../services/chat.ts";
 import {initChatPage, setStateCurrentChat} from "../../services/app.ts";
@@ -18,8 +18,8 @@ interface IChatListProps extends IProps {
 
 export class ChatList extends Block {
     constructor(props: IChatListProps) {
-        props.currentUser = window.user;
-        props.list = window.chats || [];
+        props.currentUser = window.store.getState().user;
+        props.list = window.store.getState().chats || [];
         props.showModalAddChat = () => {
             modalController.addModal((new ModalPrompt({
                 caption: 'Add Chat',
@@ -42,7 +42,7 @@ export class ChatList extends Block {
 
                     const currentChat = (e.target as HTMLElement).id;
 
-                    setStateCurrentChat(props.list.find(item => item.id === Number(currentChat))||null);
+                    /*setStateCurrentChat(props.list.find(item => item.id === Number(currentChat))||null);*/
                     this.props.setCurrentChat(props.list.find(item => item.id === Number(currentChat))||null);
                 }
             }

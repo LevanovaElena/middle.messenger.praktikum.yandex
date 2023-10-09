@@ -1,5 +1,5 @@
-import {IProps, Block} from "../../utils/Block";
-import modalController from "../../utils/modal-controller.ts";
+import {IProps, Block} from "../../core/Block.ts";
+import modalController from "../../core/modal-controller.ts";
 import { ModalAvatar} from "../index.ts";
 import {BASE_RESOURCES_URL} from "../../config.ts";
 
@@ -18,7 +18,7 @@ export class Avatar extends Block {
                 click: () => {
                     if(!props.isLoadAvatar)return;
                     modalController.addModal((new ModalAvatar({
-                        oldAvatar:window.user?.avatar||''
+                        oldAvatar:window.store.getState().user?.avatar||''
                     })) as unknown as Block);
                     modalController.openModal();
                 }

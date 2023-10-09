@@ -1,10 +1,10 @@
-import {IProps, Block} from "../../utils/Block";
-import modalController from "../../utils/modal-controller.ts";
+import {IProps, Block} from "../../core/Block.ts";
+import modalController from "../../core/modal-controller.ts";
 import {searchUsersByLogin} from "../../services/user-settings.ts";
 import {IUser} from "../../models/IUser.ts";
 import {UserItem} from "../index.ts";
 import {addChatUser, deleteChatUsers} from "../../services/chat.ts";
-import {setStateUsers} from "../../services/app.ts";
+import {initChatUsers } from "../../services/app.ts";
 
 interface IModalChatUsersProps extends IProps {
     okClick?: (result: string) => void,
@@ -44,20 +44,19 @@ export class ModalChatUsers extends Block {
                     e.stopPropagation();
                     const id = (e.target as HTMLElement).id;
                     console.log(id);
-                    if (window.currentChat && id&&props.type==='add') addChatUser({
+                    const chat=window.store.getState().currentChat;
+                    if ( chat&& id&&props.type==='add') addChatUser({
                         users: [Number(id)],
-                        chatId: window.currentChat.id
+                        chatId:chat.id
                     }).then(() => {
-                        modalController.closeModal();
-                        setStateUsers()
+                        initChatUsers(chat).then(()=>modalController.closeModal());
                     })
-                    if(props.type==='delete'&&window.currentChat){
+                    if(props.type==='delete'&&chat){
                         deleteChatUsers({
                             users: [Number(id)],
-                            chatId: window.currentChat.id
+                            chatId:chat.id
                         }).then(() => {
-                            modalController.closeModal();
-                            setStateUsers()
+                            initChatUsers(chat).then(()=>modalController.closeModal());
                         })
                     }
                 }

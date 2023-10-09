@@ -1,7 +1,7 @@
-import EventBus from "./EventBus";
+import EventBus from "./event-bus.ts";
 import {v4 as uuidv4} from 'uuid';
 import Handlebars from "handlebars";
-import {isDeepEqual} from "./object.utils.ts";
+import {isDeepEqual} from "../utils/object.utils.ts";
 
 export interface IProps {
     events?: object

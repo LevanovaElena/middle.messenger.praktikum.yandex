@@ -1,4 +1,4 @@
-import HTTPTransport from "../utils/Http.ts";
+import HTTPTransport from "../core/http.ts";
 import {IChatUsersData} from "../models/IChat.ts";
 
 export class ChatApi {
@@ -26,6 +26,9 @@ export class ChatApi {
 
     public getChatUsers(id: string) {
         return this.httpTransport.get(this.baseUrl + `/${id}/users`);
+    }
+    public getChatToken(id: string) {
+        return this.httpTransport.post(this.baseUrl + `/token/${id}`);
     }
 
     /*  public logOut() {
