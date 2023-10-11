@@ -4,6 +4,8 @@ import {BASE_URLS} from "../config.ts";
 import {IUser} from "../models/IUser.ts";
 import {getChats, getChatToken, getChatUsers} from "./chat.ts";
 import {IChat} from "../models/IChat.ts";
+import {cloneDeep} from "../utils/object.utils.ts";
+import {openConnectMessages} from "./send-message.ts";
 
 const initialStateApp = async () => {
 
@@ -20,11 +22,10 @@ const initialStateApp = async () => {
 
 }
 const initChatPage = async () => {
-    let chats:IChat[]=[];
+    let chats: IChat[] = [];
     try {
         chats = await getChats();
-    }
-    catch (error) {
+    } catch (error) {
         setStateChats(chats)
     }
     console.log('chats_initial', chats)
@@ -33,49 +34,47 @@ const initChatPage = async () => {
 }
 const initChatUsers = async (chat: IChat | null) => {
     if (!chat) return;
-    let users:IUser[]=[];
+    let users: IUser[] = [];
     try {
         users = await getChatUsers(String(chat.id));
-    }
-    catch (error) {
-        setStateUsers(chat,[])
+    } catch (error) {
+        setStateUsers(chat, [])
     }
     console.log('users_initial', users);
-    setStateUsers(chat,users)
+    setStateUsers(chat, users)
 }
 const initChatToken = async (chat: IChat | null) => {
     if (!chat) return;
-    let token='';
+    let token = '';
     try {
         token = await getChatToken(String(chat.id));
-    }
-    catch (error) {
-        setStateToken(chat,token)
+    } catch (error) {
+        setStateToken(chat, token)
     }
     console.log('token_initial', token);
-    setStateToken(chat,token)
+    setStateToken(chat, token)
 }
-const setStateUser = (user: IUser|null) => {
-    window.store.set({user:user});
+const setStateUser = (user: IUser | null) => {
+    window.store.set({user: user});
 }
-const setStateChats = (chats: IChat[]|null) => {
-    window.store.set({chats:chats});
+const setStateChats = (chats: IChat[] | null) => {
+    window.store.set({chats: chats});
 }
-const setStateUsers = (chat:IChat,users:IUser[]) => {
-    chat.users=[...users];
-    window.store.set({currentChat:chat});
+const setStateUsers = (chat: IChat, users: IUser[]) => {
+    chat.users = [...users];
+    window.store.set({currentChat: chat});
 }
-const setStateToken = (chat:IChat,token:string) => {
-    chat.token=token;
-    window.store.set({currentChat:chat});
+const setStateToken = (chat: IChat, token: string) => {
+    chat.token = token;
+    window.store.set({currentChat: chat});
 }
 const setStateCurrentChat = async (chat: IChat | null) => {
     await initChatUsers(chat);
     await initChatToken(chat);
-    window.store.set({currentChat: chat});
+    const user = window.store.getState().user;
+    if (chat && user) openConnectMessages(chat, user);
+    window.store.set({currentChat: cloneDeep(chat)});
 }
-
-
 
 
 export {

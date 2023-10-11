@@ -24,11 +24,13 @@ export class Avatar extends Block {
                 }
             }
         })
-
     }
 
+    public get props(){
+        return this._props as IAvatarProps;
+    }
     protected render(): string {
-        const {size = 'md', isLoadAvatar = false, imageUrl = ''} = this._props as IAvatarProps;
+        const {size = 'md', isLoadAvatar = false, imageUrl = ''} = this.props;
         return (`
             <div class="avatar ${size}">
                 ${imageUrl ? `

@@ -6,7 +6,8 @@ import {IUser} from "../../models/IUser.ts";
 import modalController from "../../core/modal-controller.ts";
 import ModalPrompt from "../modal-prompt";
 import {createChat} from "../../services/chat.ts";
-import {initChatPage, setStateCurrentChat} from "../../services/app.ts";
+import {initChatPage} from "../../services/app.ts";
+import {StoreEvents} from "../../core/store.ts";
 
 
 interface IChatListProps extends IProps {
@@ -39,19 +40,22 @@ export class ChatList extends Block {
             events: {
                 click: (e: Event) => {
                     if (!(e.target as HTMLElement).className.includes('chat-item__caption__name')) return;
-
                     const currentChat = (e.target as HTMLElement).id;
-
-                    /*setStateCurrentChat(props.list.find(item => item.id === Number(currentChat))||null);*/
                     this.props.setCurrentChat(props.list.find(item => item.id === Number(currentChat))||null);
                 }
             }
         })
+
+        window.store.on(StoreEvents.Updated, () => {
+            this.props.list=window.store.getState().chats||[];
+            this.setProps(this.props);
+        });
     }
 
     public get props(){
         return this._props as IChatListProps;
     }
+
     getChats(list: IChat[]): string {
         if (!list || list.length === 0) return '';
         return list.map(chat => {
@@ -68,7 +72,7 @@ export class ChatList extends Block {
     }
 
     protected render(): string {
-        const {list, currentUser} = this._props as IChatListProps;
+        const {list, currentUser} = this.props;
 
         return (`            
             <div class="chat-list">

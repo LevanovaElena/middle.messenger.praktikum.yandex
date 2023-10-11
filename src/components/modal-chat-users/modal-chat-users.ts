@@ -25,12 +25,9 @@ export class ModalChatUsers extends Block {
                 return;
             }
             searchUsersByLogin(input).then((users) => {
-                console.log('users', users)
                 this.props.users = users;
                 this.setProps(this.props)
             })
-            /*this.props.okClick&&this.props.okClick(input);
-            modalController.closeModal();*/
         }
         props.cancelClick = () => {
             modalController.closeModal();
@@ -43,14 +40,15 @@ export class ModalChatUsers extends Block {
                 click: (e: Event) => {
                     e.stopPropagation();
                     const id = (e.target as HTMLElement).id;
-                    console.log(id);
                     const chat=window.store.getState().currentChat;
-                    if ( chat&& id&&props.type==='add') addChatUser({
-                        users: [Number(id)],
-                        chatId:chat.id
-                    }).then(() => {
-                        initChatUsers(chat).then(()=>modalController.closeModal());
-                    })
+                    if ( chat&& id&&props.type==='add') {
+                        addChatUser({
+                            users: [Number(id)],
+                            chatId: chat.id
+                        }).then(() => {
+                            initChatUsers(chat).then(() => modalController.closeModal());
+                        })
+                    }
                     if(props.type==='delete'&&chat){
                         deleteChatUsers({
                             users: [Number(id)],
@@ -89,7 +87,7 @@ export class ModalChatUsers extends Block {
         return (`
                  {{{  Modal 
                          caption='${this.props.type === 'add' ? 'Add User' : 'Delete User'}' 
-                         okText='Save' 
+                         okText='${this.props.type === 'add' ?'Find users':'OK'}'
                          cancelText='Cancel' 
                          okClick=okInputClick 
                          cancelClick=cancelClick 

@@ -29,7 +29,6 @@ export class FormProfile extends Block {
             Router.getRouter().back();
         }
         props.user=window.store.getState().user;
-
         super(props);
     }
     public get props(){
@@ -38,12 +37,13 @@ export class FormProfile extends Block {
     protected render(): string {
         const {user,withButton=false,children='',buttonText=''}=this.props;
         if(!user)return '';
+        console.log('user_profile',user);
         const {avatar='',first_name,second_name}=user;
         return(`
       
         <div class="profile">
             <div class="profile__avatar">
-                {{{ Avatar imageUrl="${avatar}" isLoadAvatar=true }}}
+                {{{ Avatar imageUrl='${avatar}' isLoadAvatar=true }}}
                 <h2 class="profile__avatar__name">${first_name} ${second_name}</h2>
             </div>
             ${user ?

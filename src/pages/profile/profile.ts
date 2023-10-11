@@ -1,5 +1,6 @@
 import {IProps,Block} from "../../core/Block.ts";
 import {IUser} from "../../models/IUser.ts";
+import {StoreEvents} from "../../core/store.ts";
 
 export interface IPageProfileProps extends IProps {
     user:IUser|null
@@ -11,10 +12,15 @@ export class PageProfile extends Block {
             user: window.store.getState().user,
             events: {}
         }
-
+        window.store.on(StoreEvents.Updated, () => {
+            this.props.user={...window.store.getState().user}as IUser;
+            this.setProps(this.props);
+        });
         super(props);
     }
-
+    public get props(){
+        return this._props as IPageProfileProps;
+    }
     getChildren() {
         const user=(this._props as IPageProfileProps).user;
         if(!user )return ''

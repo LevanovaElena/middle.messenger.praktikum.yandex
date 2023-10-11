@@ -23,3 +23,5 @@ export { default as MenuItem } from './menu-item';
 export { default as MenuMessage } from './menu-message';
 export { default as MenuChat } from './menu-chat';
 export { default as Alert } from './alert';
+export { default as MessageListFooter } from './message-list-footer';
+export { default as MessageListHeader } from './message-list-header';

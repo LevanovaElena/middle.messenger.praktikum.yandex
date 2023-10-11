@@ -2,7 +2,7 @@ import {IProps,Block} from "../../core/Block.ts";
 import {IChat} from "../../models/IChat.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
-import {initChatPage, setStateCurrentChat} from "../../services/app.ts";
+import { setStateCurrentChat} from "../../services/app.ts";
 
 export interface IPageChatProps extends IProps {
     currentUser:IUser|null,
@@ -20,9 +20,11 @@ export class PageChat extends Block {
                 chatList: [],
                 messageList: [],
                 setCurrentChat: (chat: IChat) => {
-                    setStateCurrentChat(chat);
-                    this.props.currentChat = chat;
-                    this.setProps(this.props)
+                    setStateCurrentChat({...chat}).then(()=>{
+                        this.props.currentChat = chat;
+                        this.setProps(this.props)
+                    })
+
                 },
                 events: {}
             }

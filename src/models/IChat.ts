@@ -9,6 +9,7 @@ export interface IChat {
     created_by: number;
     last_message?: ILastMessage;
     users?:IUser[];
+    connection?:SocketIO|null;
 }
 
 export interface ILastMessage {
