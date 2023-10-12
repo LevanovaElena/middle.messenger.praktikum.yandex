@@ -20,14 +20,18 @@ export class ModalChatUsers extends Block {
         props.okInputClick = (event: Event) => {
             event.preventDefault();
             event.stopPropagation();
-            const input = this.refs.modal.getRefs().input.value();
-            if (!input) {
-                return;
+            if(this.props.type==='add'){
+                const input = this.refs.modal.getRefs().input.value();
+                if (!input) {
+                    return;
+                }
+                searchUsersByLogin(input).then((users) => {
+                    this.props.users = users;
+                    this.setProps(this.props)
+                })
             }
-            searchUsersByLogin(input).then((users) => {
-                this.props.users = users;
-                this.setProps(this.props)
-            })
+            else modalController.closeModal();
+
         }
         props.cancelClick = () => {
             modalController.closeModal();
@@ -69,10 +73,10 @@ export class ModalChatUsers extends Block {
 
     getChildren() {
         const {users, type} = this.props;
-        const result = users?.reduce((sum, user) => {
+        const result = users&&users.length>1?users.reduce((sum, user) => {
             const item = new UserItem({user: user, icon: type === 'add' ? 'plus' : 'delete'});
             return sum + item.renderForList();
-        }, '');
+        }, ''):'';
         return (
             `
                 ${type === 'add' ? 
@@ -88,7 +92,7 @@ export class ModalChatUsers extends Block {
                  {{{  Modal 
                          caption='${this.props.type === 'add' ? 'Add User' : 'Delete User'}' 
                          okText='${this.props.type === 'add' ?'Find users':'OK'}'
-                         cancelText='Cancel' 
+                         cancelText='${this.props.type === 'add' ?'Cancel':''}'
                          okClick=okInputClick 
                          cancelClick=cancelClick 
                          children="${this.getChildren()}" 

@@ -71,11 +71,12 @@ const setStateCurrentChat = async (chat: IChat | null) => {
     await initChatToken(chat);
     const user = window.store.getState().user;
     if (chat && user) {
-        openConnectMessages(chat, user);
         const foundedChat= window.store.getState().chats?.find(_chat => _chat.id === chat.id);
-        if(foundedChat) {
+        if(foundedChat&&chat.connection) {
             foundedChat.unread_count =0;
         }
+        openConnectMessages(chat, user);
+
     }
     window.store.set({currentChat: cloneDeep(chat),chats: window.store.getState().chats});
 }

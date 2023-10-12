@@ -10,7 +10,8 @@ export const openConnectMessages = (chat: IChat, currentUser: IUser) => {
         if(chat.connection&&chat.connection.getState()==='OPEN')return;
         const socket = new SocketIO(BASE_SOCKET_CHAT, currentUser.id, String(chat.id), chat.token);
         socket.open(() => {
-            if(chat.unread_count>0) getAllNewMessage(0);
+            console.log('chat',chat)
+            if(chat.unread_count>0) getAllNewMessage(0,chat);
             setInterval(()=>{
                 socket.ping();
             },5000);
@@ -29,12 +30,18 @@ export const openConnectMessages = (chat: IChat, currentUser: IUser) => {
                } else chat.messages.push(message);
                if(chat.id=== window.store.getState().currentChat?.id) window.store.set({currentChat: {...chat}});
                else {
-                  const findedChat= window.store.getState().chats?.find(_chat => _chat.id === chat.id);
-                  if(findedChat) {
-                      findedChat.unread_count += 1;
+                  const foundedChat= window.store.getState().chats?.find(_chat => _chat.id === chat.id);
+                  if(foundedChat) {
+                      foundedChat.unread_count += 1;
                       window.store.set({chats: window.store.getState().chats});
                   }
                }
+               const element = document.querySelector('.scroll-bottom');
+               if(element)
+               element.scrollIntoView({
+                   behavior: 'auto',
+                   block: 'end',
+               });
            }
 
            if(event.data.type==='user connected') {
@@ -56,13 +63,14 @@ export const sendMessage = (message: string) => {
     }
 }
 
-export const getAllNewMessage=(limit:number)=>{
+export const getAllNewMessage=(limit:number,chat:IChat|null)=>{
     {
-        const chat = window.store.getState().currentChat;
+        //const chat = window.store.getState().currentChat;
         if (!chat) throw Error('Select Chat!');
         if (chat.connection) {
               chat.connection.sendRequestForgetMessage(limit);
               chat.unread_count=0;
+              window.store.set({currentChat: {...chat}});
         }
     }
 }

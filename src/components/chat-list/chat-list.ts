@@ -80,9 +80,9 @@ export class ChatList extends Block {
                 {{{Button caption="New Chat" type='link' onClick=showModalAddChat }}}
                  {{{Link caption="Profile" href="/settings"  linkIcon=true }}}
                 </nav>
-                <div class="chat-list__search">
+<!--                <div class="chat-list__search">
                     {{{ InputSearch }}}
-                </div>
+                </div>-->
                 <ul class="chat-list__chats">
                     ${this.getChats(list)}                   
                 </ul>

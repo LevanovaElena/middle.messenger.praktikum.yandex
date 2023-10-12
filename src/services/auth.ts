@@ -19,12 +19,18 @@ const signUp = async (data: IUser) => {
 const signIn = async (data: IAuthData) => {
     const result = await authApi.signIn(data);
     const error = responseHasError(result as XMLHttpRequest);
-    if (!error) await initialStateApp();
+    if (error) throw Error(error);
+    if (!error) {
+        await initialStateApp();
+        Router.getRouter().go(BASE_URLS['page-chat'])
+    }
 }
 
 const getUser = async () => {
     const result = await authApi.getAuthUser() as XMLHttpRequest;
-    responseHasError(result);
+    const error=responseHasError(result);
+    if (error) throw Error(error);
+    if(!error)
     return JSON.parse(result.responseText);
 
 }

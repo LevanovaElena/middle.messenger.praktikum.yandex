@@ -15,7 +15,8 @@ export const responseHasError = (response: XMLHttpRequest) => {
         default: {
             const error = JSON.parse(response.responseText).reason;
             if (error.includes('Cookie')) {
-                showAlert('Please, login!');
+               // showAlert('Please, login!');
+                return error;
             } else showAlert(error);
             //if (error) throw Error(error);
             return error;

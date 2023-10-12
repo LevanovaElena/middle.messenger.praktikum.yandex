@@ -4,6 +4,7 @@ import {IUser} from "../../models/IUser.ts";
 import {validateMessage} from "../../utils/validates.utils.ts";
 import {IChat} from "../../models/IChat.ts";
 import {sendMessage} from "../../services/send-message.ts";
+import {showAlert} from "../../utils/api.utils.ts";
 
 
 interface IMessageListProps extends IProps {
@@ -22,13 +23,14 @@ interface IMessageListProps extends IProps {
 export class MessageListFooter extends Block {
     constructor(props: IMessageListProps) {
         props.isOpenedMenuMessage = false;
-        props.onBlurMessage = () => this.validate();
+        //props.onBlurMessage = () => this.validate();
         props.onClickSend = () => {
-            if (!validateMessage(this.valueMessage())) {
+            const error=validateMessage(this.valueMessage());
+            if (!error) {
                 console.log('Send Message:' + this.valueMessage());
                 sendMessage( this.valueMessage());
             }
-            else console.log('Error! Can not sendMessage!')
+            else showAlert(error);
         }
         props.openMenuMessage = () => {
             this.props.isOpenedMenuMessage = !this.props.isOpenedMenuMessage;
@@ -42,24 +44,7 @@ export class MessageListFooter extends Block {
     }
 
     public valueMessage() {
-        if (!this.validate()) {
-            return '';
-        }
-        return this.refs?.message.value()
-    }
-
-    private validate() {
-        const value = this.refs?.message.value();
-        const error = validateMessage(value);
-
-        this.props.message = value;
-        if (error) {
-            console.log('Message can not be blank')
-            this.setProps(this.props);
-            return false;
-        }
-        this.setProps(this.props);
-        return true;
+        return this.refs?.message.value();
     }
 
     protected render(): string {

@@ -58,6 +58,7 @@ class SocketIO {
         this.socket?.send(_message);
     }
     public sendRequestForgetMessage=(limit: number=0)=> {
+        console.log("get old")
         const _message = JSON.stringify(
             {
                 content: String(limit),
