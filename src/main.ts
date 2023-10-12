@@ -32,7 +32,7 @@ const initState: IAppState = {
 window.store = new Store<IAppState>(initState);
 
 const router = new Router(".app");
-await initialStateApp();
+initialStateApp();
 
 
 router.use(BASE_URLS['page-default'], Pages.PageChat)
