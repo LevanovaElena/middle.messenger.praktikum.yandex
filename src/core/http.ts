@@ -26,7 +26,7 @@ class HTTPTransport {
         this.baseUrl=base_url||BASE_API_URL;
     }
     get: HTTPMethod = (url, options = {}):Promise<XMLHttpRequest> => {
-        return this.request(this.baseUrl+url+queryStringify(options.params || {}) || '', {
+        return this.request(this.baseUrl+url+queryStringify(options.params as NonNullable<unknown> || {}) || '', {
             ...options,
             method: METHODS.GET
         }, options.timeout)as Promise<XMLHttpRequest> ;
