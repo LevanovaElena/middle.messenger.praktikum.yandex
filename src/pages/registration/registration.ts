@@ -2,6 +2,8 @@ import {IProps,Block} from "../../core/Block.ts";
 import {signUp} from "../../services/auth.ts";
 import {IUser} from "../../models/IUser.ts";
 import {BASE_URLS} from "../../config.ts";
+import {showAlert} from "../../utils/api.utils.ts";
+import Router from "../../core/router.ts";
 
 export interface IPageRegistrationProps extends IProps {
     onLogin:(event:Event)=>void,
@@ -10,7 +12,7 @@ export class PageRegistration extends Block {
     constructor() {
         const props:IPageRegistrationProps={
             events:{},
-            onLogin:  (event: Event) => {
+            onLogin:  async (event: Event) => {
                 event.preventDefault();
                 const login = this.refs.form.getRefs()?.login.value();
                 const email = this.refs.form.getRefs()?.email.value();
@@ -29,9 +31,9 @@ export class PageRegistration extends Block {
                     phone,
                     email
                 })
-
-                if(password===password2){
-                    const data={
+                if (password !== password2) showAlert('Repeat passwords correct!');
+                if (password === password2) {
+                    const data = {
                         first_name,
                         second_name,
                         login,
@@ -39,7 +41,8 @@ export class PageRegistration extends Block {
                         password,
                         phone
                     } as IUser;
-                    signUp(data)
+                    await signUp(data);
+                    Router.getRouter().go(BASE_URLS['page-chat']);
                 }
 
             }

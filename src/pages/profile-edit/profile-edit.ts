@@ -2,6 +2,7 @@ import {IProps,Block} from "../../core/Block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IPageProfileProps} from "../profile/profile.ts";
 import {updateUserProfile} from "../../services/user-settings.ts";
+import Router from "../../core/router.ts";
 
 export interface IPageProfileEditProps extends IProps {
     onChange:(event:Event)=>void,
@@ -29,7 +30,10 @@ export class PageProfileEdit extends Block {
                     phone,
                     email
                 }
-                if (login && first_name && second_name && phone && email) await updateUserProfile(userData);
+                if (login && first_name && second_name && phone && email) {
+                    await updateUserProfile(userData);
+                    Router.getRouter().back();
+                }
             }
         }
         super(props);

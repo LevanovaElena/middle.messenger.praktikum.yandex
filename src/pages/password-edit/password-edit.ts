@@ -1,6 +1,8 @@
 import {IProps,Block} from "../../core/Block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {updateUserPassword} from "../../services/user-settings.ts";
+import Router from "../../core/router.ts";
+import {showAlert} from "../../utils/api.utils.ts";
 
 export interface ILoginPageProps extends IProps {
     onChange:(event:Event)=>void,
@@ -18,10 +20,14 @@ export class PagePasswordEdit extends Block {
                 const newPassword = this.refs.form.getRefs()?.newPassword.value();
                 const repeatPassword = this.refs.form.getRefs()?.repeatPassword.value();
 
-                if (oldPassword && newPassword && newPassword === repeatPassword) await updateUserPassword({
-                    oldPassword,
-                    newPassword
-                })
+                if(newPassword !== repeatPassword)showAlert('Repeat new password correct!');
+                if (oldPassword && newPassword && newPassword === repeatPassword) {
+                    await updateUserPassword({
+                        oldPassword,
+                        newPassword
+                    });
+                    Router.getRouter().back();
+                }
             }
         }
 

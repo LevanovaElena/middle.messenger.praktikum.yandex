@@ -9,7 +9,11 @@ import {initialStateApp, setStateUser} from "./app.ts";
 const authApi = new AuthApi('/auth');
 const signUp = async (data: IUser) => {
     const result = await authApi.signUp(data);
-    responseHasError(result);
+    const error=responseHasError(result);
+    if(!error) {
+        setStateUser(JSON.parse(result.responseText));
+
+    }
     return JSON.parse(result.responseText);
 }
 const signIn = async (data: IAuthData) => {
