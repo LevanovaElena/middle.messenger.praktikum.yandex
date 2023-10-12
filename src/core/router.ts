@@ -23,6 +23,10 @@ class Router {
     public static getRouter(){
         return this.__instance;
     }
+
+    public get currentRoute(){
+        return this._currentRoute?.pathname;
+    }
     /**
      * use — регистрирует блок по пути в роут и возвращает себя — чтобы можно было выстроить в цепочку;
      * @param pathname

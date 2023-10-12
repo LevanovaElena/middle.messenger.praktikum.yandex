@@ -12,7 +12,7 @@ const initialStateApp = async () => {
     try {
         user = await getUser();
     } catch (error) {
-        Router.getRouter().go(BASE_URLS['page-login']);
+        if(Router.getRouter().currentRoute!==BASE_URLS['page-sign-up']) Router.getRouter().go(BASE_URLS['page-login']);
         return;
     }
     store.user=user;

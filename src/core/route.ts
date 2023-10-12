@@ -13,6 +13,9 @@ class Route {
         this._props = props;
     }
 
+    public get pathname() {
+        return this._pathname
+    }
     /**
      * navigate — метод для отображения вьюшки, если переданный URL совпадает с URL текущего Route;
      * @param pathname
