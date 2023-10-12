@@ -33,8 +33,7 @@ export class ChatList extends Block {
             modalController.openModal();
         }
         props.setCurrentChat = (id: string) => {
-            const chat=this.props.list.find(item => item.id === Number(id)) || null;
-            console.log('chat',chat)
+            const chat = this.props.list.find(item => item.id === Number(id)) || null;
             setStateCurrentChat(chat).then(() => {
                 this.setProps(this.props)
             })
@@ -64,18 +63,19 @@ export class ChatList extends Block {
                     id='${chat.id} '
                     title='${chat.title} '
                     avatar='${chat.avatar} '
-                    unread_count='${chat.unread_count>0?String(chat.unread_count):''}'
-                    last_message_content='${chat.last_message ?chat.last_message.content : 'no messages'} '
+                    unread_count='${chat.unread_count > 0 ? String(chat.unread_count) : ''}'
+                    last_message_content='${chat.last_message ? chat.last_message.content : 'no messages'} '
                     last_message_time='${chat.last_message ? chat.last_message.time : ''}' }}} `)
         }).join('')
     }
+
     protected render(): string {
         const {list, currentUser} = this.props;
         //if (!list || list.length === 0) return '';
         return (`            
             <div class="chat-list">
                 <nav class="chat-list__header">
-                ${currentUser && `{{{ Avatar imageUrl='${currentUser.avatar||''}' size='sm' }}}`}
+                ${currentUser && `{{{ Avatar imageUrl='${currentUser.avatar || ''}' size='sm' }}}`}
                 {{{Button caption="New Chat" type='link' onClick=showModalAddChat }}}
                  {{{Link caption="Profile" href="/settings"  linkIcon=true }}}
                 </nav>

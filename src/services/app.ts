@@ -4,18 +4,18 @@ import {BASE_URLS} from "../config.ts";
 import {IUser} from "../models/IUser.ts";
 import {getChats, getChatToken, getChatUsers} from "./chat.ts";
 import {IChat} from "../models/IChat.ts";
-import { openConnectMessages} from "./send-message.ts";
+import {openConnectMessages} from "./send-message.ts";
 
 const initialStateApp = async () => {
-    const store= window.store.getState();
+    const store = window.store.getState();
     let user = null;
     try {
         user = await getUser();
     } catch (error) {
-        if(Router.getRouter().currentRoute!==BASE_URLS['page-sign-up']) Router.getRouter().go(BASE_URLS['page-login']);
+        if (Router.getRouter().currentRoute !== BASE_URLS['page-sign-up']) Router.getRouter().go(BASE_URLS['page-login']);
         return;
     }
-    store.user=user;
+    store.user = user;
     await updateChats();
 
 }
@@ -26,7 +26,6 @@ const updateChats = async () => {
     } catch (error) {
         setStateChats(chats)
     }
-    console.log('chats_initial', chats)
     setStateChats(chats)
 
 }
@@ -48,7 +47,6 @@ const initChatToken = async (chat: IChat | null) => {
     } catch (error) {
         setStateToken(chat, token)
     }
-    console.log('token_initial', token);
     setStateToken(chat, token)
 }
 const setStateUser = (user: IUser | null) => {
@@ -68,14 +66,14 @@ const setStateCurrentChat = async (chat: IChat | null) => {
     await initChatToken(chat);
     const user = window.store.getState().user;
     if (chat && user) {
-        const foundedChat= window.store.getState().chats?.find(_chat => _chat.id === chat.id);
-        if(foundedChat&&chat.connection) {
-            foundedChat.unread_count =0;
+        const foundedChat = window.store.getState().chats?.find(_chat => _chat.id === chat.id);
+        if (foundedChat && chat.connection) {
+            foundedChat.unread_count = 0;
         }
         openConnectMessages(chat, user);
 
     }
-    window.store.set({currentChat: chat,chats: window.store.getState().chats});
+    window.store.set({currentChat: chat, chats: window.store.getState().chats});
 }
 
 

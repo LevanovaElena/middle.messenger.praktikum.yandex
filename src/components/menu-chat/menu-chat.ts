@@ -4,7 +4,6 @@ import modalController from "../../core/modal-controller.ts";
 import {ModalChatUsers} from "../index.ts";
 
 
-
 interface IMenuChatProps extends IProps {
     currentChat: IChat | null,
     isOpenedMenu: boolean,
@@ -20,7 +19,7 @@ export class MenuChat extends Block {
         props.addUser = () => {
             modalController.addModal((new ModalChatUsers({
                 users: [],
-                type:'add',
+                type: 'add',
                 ref: "modal",
                 okClick: (result: string) => {
                     console.log(result);
@@ -31,8 +30,8 @@ export class MenuChat extends Block {
         }
         props.deleteUser = () => {
             modalController.addModal((new ModalChatUsers({
-                users: window.store.getState().currentChat?.users||[],
-                type:'delete',
+                users: window.store.getState().currentChat?.users || [],
+                type: 'delete',
                 ref: "modal",
                 okClick: (result: string) => {
                     console.log(result);
@@ -42,7 +41,6 @@ export class MenuChat extends Block {
             this.props.closeMenu();
         }
         props.changeAvatarChat = () => {
-            console.log(' add Avatar Chat!');
             this.props.closeMenu();
         }
 

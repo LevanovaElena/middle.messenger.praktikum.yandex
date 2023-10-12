@@ -1,61 +1,61 @@
-import {IProps,Block} from "../../core/block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import {chat1, mockListChats} from "../../mocks/chat.mocks.ts";
 import {mockListMessages} from "../../mocks/chat-message.mocks.ts";
 import {mockUser} from "../../mocks/user-profile.mocks.ts";
-import { validateName} from "../../utils/validates.utils.ts";
+import {validateName} from "../../utils/validates.utils.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IChat} from "../../models/IChat.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
 import {IValidateType} from "../../models/IValidateType.ts";
 
 export interface IAllComponentsProps extends IProps {
-    onClick:(event:Event)=>void,
-    onLogin:(event:Event)=>void,
-    onClickLoadAvatar:(event:Event)=>void,
-    user:IUser,
-    chat:IChat,
-    chatList:IChat[],
-    message:IChatMessage,
-    messageList:IChatMessage[],
-    validate:IValidateType
+    onClick: (event: Event) => void,
+    onLogin: (event: Event) => void,
+    onClickLoadAvatar: (event: Event) => void,
+    user: IUser,
+    chat: IChat,
+    chatList: IChat[],
+    message: IChatMessage,
+    messageList: IChatMessage[],
+    validate: IValidateType
 }
+
 export class AllComponents extends Block {
 
     constructor() {
-        const props:IAllComponentsProps={
-            events:{},
-            validate:{
-                login:validateName
+        const props: IAllComponentsProps = {
+            events: {},
+            validate: {
+                login: validateName
             },
-            onClick: (event:Event) => {
+            onClick: (event: Event) => {
                 event.preventDefault();
             },
-            onLogin: (event:Event) => {
+            onLogin: (event: Event) => {
                 event.preventDefault();
-                const login =  this.refs.login.value();
-                const password =  this.refs.password.value();
+                const login = this.refs.login.value();
+                const password = this.refs.password.value();
 
                 console.log({
                     login,
                     password
                 })
             },
-            onClickLoadAvatar: (event:Event) => {
+            onClickLoadAvatar: (event: Event) => {
                 event.preventDefault();
-                console.log("click")
             },
-            chat:chat1,
-            chatList:mockListChats,
-            message:mockListMessages[0],
-            messageList:mockListMessages,
-            user:mockUser
+            chat: chat1,
+            chatList: mockListChats,
+            message: mockListMessages[0],
+            messageList: mockListMessages,
+            user: mockUser
         }
 
         super(props)
     }
 
     protected render(): string {
-        return(`
+        return (`
             <div class="container container-center">
               <div class="container-all">
                 {{{ Button caption="sign in" onClick=onClick}}}
