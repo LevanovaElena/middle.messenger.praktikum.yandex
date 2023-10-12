@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import alertController from "../../core/alert-controller.ts";
 
 interface IModalProps extends IProps {

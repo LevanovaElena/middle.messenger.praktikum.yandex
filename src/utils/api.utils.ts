@@ -2,7 +2,7 @@ import {BASE_URLS} from "../config.ts";
 import Router from "../core/router.ts";
 import alertController from "../core/alert-controller.ts";
 import Alert from "../components/alert";
-import Block from "../core/Block.ts";
+import Block from "../core/block.ts";
 
 
 export const responseHasError = (response: XMLHttpRequest) => {

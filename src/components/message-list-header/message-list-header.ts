@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import {IChat} from "../../models/IChat.ts";
 import {StoreEvents} from "../../core/store.ts";
 

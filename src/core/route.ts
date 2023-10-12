@@ -1,4 +1,4 @@
-import Block, {IProps} from "./Block.ts";
+import Block, {IProps} from "./block.ts";
 
 class Route {
     private _pathname: string;

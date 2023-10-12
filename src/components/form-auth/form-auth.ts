@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../core/Block.ts";
+import {IProps,Block} from "../../core/block.ts";
 import {ALL_VALIDATE_FIELDS, IValidateType} from "../../models/IValidateType.ts";
 
 interface IFormAuthProps extends IProps {
@@ -14,10 +14,6 @@ interface IFormAuthProps extends IProps {
 export class FormAuth extends Block {
     constructor(props:IFormAuthProps) {
         props.validate= ALL_VALIDATE_FIELDS;
-        /*props.onClickOk={
-            console.log('OK');
-            props.onClickOkButton(event)
-        }*/
         super(props);
     }
 

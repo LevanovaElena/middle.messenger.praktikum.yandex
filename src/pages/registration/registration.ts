@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../core/Block.ts";
+import {IProps,Block} from "../../core/block.ts";
 import {signUp} from "../../services/auth.ts";
 import {IUser} from "../../models/IUser.ts";
 import {BASE_URLS} from "../../config.ts";
@@ -21,16 +21,6 @@ export class PageRegistration extends Block {
                 const second_name = this.refs.form.getRefs()?.second_name.value();
                 const password = this.refs.form.getRefs()?.password.value();
                 const password2 = this.refs.form.getRefs()?.password2.value();
-
-                console.log({
-                    login,
-                    password,
-                    password2,
-                    second_name,
-                    first_name,
-                    phone,
-                    email
-                })
                 if (password !== password2) showAlert('Repeat passwords correct!');
                 if (password === password2) {
                     const data = {

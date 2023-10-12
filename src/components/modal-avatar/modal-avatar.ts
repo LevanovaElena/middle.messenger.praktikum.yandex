@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import {updateUserAvatar, updateUserProfile} from "../../services/user-settings.ts";
 import {BASE_RESOURCES_URL} from "../../config.ts";
 import modalController from "../../core/modal-controller.ts";
@@ -21,7 +21,6 @@ export class ModalAvatar extends Block {
             modalController.closeModal();
         }
         props.cancelClick = () => {
-            console.log('cancel',this.props);
             const user = window.store.getState().user;
             if (user && this.props.oldAvatar) {
                 this.props.newAvatar ='';
@@ -35,8 +34,6 @@ export class ModalAvatar extends Block {
         const _onAddFile = <TEvent>(e: TEvent) => {
             deleteActive(e as Event);
             const formData = loadNewFileFromDrag<TEvent>(e);
-            console.log('added file',e);
-            console.log('formData',formData)
             if (formData) {
                 updateUserAvatar(formData).then(user => {
                     this.props.newAvatar = user.avatar;

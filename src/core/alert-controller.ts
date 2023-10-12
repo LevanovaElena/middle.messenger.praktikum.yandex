@@ -1,4 +1,4 @@
-import Block from "./Block.ts";
+import Block from "./block.ts";
 
 class AlertController {
     private static __instance: AlertController;

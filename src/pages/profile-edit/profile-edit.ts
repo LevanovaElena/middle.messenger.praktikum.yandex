@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../core/Block.ts";
+import {IProps,Block} from "../../core/block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {IPageProfileProps} from "../profile/profile.ts";
 import {updateUserProfile} from "../../services/user-settings.ts";

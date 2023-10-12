@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import {BASE_URLS} from "../../config.ts";
 import { signIn} from "../../services/auth.ts";
 
@@ -17,10 +17,6 @@ export class LoginPage extends Block {
                 const login = this.refs.formLogin.getRefs()?.login.value();
                 const password = this.refs.formLogin.getRefs()?.password.value();
 
-                console.log({
-                    login,
-                    password
-                })
                 if (!login) {
                     return;
                 }
@@ -31,9 +27,7 @@ export class LoginPage extends Block {
 
             }
         }
-       // getUser().catch(error=>console.log(error))
         super(props);
-        //console.log('window.user', window.user)
     }
 
     protected render(): string {

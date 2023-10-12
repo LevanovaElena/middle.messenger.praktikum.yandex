@@ -1,4 +1,4 @@
-import  {IProps,Block} from "../../core/Block.ts";
+import  {IProps,Block} from "../../core/block.ts";
 
 interface IButtonProps extends IProps{
     type: 'arrow' | 'dots'|'paperclip'|'cancel'|'number'|'close',

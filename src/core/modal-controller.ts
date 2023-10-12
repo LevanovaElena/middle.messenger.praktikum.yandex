@@ -1,4 +1,4 @@
-import Block from "./Block.ts";
+import Block from "./block.ts";
 
 class ModalController {
     private static __instance: ModalController;
@@ -23,7 +23,6 @@ class ModalController {
     }
 
     public openModal(){
-        console.log('OPEN!')
         this.dialog?.showModal()
     }
 

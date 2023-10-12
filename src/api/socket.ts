@@ -26,13 +26,7 @@ class SocketIO {
     public close=(callBack: (event: CloseEvent) => void)=> {
         const funk = (event: CloseEvent) => {
             callBack(event);
-            if (event.wasClean) {
-                console.log('Соединение закрыто чисто');
-            } else {
-                console.log('Обрыв соединения');
-            }
 
-            console.log(`Код: ${event.code} | Причина: ${event.reason}`);
         }
         this.socket?.addEventListener('close', funk);
     }
@@ -40,7 +34,6 @@ class SocketIO {
     public message=(callBack: (event: MessageEvent) => void)=> {
         const funk = (event: MessageEvent) => {
             callBack(event);
-            console.log('Получены данные', event.data);
         }
         this.socket?.addEventListener('message', funk);
     }

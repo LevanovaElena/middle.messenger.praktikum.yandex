@@ -34,8 +34,6 @@ export class Block {
 
         this.children = children;
         this._props = this._makePropsProxy(props, this);
-        // console.log('init props',props,this.props)
-
         this._eventBus = () => eventBus;
 
         this._registerEvents(eventBus);
@@ -204,7 +202,6 @@ export class Block {
     }
 
     public hide(){
-        console.log('hide')
     }
     public show(){
         const app = document.getElementById('app');

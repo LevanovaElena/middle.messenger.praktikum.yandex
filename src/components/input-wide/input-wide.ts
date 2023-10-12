@@ -1,4 +1,4 @@
-import{IProps,Block} from "../../core/Block.ts";
+import{IProps,Block} from "../../core/block.ts";
 
 interface IInputWideProps extends IProps{
     type: 'text' | 'button',
@@ -35,11 +35,8 @@ export class InputWide extends Block {
     }
 
     private validate() {
-        console.log(this)
         const value = this.refs?.input?.value();
         const error = this.props.validate(value);
-
-        console.log('value,error', value, error)
         this.props.value = value;
 
         if (error) {

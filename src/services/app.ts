@@ -16,7 +16,6 @@ const initialStateApp = async () => {
         return;
     }
     store.user=user;
-    console.log('user_initial', window.store.getState());
     await updateChats();
 
 }
@@ -39,7 +38,6 @@ const initChatUsers = async (chat: IChat | null) => {
     } catch (error) {
         setStateUsers(chat, [])
     }
-    console.log('users_initial', users);
     setStateUsers(chat, users)
 }
 const initChatToken = async (chat: IChat | null) => {

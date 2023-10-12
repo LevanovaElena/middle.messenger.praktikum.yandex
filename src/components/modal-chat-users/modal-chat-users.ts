@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import modalController from "../../core/modal-controller.ts";
 import {searchUsersByLogin} from "../../services/user-settings.ts";
 import {IUser} from "../../models/IUser.ts";

@@ -1,4 +1,4 @@
-import Block from "./Block.ts";
+import Block from "./block.ts";
 import Route from "./route.ts";
 
 class Router {

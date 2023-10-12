@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
 import {IUser} from "../../models/IUser.ts";
 import {validateMessage} from "../../utils/validates.utils.ts";
@@ -27,7 +27,6 @@ export class MessageListFooter extends Block {
         props.onClickSend = () => {
             const error=validateMessage(this.valueMessage());
             if (!error) {
-                console.log('Send Message:' + this.valueMessage());
                 sendMessage( this.valueMessage());
             }
             else showAlert(error);

@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import {IChat} from "../../models/IChat.ts";
 import modalController from "../../core/modal-controller.ts";
 import {ModalChatUsers} from "../index.ts";
@@ -18,7 +18,6 @@ export class MenuChat extends Block {
     constructor(props: IMenuChatProps) {
         props.currentChat = window.store.getState().currentChat;
         props.addUser = () => {
-            console.log('add user!',props.currentChat);
             modalController.addModal((new ModalChatUsers({
                 users: [],
                 type:'add',

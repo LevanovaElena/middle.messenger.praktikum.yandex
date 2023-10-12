@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
 import {IUser} from "../../models/IUser.ts";
 import {Message} from "../index.ts";

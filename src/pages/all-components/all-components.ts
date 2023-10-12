@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../core/Block.ts";
+import {IProps,Block} from "../../core/block.ts";
 import {chat1, mockListChats} from "../../mocks/chat.mocks.ts";
 import {mockListMessages} from "../../mocks/chat-message.mocks.ts";
 import {mockUser} from "../../mocks/user-profile.mocks.ts";
@@ -29,7 +29,6 @@ export class AllComponents extends Block {
             },
             onClick: (event:Event) => {
                 event.preventDefault();
-                console.log("click")
             },
             onLogin: (event:Event) => {
                 event.preventDefault();

@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../core/Block.ts";
+import {IProps,Block} from "../../core/block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {ALL_VALIDATE_FIELDS, IValidateType} from "../../models/IValidateType.ts";
 import {logOut} from "../../services/auth.ts";

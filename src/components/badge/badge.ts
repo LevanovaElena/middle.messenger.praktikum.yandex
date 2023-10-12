@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../core/Block.ts";
+import {IProps,Block} from "../../core/block.ts";
 
 interface IBadgeProps extends IProps{
     type: 'primary' | 'ready',

@@ -1,4 +1,4 @@
-import {IProps, Block} from "../../core/Block.ts";
+import {IProps, Block} from "../../core/block.ts";
 import {IChat} from "../../models/IChat.ts";
 import {IUser} from "../../models/IUser.ts";
 import modalController from "../../core/modal-controller.ts";
@@ -27,7 +27,6 @@ export class ChatList extends Block {
                 okText: 'Add Chat',
                 ref: "modal",
                 okClick: (result: string) => {
-                    console.log(result);
                     createChat(result).then(async () => await updateChats())
                 },
             })) as unknown as Block);
