@@ -4,7 +4,7 @@ import {searchUsersByLogin} from "../../services/user-settings.ts";
 import {IUser} from "../../models/IUser.ts";
 import {UserItem} from "../index.ts";
 import {addChatUser, deleteChatUsers} from "../../services/chat.ts";
-import { setStateCurrentChat} from "../../services/app.ts";
+import {setStateCurrentChat} from "../../services/app.ts";
 
 interface IModalChatUsersProps extends IProps {
     okClick?: (result: string) => void,
@@ -20,7 +20,7 @@ export class ModalChatUsers extends Block {
         props.okInputClick = (event: Event) => {
             event.preventDefault();
             event.stopPropagation();
-            if(this.props.type==='add'){
+            if (this.props.type === 'add') {
                 const input = this.refs.modal.getRefs().input.value();
                 if (!input) {
                     return;
@@ -29,8 +29,7 @@ export class ModalChatUsers extends Block {
                     this.props.users = users;
                     this.setProps(this.props)
                 })
-            }
-            else modalController.closeModal();
+            } else modalController.closeModal();
 
         }
         props.cancelClick = () => {
@@ -44,8 +43,8 @@ export class ModalChatUsers extends Block {
                 click: (e: Event) => {
                     e.stopPropagation();
                     const id = (e.target as HTMLElement).id;
-                    const chat=window.store.getState().currentChat;
-                    if ( chat&& id&&props.type==='add') {
+                    const chat = window.store.getState().currentChat;
+                    if (chat && id && props.type === 'add') {
                         addChatUser({
                             users: [Number(id)],
                             chatId: chat.id
@@ -53,12 +52,12 @@ export class ModalChatUsers extends Block {
                             setStateCurrentChat(chat).then(() => modalController.closeModal());
                         })
                     }
-                    if(props.type==='delete'&&chat){
+                    if (props.type === 'delete' && chat) {
                         deleteChatUsers({
                             users: [Number(id)],
-                            chatId:chat.id
+                            chatId: chat.id
                         }).then(() => {
-                            setStateCurrentChat(chat).then(()=>modalController.closeModal());
+                            setStateCurrentChat(chat).then(() => modalController.closeModal());
                         })
                     }
                 }
@@ -73,13 +72,13 @@ export class ModalChatUsers extends Block {
 
     getChildren() {
         const {users, type} = this.props;
-        const result = users&&users.length>1?users.reduce((sum, user) => {
+        const result = users && users.length > 1 ? users.reduce((sum, user) => {
             const item = new UserItem({user: user, icon: type === 'add' ? 'plus' : 'delete'});
             return sum + item.renderForList();
-        }, ''):'';
+        }, '') : '';
         return (
             `
-                ${type === 'add' ? 
+                ${type === 'add' ?
                 `{{{ InputShort label='Login' type='text' name='input' validate=validate.login ref='input' }}} ` : ''}
                  
                 <div class='modal-users'>${result}</div>                        
@@ -91,8 +90,8 @@ export class ModalChatUsers extends Block {
         return (`
                  {{{  Modal 
                          caption='${this.props.type === 'add' ? 'Add User' : 'Delete User'}' 
-                         okText='${this.props.type === 'add' ?'Find users':'OK'}'
-                         cancelText='${this.props.type === 'add' ?'Cancel':''}'
+                         okText='${this.props.type === 'add' ? 'Find users' : 'OK'}'
+                         cancelText='${this.props.type === 'add' ? 'Cancel' : ''}'
                          okClick=okInputClick 
                          cancelClick=cancelClick 
                          children="${this.getChildren()}" 

@@ -23,7 +23,7 @@ export const isDeepEqual = <T extends object>(object1: { [index: string]: T }, o
     return true;
 };
 
-export function cloneDeep(obj: any): any {
+/*export function cloneDeep(obj: object | unknown ): any {
     if (!isObject(obj)) {
         return obj;
     }
@@ -32,13 +32,12 @@ export function cloneDeep(obj: any): any {
 
     for (let key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            // @ts-ignore
             clonedObj[key] = cloneDeep(obj[key]);
         }
     }
 
     return clonedObj;
-}
+}*/
 
 export const isObject = (object: object | unknown) => {
     return object != null && typeof object === "object";
@@ -47,7 +46,7 @@ export const isObject = (object: object | unknown) => {
 /**
  * Напишите функцию, которая объединит два объекта с сохранением их уникальных ключей. Порядок ключей важен.
  * merge({a: {b: {a: 2}}, d: 5}, {a: {b: {c: 1}}});
- * /*
+ * /!*
  * {
  *    a: {
  *        b: {
@@ -58,7 +57,6 @@ export const isObject = (object: object | unknown) => {
  *    d: 5,
  * }
  *
- */
 
 export const merge = (lhs: Indexed, rhs: Indexed): Indexed => {
     let result = lhs;
@@ -80,7 +78,7 @@ export const merge = (lhs: Indexed, rhs: Indexed): Indexed => {
         if (objKeys1.indexOf(key) === -1) result[key] = rhs[key];
     }
     return result;
-    /*
+    /!*
     for (let p in rhs) {
         if (!rhs.hasOwnProperty(p)) {
             continue;
@@ -98,18 +96,18 @@ export const merge = (lhs: Indexed, rhs: Indexed): Indexed => {
     }
 
     return lhs;
-     */
+     *!/
 
 }
 
-/**
+/!**
  * set, которая получает путь к вложенному свойству объекта и устанавливает значение в это свойство.
  * Если поля не существует, его нужно создать по указанному пути.
  * Проверьте, что path — строка, иначе нужно выбросить ошибку 'path must be string'
  * @param object
  * @param path
  * @param value
- */
+ *!/
 export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
 
     if (!isObject(object)) return object;
@@ -122,4 +120,4 @@ function createObjectFromString(string: string, value: any) {
     return string.split('.').reduceRight<Indexed>((acc, key) => ({
         [key]: acc,
     }), value as any);
-}
+}*/

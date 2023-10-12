@@ -2,7 +2,7 @@
 export const loadNewFileFromDrag=<TEvent>(e:TEvent):FormData|null=>{
     let file=null;
     if(e instanceof DragEvent){
-        let dt = e.dataTransfer;
+        const dt = e.dataTransfer;
         if (dt) {
             file = dt.files[0];
         }

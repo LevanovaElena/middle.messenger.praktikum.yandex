@@ -17,7 +17,6 @@ export const getShortDate=(date:string)=>{
     return result;
 }
 function getWeekDay(date:Date) {
-    let days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
-
+    const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     return days[date.getDay()];
 }

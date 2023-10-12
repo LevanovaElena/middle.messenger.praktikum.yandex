@@ -2,12 +2,12 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 5px 5px 5px 5px;
+    padding: 5px;
     cursor: pointer;
 
 
     &:hover{
-        opacity: 80%;
+        opacity: 0.8;
     }
 
     .menu-item__icon {
@@ -21,22 +21,28 @@
         &.menu-item__icon_media {
             background-image: url("../../assets/icons/image.svg") ;
         }
+
         &.menu-item__icon_file {
             background-image: url("../../assets/icons/file.svg");
         }
+
         &.menu-item__icon_location {
             background-image: url("../../assets/icons/location.svg");
         }
+
         &.menu-item__icon_plus{
             background-image: url("../../assets/icons/circle-plus.svg");
         }
+
         &.menu-item__icon_delete{
             background-image: url("../../assets/icons/circle-x.svg") ;
         }
+
         &.menu-item__icon_avatar{
             background-image: url("../../assets/icons/chat-avatar.svg") ;
         }
     }
+
     .menu-item__caption{
         font-size: 12px;
         font-weight: 500;

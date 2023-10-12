@@ -4,11 +4,10 @@ import {BASE_URLS} from "../config.ts";
 import {IUser} from "../models/IUser.ts";
 import {getChats, getChatToken, getChatUsers} from "./chat.ts";
 import {IChat} from "../models/IChat.ts";
-import {cloneDeep} from "../utils/object.utils.ts";
 import { openConnectMessages} from "./send-message.ts";
 
 const initialStateApp = async () => {
-    let store= window.store.getState();
+    const store= window.store.getState();
     let user = null;
     try {
         user = await getUser();
@@ -78,7 +77,7 @@ const setStateCurrentChat = async (chat: IChat | null) => {
         openConnectMessages(chat, user);
 
     }
-    window.store.set({currentChat: cloneDeep(chat),chats: window.store.getState().chats});
+    window.store.set({currentChat: chat,chats: window.store.getState().chats});
 }
 
 

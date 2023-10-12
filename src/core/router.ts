@@ -28,7 +28,7 @@ class Router {
      * @param pathname
      * @param block
      */
-    use(pathname:string, block:Block) {
+    use(pathname:string, block:typeof Block) {
         const route = new Route(pathname, block, {rootQuery: this._rootQuery});
         this.routes?.push(route);
         return this;
@@ -38,10 +38,8 @@ class Router {
      * start — по событию onpopstate запускает приложение.
      */
     start() {
-        // Реагируем на изменения в адресной строке и вызываем перерисовку
         window.onpopstate = event => {
-            // @ts-ignore
-            this._onRoute(event?.currentTarget?.location?.pathname);
+            this._onRoute((event?.currentTarget as Window)?.location?.pathname);
         };
 
         this._onRoute(window.location.pathname);
@@ -54,7 +52,6 @@ class Router {
         }
 
         if (this._currentRoute && this._currentRoute !== route) {
-            // @ts-ignore
             this._currentRoute.leave();
         }
 
