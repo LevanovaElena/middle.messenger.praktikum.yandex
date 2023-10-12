@@ -1,6 +1,7 @@
 //'wss://ya-praktikum.tech/ws/chats/<USER_ID>/<CHAT_ID>/<TOKEN_VALUE>'
 class SocketIO {
-    private socket: WebSocket | null = null;
+    private STATES=['CONNECTING','OPEN','CLOSING','CLOSED'];
+    private readonly socket: WebSocket | null = null;
 
     constructor(url: string,user_id?:string,chat_id?:string,token?:string) {
         let _url=url;
@@ -14,6 +15,10 @@ class SocketIO {
         return new WebSocket(url);
     }
 
+    public getState=()=>{
+        if(!this.socket)return this.STATES[3];
+        return this.STATES[this.socket.readyState];
+    }
     public open=(callBack: () => void) =>{
         this.socket?.addEventListener('open', callBack);
     }

@@ -23,6 +23,7 @@ export class MessageList extends Block {
         window.store.on(StoreEvents.Updated, () => {
             this.props.currentUser=window.store.getState().user as IUser;
             this.props.messageList = window.store.getState().currentChat?.messages||[];
+            this.props.currentChat = window.store.getState().currentChat;
             this.setProps(this.props);
         });
     }
@@ -49,13 +50,21 @@ export class MessageList extends Block {
             return (`<div class="message-list__empty">
                         <p class="">Select a chat to write a message</p>
                     </div>`)
+        const users=currentChat.users?.length||0;
         return (`
            <div class="message-list">
               {{{ MessageListHeader }}}
-                <ul class="message-list__main">
+              ${users>1?
+                ` <ul class="message-list__main">
                     ${this.getListMessages(messageList)}                   
-                </ul>
-                {{{MessageListFooter }}}
+                    </ul>
+                     {{{MessageListFooter }}}
+                `:
+                `<div class="message-list__empty">
+                     <p class="">Add users to chat</p>
+                </div>`
+        }
+               
             </div>
         `)
     }

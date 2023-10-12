@@ -8,7 +8,7 @@ import {cloneDeep} from "../utils/object.utils.ts";
 import { openConnectMessages} from "./send-message.ts";
 
 const initialStateApp = async () => {
-
+    let store= window.store.getState();
     let user = null;
     try {
         user = await getUser();
@@ -16,12 +16,12 @@ const initialStateApp = async () => {
         Router.getRouter().go(BASE_URLS['page-login']);
         return;
     }
-    setStateUser(user);
+    store.user=user;
     console.log('user_initial', window.store.getState());
-    await initChatPage();
+    await updateChats();
 
 }
-const initChatPage = async () => {
+const updateChats = async () => {
     let chats: IChat[] = [];
     try {
         chats = await getChats();
@@ -62,11 +62,9 @@ const setStateChats = (chats: IChat[] | null) => {
 }
 const setStateUsers = (chat: IChat, users: IUser[]) => {
     chat.users = [...users];
-    window.store.set({currentChat: chat});
 }
 const setStateToken = (chat: IChat, token: string) => {
     chat.token = token;
-    window.store.set({currentChat: chat});
 }
 const setStateCurrentChat = async (chat: IChat | null) => {
     await initChatUsers(chat);
@@ -74,16 +72,19 @@ const setStateCurrentChat = async (chat: IChat | null) => {
     const user = window.store.getState().user;
     if (chat && user) {
         openConnectMessages(chat, user);
-
+        const foundedChat= window.store.getState().chats?.find(_chat => _chat.id === chat.id);
+        if(foundedChat) {
+            foundedChat.unread_count =0;
+        }
     }
-    window.store.set({currentChat: cloneDeep(chat)});
+    window.store.set({currentChat: cloneDeep(chat),chats: window.store.getState().chats});
 }
 
 
 export {
     initialStateApp,
     setStateUser,
-    initChatPage,
+    updateChats,
     setStateCurrentChat,
     setStateUsers,
     initChatToken,

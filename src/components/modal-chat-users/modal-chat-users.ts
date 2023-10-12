@@ -4,7 +4,7 @@ import {searchUsersByLogin} from "../../services/user-settings.ts";
 import {IUser} from "../../models/IUser.ts";
 import {UserItem} from "../index.ts";
 import {addChatUser, deleteChatUsers} from "../../services/chat.ts";
-import {initChatUsers } from "../../services/app.ts";
+import { setStateCurrentChat} from "../../services/app.ts";
 
 interface IModalChatUsersProps extends IProps {
     okClick?: (result: string) => void,
@@ -46,7 +46,7 @@ export class ModalChatUsers extends Block {
                             users: [Number(id)],
                             chatId: chat.id
                         }).then(() => {
-                            initChatUsers(chat).then(() => modalController.closeModal());
+                            setStateCurrentChat(chat).then(() => modalController.closeModal());
                         })
                     }
                     if(props.type==='delete'&&chat){
@@ -54,7 +54,7 @@ export class ModalChatUsers extends Block {
                             users: [Number(id)],
                             chatId:chat.id
                         }).then(() => {
-                            initChatUsers(chat).then(()=>modalController.closeModal());
+                            setStateCurrentChat(chat).then(()=>modalController.closeModal());
                         })
                     }
                 }

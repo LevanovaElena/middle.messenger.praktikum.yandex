@@ -1,7 +1,7 @@
 import {responseHasError} from "../utils/api.utils.ts";
 import ChatApi from "../api/chat.ts";
 import {IChat, IChatUsersData} from "../models/IChat.ts";
-import {initChatPage} from "./app.ts";
+import {updateChats} from "./app.ts";
 import {IUser} from "../models/IUser.ts";
 
 
@@ -22,13 +22,13 @@ const addChatUser= async (data:IChatUsersData) => {
     const result=await chatApi.addChatUsers(data) as  XMLHttpRequest;
     const error=responseHasError(result);
     if(error) throw Error(error);
-    await initChatPage();
+    await updateChats();
 }
 const deleteChatUsers= async (data:IChatUsersData) => {
     const result=await chatApi.deleteChatUsers(data) as  XMLHttpRequest;
     const error=responseHasError(result);
     if(error) throw Error(error);
-    await initChatPage();
+    await updateChats();
 }
 
 const getChatUsers=async (idChat:string):Promise<IUser[]> => {
