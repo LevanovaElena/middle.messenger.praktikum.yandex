@@ -1,7 +1,7 @@
-import  {IProps,Block} from "../../utils/Block";
+import  {IProps,Block} from "../../core/block.ts";
 
 interface IButtonProps extends IProps{
-    type: 'arrow' | 'dots'|'paperclip'|'cancel'|'number',
+    type: 'arrow' | 'dots'|'paperclip'|'cancel'|'number'|'close',
     caption: string,
     page: string,
     onClick: () => void
@@ -20,7 +20,7 @@ export class Button extends Block {
     protected render(): string {
         const { type='', caption='', page='' } = this._props as IButtonProps;
         return (`
-            <button class="button ${type?"button-"+type:""}" 
+            <button type="button" class="button ${type?"button-"+type:""}" 
             ${page ? `page="${page}"` : ''}> 
                 ${caption}
             </button>

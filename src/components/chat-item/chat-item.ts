@@ -1,37 +1,60 @@
-import {IProps,Block} from "../../utils/Block";
-import {IChat} from "../../models/IChat.ts";
+import {IProps, Block} from "../../core/block.ts";
+import {getShortDate} from "../../utils/date.utils.ts";
 
 export interface IChatItemProps extends IProps {
-    chat:IChat,
+    id: number;
+    title: string;
+    avatar: string|null;
+    unread_count: string|null;
+    last_message_content:string|null;
+    last_message_time:string|null;
+
+    onClick: (id:string) => void
 }
 
 export class ChatItem extends Block {
     constructor(props: IChatItemProps) {
-        super(props);
+        super({
+            ...props,
+            events: {
+                click: (e: Event) => {
+                    e.stopPropagation();
+                    props.onClick(String(this.props.id));
+                }
+            }
+        })
     }
 
-    public renderForList=this.render;
+    public get props() {
+        return this._props as IChatItemProps;
+    }
+
     protected render(): string {
-        const { chat } = this._props as IChatItemProps;
+        const {id,title,avatar,unread_count,last_message_content,last_message_time} = this._props as IChatItemProps;
+
         return (`
             <li class="chat-item">
                 <div class="chat-item__avatar">
-                  {{{ Avatar imageUrl=${chat.avatar} isLoadAvatar=false size='sm' }}}
+                  {{{ Avatar imageUrl=${avatar} isLoadAvatar=false size='sm' }}}
                 </div>
                 <div class="chat-item__caption">
-                    <div class="chat-item__caption__name">
-                        ${chat.title}
+                    <div class="chat-item__caption__name" id='${id}'>
+                        ${title}
                     </div>
-                    <div class="chat-item__caption__time">
-                        ${chat.last_message.time}
-                    </div>
+                    ${last_message_time ? `<div class="chat-item__caption__time">
+                        ${ getShortDate(last_message_time)}
+                    </div>` : ``}
+                    
                 </div>
-                <div class="chat-item__message">
+                 ${last_message_content ? ` <div class="chat-item__message">
                     <div class="chat-item__message__content">
-                        <p> ${chat.last_message.content}</p>
+                        <p> ${last_message_content}</p>
                     </div>
-                    {{{ Button type="number" caption=${chat.unread_count}}}}
-                </div>
+                    ${unread_count ? `{{{ Button type="number" caption='${unread_count}' }}}` : ''}
+                </div>` : ` <div class="chat-item__message__content">
+                        <p> no messages</p>
+                    </div>`}
+               
             </li>
         `)
     }

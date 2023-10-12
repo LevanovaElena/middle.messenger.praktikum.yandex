@@ -1,4 +1,9 @@
-import {IProps,Block} from "../../utils/Block.ts";
+import {IProps,Block} from "../../core/block.ts";
+import {signUp} from "../../services/auth.ts";
+import {IUser} from "../../models/IUser.ts";
+import {BASE_URLS} from "../../config.ts";
+import {showAlert} from "../../utils/api.utils.ts";
+import Router from "../../core/router.ts";
 
 export interface IPageRegistrationProps extends IProps {
     onLogin:(event:Event)=>void,
@@ -7,7 +12,7 @@ export class PageRegistration extends Block {
     constructor() {
         const props:IPageRegistrationProps={
             events:{},
-            onLogin:  (event: Event) => {
+            onLogin:  async (event: Event) => {
                 event.preventDefault();
                 const login = this.refs.form.getRefs()?.login.value();
                 const email = this.refs.form.getRefs()?.email.value();
@@ -16,16 +21,20 @@ export class PageRegistration extends Block {
                 const second_name = this.refs.form.getRefs()?.second_name.value();
                 const password = this.refs.form.getRefs()?.password.value();
                 const password2 = this.refs.form.getRefs()?.password2.value();
+                if (password !== password2) showAlert('Repeat passwords correct!');
+                if (password === password2) {
+                    const data = {
+                        first_name,
+                        second_name,
+                        login,
+                        email,
+                        password,
+                        phone
+                    } as IUser;
+                    await signUp(data);
+                    Router.getRouter().go(BASE_URLS['page-chat']);
+                }
 
-                console.log({
-                    login,
-                    password,
-                    password2,
-                    second_name,
-                    first_name,
-                    phone,
-                    email
-                })
             }
         }
 
@@ -49,7 +58,17 @@ export class PageRegistration extends Block {
 
         return (`
             <form class="container container-center">
-                {{{ FormAuth caption="Registration" captionOk="sign up" captionCancel="Cancel" pageOk="allPages" pageCancel="loginPage" onClickOkButton=onLogin children="${this.getChildren()}" ref="form" }}}
+                {{{ FormAuth 
+                    caption="Registration" 
+                    captionOk="sign up" 
+                    captionCancel="Cancel" 
+                    pageOk="allPages" 
+                    pageCancel="loginPage" 
+                    onClickOkButton=onLogin 
+                    children="${this.getChildren()}" 
+                    ref="form" 
+                    cancelLink="${BASE_URLS['page-login']}" 
+                }}}
             </form>`)
     }
 }

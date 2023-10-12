@@ -1,29 +1,33 @@
-import {IProps,Block} from "../../utils/Block.ts";
-import {mockUser} from "../../mocks/user-profile.mocks.ts";
+import {IProps,Block} from "../../core/block.ts";
 import {IUser} from "../../models/IUser.ts";
+import {updateUserPassword} from "../../services/user-settings.ts";
+import Router from "../../core/router.ts";
+import {showAlert} from "../../utils/api.utils.ts";
 
 export interface ILoginPageProps extends IProps {
     onChange:(event:Event)=>void,
-    user:IUser
+    user:IUser|null
 }
 export class PagePasswordEdit extends Block {
 
     constructor() {
         const props:ILoginPageProps={
             events:{},
-            user:mockUser,
-            onChange: (event: Event) => {
-
+            user:window.store.getState().user,
+            onChange: async (event: Event) => {
                 event.preventDefault();
                 const oldPassword = this.refs.form.getRefs()?.oldPassword.value();
                 const newPassword = this.refs.form.getRefs()?.newPassword.value();
                 const repeatPassword = this.refs.form.getRefs()?.repeatPassword.value();
 
-                console.log({
-                    oldPassword,
-                    newPassword,
-                    repeatPassword,
-                })
+                if(newPassword !== repeatPassword)showAlert('Repeat new password correct!');
+                if (oldPassword && newPassword && newPassword === repeatPassword) {
+                    await updateUserPassword({
+                        oldPassword,
+                        newPassword
+                    });
+                    Router.getRouter().back();
+                }
             }
         }
 

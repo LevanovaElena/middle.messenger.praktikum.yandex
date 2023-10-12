@@ -1,9 +1,11 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps,Block} from "../../core/block.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
+import {getShortDate} from "../../utils/date.utils.ts";
 
 export interface IMessageProps extends IProps{
     message:IChatMessage;
-    myMessage:boolean
+    myMessage:boolean;
+    userName:string;
 }
 
 export class Message extends Block {
@@ -15,19 +17,26 @@ export class Message extends Block {
         return this._props as IMessageProps;
     }
     protected render(): string {
-        const { message,myMessage } = this.props;
+        const { message,myMessage,userName } = this.props;
         return (`
             <li class="message  ${myMessage?' message-my':''}">
                ${message.file?`
                     <article class="message__file">
+                        ${!myMessage?` <div class="message__user">
+                            ${userName}
+                        </div>`:''}
                         <img src=${message.file.path} alt="included_file"/>
                         <div class="message__time">
-                            {{{ Badge text="01.20" type="primary" }}}
+                            {{{ Badge text="${getShortDate(message.time)}" type="primary" }}}
                         </div>
                     </article>`:`<article class="message__text">
+                        ${!myMessage?` <div class="message__user">
+                            ${userName}
+                        </div>`:''}
+                       
                         <p>${message.content}</p>
                         <div class="message__time">
-                            {{{Badge text="01.20" }}}
+                            {{{Badge text="${getShortDate(message.time)}" }}}
                         </div>
                     </article>`
                 }
