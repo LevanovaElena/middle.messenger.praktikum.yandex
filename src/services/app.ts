@@ -5,7 +5,7 @@ import {IUser} from "../models/IUser.ts";
 import {getChats, getChatToken, getChatUsers} from "./chat.ts";
 import {IChat} from "../models/IChat.ts";
 import {cloneDeep} from "../utils/object.utils.ts";
-import {openConnectMessages} from "./send-message.ts";
+import { openConnectMessages} from "./send-message.ts";
 
 const initialStateApp = async () => {
 
@@ -72,7 +72,10 @@ const setStateCurrentChat = async (chat: IChat | null) => {
     await initChatUsers(chat);
     await initChatToken(chat);
     const user = window.store.getState().user;
-    if (chat && user) openConnectMessages(chat, user);
+    if (chat && user) {
+        openConnectMessages(chat, user);
+
+    }
     window.store.set({currentChat: cloneDeep(chat)});
 }
 

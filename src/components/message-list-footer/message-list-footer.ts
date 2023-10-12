@@ -28,7 +28,7 @@ export class MessageListFooter extends Block {
                 console.log('Send Message:' + this.valueMessage());
                 sendMessage( this.valueMessage());
             }
-            else console.log('Error! Can not send!')
+            else console.log('Error! Can not sendMessage!')
         }
         props.openMenuMessage = () => {
             this.props.isOpenedMenuMessage = !this.props.isOpenedMenuMessage;

@@ -44,11 +44,19 @@ class SocketIO {
         this.socket?.addEventListener('error', callBack);
     }
 
-    public send=(message: string)=> {
+    public sendMessage=(message: string)=> {
         const _message = JSON.stringify(
             {
                 content: message,
                 type: "message"
+            })
+        this.socket?.send(_message);
+    }
+    public sendRequestForgetMessage=(limit: number=0)=> {
+        const _message = JSON.stringify(
+            {
+                content: String(limit),
+                type: "get old"
             })
         this.socket?.send(_message);
     }

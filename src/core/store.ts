@@ -24,7 +24,7 @@ export class Store<State extends Record<string, any>> extends EventBus {
 
     public set(nextState: Partial<State>) {
         const prevState = {...this.state};
-console.log('nextState',nextState)
+        //console.log('nextState',nextState)
 
         this.state = {...this.state, ...nextState};
         console.log('this.state ',this.state )

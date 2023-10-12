@@ -12,7 +12,7 @@ const  updateUserProfile=async (newUserData: IUser) => {
     const error=responseHasError(result);
     if(error) throw Error(error);
     setStateUser(JSON.parse(result.responseText));
-    Router.getRouter().back();
+
 }
 const  updateUserPassword=async (newUserPasswords: IPasswords) => {
     const result= await userApi.changeUserPassword(newUserPasswords);

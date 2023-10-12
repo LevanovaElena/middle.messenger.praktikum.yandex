@@ -1,4 +1,6 @@
 import {IUser} from "./IUser.ts";
+import SocketIO from "../api/socket.ts";
+import {IChatMessage} from "./IChatMessage.ts";
 
 export interface IChat {
     id: number;
@@ -10,6 +12,7 @@ export interface IChat {
     last_message?: ILastMessage;
     users?:IUser[];
     connection?:SocketIO|null;
+    messages?:IChatMessage[]|null;
 }
 
 export interface ILastMessage {

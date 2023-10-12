@@ -21,12 +21,14 @@ export class ModalAvatar extends Block {
             modalController.closeModal();
         }
         props.cancelClick = () => {
+            console.log('cancel',this.props);
             const user = window.store.getState().user;
-            if (user && this.props.newAvatar) {
+            if (user && this.props.oldAvatar) {
+                this.props.newAvatar ='';
                 updateUserProfile({...user, avatar: this.props.oldAvatar}).then(() => {
                     modalController.closeModal();
                 });
-            } else modalController.closeModal();
+            } //else modalController.closeModal();
 
         }
 

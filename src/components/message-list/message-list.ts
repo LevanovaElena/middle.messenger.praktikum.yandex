@@ -18,9 +18,11 @@ interface IMessageListProps extends IProps {
 export class MessageList extends Block {
     constructor(props: IMessageListProps) {
         props.currentChat = window.store.getState().currentChat;
+        props.messageList = window.store.getState().currentChat?.messages||[];
         super(props);
         window.store.on(StoreEvents.Updated, () => {
             this.props.currentUser=window.store.getState().user as IUser;
+            this.props.messageList = window.store.getState().currentChat?.messages||[];
             this.setProps(this.props);
         });
     }
@@ -32,7 +34,7 @@ export class MessageList extends Block {
     getListMessages(list: IChatMessage[]): string {
         if (!list || list.length === 0) return '';
         return list.map(message => {
-            const messageBlock = new Message({message: message, myMessage: message.main || false} as IMessageProps)
+            const messageBlock = new Message({message: message, myMessage: String(message.user_id)===String(this.props.currentUser.id)} as IMessageProps)
             return (`
             <div class="message-list__main__message">
                 ${messageBlock.renderForList()}
