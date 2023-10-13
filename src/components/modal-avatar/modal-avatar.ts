@@ -2,7 +2,8 @@ import {IProps, Block} from "../../core/block.ts";
 import {updateUserAvatar, updateUserProfile} from "../../services/user-settings.ts";
 import {BASE_RESOURCES_URL} from "../../config.ts";
 import modalController from "../../core/modal-controller.ts";
-import {addActive, deleteActive,  loadNewFileFromDrag} from "../../utils/load-file.utils.ts";
+import {addActive, deleteActive, loadNewFileFromDrag} from "../../utils/load-file.utils.ts";
+import {updateChatAvatar} from "../../services/chat.ts";
 
 interface IModalAvatarProps extends IProps {
     oldAvatar?: string,
@@ -11,23 +12,48 @@ interface IModalAvatarProps extends IProps {
     cancelClick?: () => void,
     onAddFile?: (e: InputEvent) => void,
     file?: unknown;
+    type: 'user' | 'chat'
 }
 
 export class ModalAvatar extends Block {
     constructor(props: IModalAvatarProps) {
         props.file = null;
         props.newAvatar = '';
-        props.okClick = () => {
+        props.okClick = async () => {
+            if(this.props.type==='chat') {
+                const chat=window.store.getState().chats?.find(item=>item.id===window.store.getState().currentChat?.id);
+                if(chat){
+                    chat.avatar=window.store.getState().currentChat?.avatar;
+                    window.store.set({chats:window.store.getState().chats});
+                }
+            }
             modalController.closeModal();
         }
         props.cancelClick = () => {
-            const user = window.store.getState().user;
-            if (user && this.props.oldAvatar) {
-                this.props.newAvatar ='';
-                updateUserProfile({...user, avatar: this.props.oldAvatar}).then(() => {
-                    modalController.closeModal();
-                });
-            } //else modalController.closeModal();
+            switch (this.props.type) {
+                case "user": {
+                    const user = window.store.getState().user;
+                    if (user && this.props.oldAvatar) {
+                        this.props.newAvatar = '';
+                        updateUserProfile({...user, avatar: this.props.oldAvatar}).then(() => {
+                            modalController.closeModal();
+                        });
+                    }
+                    break;
+                }
+                case "chat": {
+                    const chat = window.store.getState().currentChat;
+                    if (chat && this.props.oldAvatar) {
+                        this.props.newAvatar = '';
+                        console.log('Вернуть на место старый аватар')
+                        /* updateChatAvatar({...user, avatar: this.props.oldAvatar}).then(() => {
+                             modalController.closeModal();
+                         });*/
+                    }
+                    break;
+                }
+            }
+
 
         }
 
@@ -35,12 +61,31 @@ export class ModalAvatar extends Block {
             deleteActive(e as Event);
             const formData = loadNewFileFromDrag<TEvent>(e);
             if (formData) {
-                updateUserAvatar(formData).then(user => {
-                    this.props.newAvatar = user.avatar;
-                    modalController.addModal((new ModalAvatar({
-                        oldAvatar: window.store.getState().user?.avatar || ''
-                    })) as unknown as Block);
-                });
+                switch (this.props.type) {
+                    case "user": {
+                        updateUserAvatar(formData).then(user => {
+                            this.props.newAvatar = user.avatar;
+                            modalController.addModal((new ModalAvatar({
+                                oldAvatar: window.store.getState().user?.avatar || '',
+                                type: 'user'
+                            })) as unknown as Block);
+                        });
+                        break;
+                    }
+                    case "chat": {
+                        const _chat = window.store.getState().currentChat;
+                        if (!_chat) break;
+                        updateChatAvatar(formData, _chat.id).then(chat => {
+                            this.props.newAvatar = chat.avatar;
+                            modalController.addModal((new ModalAvatar({
+                                oldAvatar: window.store.getState().currentChat?.avatar || '',
+                                type: 'chat'
+                            })) as unknown as Block);
+                        });
+                        break;
+                    }
+                }
+
             }
         }
         super({
@@ -56,7 +101,7 @@ export class ModalAvatar extends Block {
                     deleteActive(e);
                 },
                 drop: _onAddFile<DragEvent>,
-                change:_onAddFile<Event>,
+                change: _onAddFile<Event>,
 
             }
         })
@@ -71,9 +116,9 @@ export class ModalAvatar extends Block {
         const {oldAvatar = '', newAvatar = ''} = this.props;
         let result: string;
         if (newAvatar) {
-            result = `<img src=${BASE_RESOURCES_URL + newAvatar} alt='image avatar' class='modal-avatar__image'/>`
+            result = `<img src='${BASE_RESOURCES_URL + newAvatar}' alt='image avatar' class='modal-avatar__image'/>`
         } else {
-            result = oldAvatar ? `<img src=${BASE_RESOURCES_URL + oldAvatar} alt='image avatar' class='modal-avatar__image'/>` : `<div class='modal-avatar__empty'></div>`
+            result = oldAvatar ? `<img src='${BASE_RESOURCES_URL + oldAvatar}' alt='image avatar' class='modal-avatar__image'/>` : `<div class='modal-avatar__empty'></div>`
         }
         return (
             `<div class='modal-avatar' id='modal-avatar'>

@@ -18,7 +18,8 @@ export class Avatar extends Block {
                 click: () => {
                     if(!props.isLoadAvatar)return;
                     modalController.addModal((new ModalAvatar({
-                        oldAvatar:window.store.getState().user?.avatar||''
+                        oldAvatar:window.store.getState().user?.avatar||'',
+                        type:'user'
                     })) as unknown as Block);
                     modalController.openModal();
                 }
@@ -33,7 +34,7 @@ export class Avatar extends Block {
         const {size = 'md', isLoadAvatar = false, imageUrl = ''} = this.props;
         return (`
             <div class="avatar ${size}">
-                ${imageUrl ? `
+                ${imageUrl&&imageUrl.trim()!=='null'? `
                     <img src='${BASE_RESOURCES_URL+imageUrl}' alt="image avatar" class="avatar__image"/>` : ``}
                 ${isLoadAvatar ? `
                     <div class="avatar__hover">

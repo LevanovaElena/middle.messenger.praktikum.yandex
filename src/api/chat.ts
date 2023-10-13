@@ -31,9 +31,10 @@ export class ChatApi {
         return this.httpTransport.post(this.baseUrl + `/token/${id}`);
     }
 
-    /*  public logOut() {
-       return  this.httpTransport.post(this.baseUrl + '/logout');
-   }*/
+    public updateChatAvatar(file: FormData,chatId:number) {
+        file.append('chatId', String(chatId));
+        return this.httpTransport.put(this.baseUrl + '/avatar', {data: file});
+    }
 }
 
 export default ChatApi
