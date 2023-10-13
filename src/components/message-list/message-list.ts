@@ -9,7 +9,7 @@ import {getUserName} from "../../utils/user.utils.ts";
 
 interface IMessageListProps extends IProps {
     messageList: IChatMessage[];
-    currentUser: IUser;
+    currentUser: IUser|null;
     currentChat: IChat | null;
     openMenuMessage?: () => void;
     openMenuChat?: () => void;
@@ -22,7 +22,7 @@ export class MessageList extends Block {
         props.messageList = window.store.getState().currentChat?.messages || [];
         super(props);
         window.store.on(StoreEvents.Updated, () => {
-            this.props.currentUser = window.store.getState().user as IUser;
+            this.props.currentUser = window.store.getState().user;
             this.props.messageList = window.store.getState().currentChat?.messages || [];
             this.props.currentChat = window.store.getState().currentChat;
             this.setProps(this.props);
@@ -46,7 +46,7 @@ export class MessageList extends Block {
             const messageBlock = new Message({
                 userName: mapUsers.size ? mapUsers.get(message.user_id) : '',
                 message: message,
-                myMessage: String(message.user_id) === String(this.props.currentUser.id)
+                myMessage: String(message.user_id) === String(this.props.currentUser?.id)
             } as IMessageProps)
             return (`
             <div class="message-list__main__message">
@@ -57,10 +57,10 @@ export class MessageList extends Block {
     }
 
     protected render(): string {
-        const {messageList, currentChat} = this.props;
+        const {messageList, currentChat, currentUser} = this.props;
         if (!currentChat)
             return (`<div class="message-list__empty">
-                        <p class="">Select a chat to write a message</p>
+                        ${currentUser?`<p class="">Select a chat to write a message</p>`:``}
                     </div>`)
         const users = currentChat.users?.length || 0;
         return (`

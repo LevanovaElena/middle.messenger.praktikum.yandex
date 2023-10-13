@@ -71,6 +71,11 @@ export class ChatList extends Block {
 
     protected render(): string {
         const {list, currentUser} = this.props;
+        if (!currentUser) return `
+            <div class="container container-center">
+                 {{{Loader }}}
+            </div>`
+
         //if (!list || list.length === 0) return '';
         return (`            
             <div class="chat-list">
