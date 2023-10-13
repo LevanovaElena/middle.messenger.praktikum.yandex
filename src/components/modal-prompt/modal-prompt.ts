@@ -41,7 +41,7 @@ export class ModalPrompt extends Block {
         const {labelText = ''} = this.props;
         return (
             `
-                {{{ InputShort label='${labelText}' type='text' name='input' validate=validate.login ref='input' }}}             
+                {{{ InputShort label='${labelText}' type='text' name='input' validate=validate.nameChat ref='input' }}}             
             `
         )
     }

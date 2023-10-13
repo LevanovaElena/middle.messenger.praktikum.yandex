@@ -5,6 +5,7 @@ import {IUser} from "../../models/IUser.ts";
 import {UserItem} from "../index.ts";
 import {addChatUser, deleteChatUsers} from "../../services/chat.ts";
 import {setStateCurrentChat} from "../../services/app.ts";
+import {showModalAlert} from "../../utils/api.utils.ts";
 
 interface IModalChatUsersProps extends IProps {
     okClick?: (result: string) => void,
@@ -26,6 +27,9 @@ export class ModalChatUsers extends Block {
                     return;
                 }
                 searchUsersByLogin(input).then((users) => {
+                    if(!users||users.length===0){
+                        showModalAlert('Not Found users')
+                    }
                     this.props.users = users;
                     this.setProps(this.props)
                 })

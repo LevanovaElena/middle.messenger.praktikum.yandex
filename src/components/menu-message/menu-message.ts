@@ -1,5 +1,8 @@
 import {IProps, Block} from "../../core/block.ts";
 import {IChat} from "../../models/IChat.ts";
+import modalController from "../../core/modal-controller.ts";
+import ModalLoadFile from "../modal-load-file";
+import ModalController from "../../core/modal-controller.ts";
 
 
 interface IMenuMessageProps extends IProps {
@@ -16,6 +19,11 @@ export class MenuMessage extends Block {
         props.currentChat = window.store.getState().currentChat;
         props.addMedia = () => {
             console.log('add media!');
+            modalController.addModal((new ModalLoadFile({
+                file:null,
+                type: 'picture'
+            })) as unknown as Block);
+            ModalController.openModal();
             this.props.closeMenu();
         }
         props.addFile = () => {
@@ -41,9 +49,9 @@ export class MenuMessage extends Block {
         return (`            
             <nav class='${`menu menu-message container-shadow ${isOpenedMenu ? 'opened' : 'hide'}`}'>
                 <ul >
-                    {{{ MenuItem caption='Picture or Video' onClick=addMedia icon='media' }}}
-                    {{{ MenuItem caption='File' onClick=addFile icon='file' }}}
-                    {{{ MenuItem caption='Location' onClick=addLocation icon='location' }}}
+                    {{{ MenuItem caption='Picture' onClick=addMedia icon='media' }}}
+                    {{{ MenuItem caption='File' onClick=addFile icon='file' disabled=true }}}
+                    {{{ MenuItem caption='Location' onClick=addLocation icon='location' disabled=true }}}
                 </ul>
             </nav>
         `)

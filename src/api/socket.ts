@@ -50,6 +50,14 @@ class SocketIO {
             })
         this.socket?.send(_message);
     }
+    public sendFile = (idResource: string) => {
+        const _message = JSON.stringify(
+            {
+                content: idResource,
+                type: "file"
+            })
+        this.socket?.send(_message);
+    }
     public sendRequestForgetMessage = (limit: number = 0) => {
         const _message = JSON.stringify(
             {

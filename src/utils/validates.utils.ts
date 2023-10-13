@@ -95,3 +95,11 @@ export const validateMessage = (value: string) => {
     if (value.length === 0) return `Message can not be blank`;
     return '';
 }
+
+/**
+ * nameChat — не должно быть пустым.
+ */
+export const validateNameChat = (value: string) => {
+    if (value.length === 0) return `Chat Name can not be blank`;
+    return '';
+}

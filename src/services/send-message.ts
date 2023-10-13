@@ -19,7 +19,7 @@ export const openConnectMessages = (chat: IChat, currentUser: IUser) => {
     socket.message((event: MessageEvent) => {
         //console.log('Message!', event.data);
         const message = JSON.parse(event.data);
-        if (message.type === 'message' || Array.isArray(message)) {
+        if (message.type === 'message' || Array.isArray(message)||message.type === 'file') {
             if (!chat.messages) chat.messages = [];
             if (Array.isArray(message)) {
                 message.reverse();
@@ -40,7 +40,6 @@ export const openConnectMessages = (chat: IChat, currentUser: IUser) => {
                     block: 'end',
                 });
         }
-
         if (event.data.type === 'user connected') {
             console.log('user connected', event.data)
         }

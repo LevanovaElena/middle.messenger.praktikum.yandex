@@ -35,7 +35,7 @@ export class ChatItem extends Block {
         return (`
             <li class="chat-item">
                 <div class="chat-item__avatar">
-                  {{{ Avatar imageUrl=${avatar} isLoadAvatar=false size='sm' }}}
+                  {{{ Avatar imageUrl='${avatar||''}' isLoadAvatar=false size='sm' }}}
                 </div>
                 <div class="chat-item__caption">
                     <div class="chat-item__caption__name" id='${id}'>

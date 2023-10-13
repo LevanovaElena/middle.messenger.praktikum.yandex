@@ -1,5 +1,5 @@
 
-export const loadNewFileFromDrag=<TEvent>(e:TEvent):FormData|null=>{
+export const loadNewFileFromDrag=<TEvent>(e:TEvent,name:string='avatar'):FormData|null=>{
     let file=null;
     if(e instanceof DragEvent){
         const dt = e.dataTransfer;
@@ -13,7 +13,7 @@ export const loadNewFileFromDrag=<TEvent>(e:TEvent):FormData|null=>{
     }
     if(file){
         const formData = new FormData();
-        formData.append('avatar', file);
+        formData.append(name, file);
         return formData;
     }
 

@@ -26,6 +26,9 @@ class AlertController {
         this.dialog?.show()
     }
 
+    public open(){
+        this.dialog?.showModal()
+    }
     public closeModal(){
         this.dialog?.close()
     }
