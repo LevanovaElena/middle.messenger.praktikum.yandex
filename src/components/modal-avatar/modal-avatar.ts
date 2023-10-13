@@ -49,6 +49,7 @@ export class ModalAvatar extends Block {
                         /* updateChatAvatar({...user, avatar: this.props.oldAvatar}).then(() => {
                              modalController.closeModal();
                          });*/
+                        modalController.closeModal();
                     }
                     break;
                 }
