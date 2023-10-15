@@ -2,6 +2,7 @@ import {IChat} from "../models/IChat.ts";
 import {BASE_SOCKET_CHAT} from "../config.ts";
 import {IUser} from "../models/IUser.ts";
 import SocketIO from "../api/socket.ts";
+import {showAlert} from "../utils/api.utils.ts";
 
 export const openConnectMessages = (chat: IChat, currentUser: IUser) => {
     if (!chat.id) return;
@@ -10,15 +11,21 @@ export const openConnectMessages = (chat: IChat, currentUser: IUser) => {
     if (chat.connection && chat.connection.getState() === 'OPEN') return;
     const socket = new SocketIO(BASE_SOCKET_CHAT, currentUser.id, String(chat.id), chat.token);
     socket.open(() => {
-        if (chat.unread_count > 0) getAllNewMessage(0, chat);
+        getAllNewMessage(0, chat);
         setInterval(() => {
             socket.ping();
         }, 5000);
 
     })
     socket.message((event: MessageEvent) => {
-        //console.log('Message!', event.data);
-        const message = JSON.parse(event.data);
+        let message=null;
+        try{
+            message = JSON.parse(event.data);
+        }
+        catch (e){
+            showAlert('Unknown message!')
+        }
+        if(!message)return;
         if (message.type === 'message' || Array.isArray(message)||message.type === 'file') {
             if (!chat.messages) chat.messages = [];
             if (Array.isArray(message)) {

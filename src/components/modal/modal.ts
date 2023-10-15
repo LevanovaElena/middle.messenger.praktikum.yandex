@@ -15,7 +15,14 @@ export class Modal extends Block {
     constructor(props: IModalProps) {
         props.validate= ALL_VALIDATE_FIELDS;
         super({
-            ...props
+            ...props,
+            events:{
+                submit:(event: Event)=>{
+                    event.stopPropagation();
+                    event.preventDefault();
+                    this.props.okClick(event);
+                }
+            }
         })
     }
 
@@ -26,7 +33,7 @@ export class Modal extends Block {
     protected render(): string {
         const {caption = '', okText = '', cancelText = '',children=''} = this.props;
         return (`
-                <form class="modal ">
+                <form class="modal " >
                     <h2 class="modal__header">
                         ${caption}
                     </h2>
@@ -34,7 +41,7 @@ export class Modal extends Block {
                         ${children}
                     </div>
                     <div class="modal__footer">
-                        {{{ Button caption="${okText}" onClick=okClick }}}
+                        {{{ Button caption="${okText}" onClick=okClick isSubmit=true}}}
                         {{{ Button caption="${cancelText}" onClick=cancelClick type='link'}}}
                     </div>
                 </form>

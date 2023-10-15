@@ -10,15 +10,16 @@ const authApi = new AuthApi('/auth');
 const signUp = async (data: IUser) => {
     const result = await authApi.signUp(data);
     const error=responseHasError(result);
+    if (error) throw Error(error);
     if(!error) {
-        setStateUser(JSON.parse(result.responseText));
-
+        const newUser=await getUser() as IUser;
+       setStateUser(newUser);
     }
-    return JSON.parse(result.responseText);
+    return result.data;
 }
 const signIn = async (data: IAuthData) => {
     const result = await authApi.signIn(data);
-    const error = responseHasError(result as XMLHttpRequest);
+    const error = responseHasError(result );
     if (error) throw Error(error);
     if (!error) {
         await initialStateApp();
@@ -27,19 +28,20 @@ const signIn = async (data: IAuthData) => {
 }
 
 const getUser = async () => {
-    const result = await authApi.getAuthUser() as XMLHttpRequest;
+    const result = await authApi.getAuthUser();
     const error=responseHasError(result);
     if (error) throw Error(error);
     if(!error)
-    return JSON.parse(result.responseText);
+    return result.data?result.data:null;
 
 }
 const logOut = async () => {
-    const result = await authApi.logOut() as XMLHttpRequest;
+    const result = await authApi.logOut() ;
     const error = responseHasError(result);
     if (error) throw Error(error);
-    setStateUser(null);
     Router.getRouter().go(BASE_URLS['page-login']);
+    setStateUser(null);
+
 }
 
 export {

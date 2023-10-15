@@ -15,8 +15,12 @@ type IOptionsRequest = {
     headers?: Record<string, string>;
     params?: object;
 }
+export type IResult={
+    status:number;
+    data:object
+}
 
-type HTTPMethod = (url: string, options?: IOptionsRequest) => Promise<XMLHttpRequest>
+type HTTPMethod = (url: string, options?: IOptionsRequest) => Promise<IResult>
 
 
 
@@ -25,24 +29,24 @@ class HTTPTransport {
     constructor(base_url?:string) {
         this.baseUrl=base_url||BASE_API_URL;
     }
-    get: HTTPMethod = (url, options = {}):Promise<XMLHttpRequest> => {
+    get: HTTPMethod = (url, options = {}):Promise<IResult> => {
         return this.request(this.baseUrl+url+queryStringify(options.params as NonNullable<unknown> || {}) || '', {
             ...options,
             method: METHODS.GET
-        }, options.timeout)as Promise<XMLHttpRequest> ;
+        }, options.timeout)as Promise<IResult> ;
     };
 
     put: HTTPMethod = (url, options = {}) => {
 
-        return this.request(this.baseUrl+url, {...options, method: METHODS.PUT}, options.timeout) as Promise<XMLHttpRequest>;
+        return this.request(this.baseUrl+url, {...options, method: METHODS.PUT}, options.timeout) as Promise<IResult>;
     };
     post: HTTPMethod = (url, options = {})=> {
 
-        return this.request(this.baseUrl+url, {...options, method: METHODS.POST},options.timeout) as Promise<XMLHttpRequest>;
+        return this.request(this.baseUrl+url, {...options, method: METHODS.POST},options.timeout) as Promise<IResult>;
     };
     delete: HTTPMethod = (url, options = {}) => {
 
-        return this.request(this.baseUrl+url, {...options, method: METHODS.DELETE}, options.timeout) as Promise<XMLHttpRequest>;
+        return this.request(this.baseUrl+url, {...options, method: METHODS.DELETE}, options.timeout) as Promise<IResult>;
     };
 
     request = (url: string, options: IOptionsRequest = {method: METHODS.GET,}, timeout = 5000) => {
@@ -63,7 +67,14 @@ class HTTPTransport {
 
 
             xhr.onload = function () {
-                resolve(xhr);
+                //resolve(xhr);
+                if(xhr.getResponseHeader('content-type')?.includes('application/json'))
+                {
+                    const resultData ={status: xhr.status, data:JSON.parse( xhr.responseText)};
+                    resolve(resultData);
+                }
+                else resolve(xhr);
+
             };
 
             /*        const handleError = err => {

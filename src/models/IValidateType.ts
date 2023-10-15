@@ -1,4 +1,5 @@
 import {
+    validateDisplayName,
     validateEmail,
     validateLogin,
     validateName,
@@ -15,6 +16,7 @@ export interface IValidateType{
     phone?:(value:string)=>string,
     email?:(value:string)=>string,
     nameChat?:(value:string)=>string,
+    displayName?:(value:string)=>string,
 
 
 }
@@ -25,5 +27,6 @@ export const ALL_VALIDATE_FIELDS:IValidateType={
     phone:validatePhone,
     email:validateEmail,
     password:validatePassword,
-    nameChat:validateNameChat
+    nameChat:validateNameChat,
+    displayName:validateDisplayName
 }

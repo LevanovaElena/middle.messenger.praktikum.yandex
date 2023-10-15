@@ -127,17 +127,24 @@ export class Block {
     }
 
     private _render() {
-        const fragment = this.compile(this.render(), this._props);
+        try{
+            const fragment = this.compile(this.render(), this._props);
 
-        const newElement = fragment.firstElementChild as HTMLElement;
+            const newElement = fragment.firstElementChild as HTMLElement;
 
-        if (this._element) {
-            this._element.replaceWith(newElement);
+            if (this._element&&newElement) {
+                this._element.replaceWith(newElement);
+            }
+
+            this._element = newElement;
+
+            this._addEvents();
+
+        }
+        catch (err:unknown) {
+            //console.log('error',err)
         }
 
-        this._element = newElement;
-
-        this._addEvents();
     }
 
     _addEvents() {

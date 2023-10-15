@@ -11,7 +11,7 @@ const  updateUserProfile=async (newUserData: IUser) => {
     const result= await userApi.changeUserProfile(newUserData);
     const error=responseHasError(result);
     if(error) throw Error(error);
-    setStateUser(JSON.parse(result.responseText));
+    if(!error)setStateUser(result.data as IUser);
 
 }
 const  updateUserPassword=async (newUserPasswords: IPasswords) => {
@@ -25,15 +25,15 @@ const  updateUserAvatar=async (newAvatar:FormData) => {
     const result= await userApi.changeUserAvatar(newAvatar);
     const error=responseHasError(result);
     if(error) throw Error(error);
-    setStateUser(JSON.parse(result.responseText));
-    return JSON.parse(result.responseText);
+    setStateUser(result.data as IUser);
+    return result.data as IUser;
 }
 
 const  searchUsersByLogin=async (login:string) => {
     const result= await userApi.searchUser(login);
     const error=responseHasError(result);
     if(error) throw Error(error);
-    return JSON.parse(result.responseText);
+    return result.data as IUser[];
 }
 
 export {

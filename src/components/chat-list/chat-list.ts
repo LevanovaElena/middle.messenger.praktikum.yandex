@@ -18,7 +18,7 @@ interface IChatListProps extends IProps {
 export class ChatList extends Block {
     constructor(props: IChatListProps) {
 
-        props.currentUser = window.store.getState().user;
+        props.currentUser = window.store.getState().user||null;
         props.list = window.store.getState().chats || [];
         props.showModalAddChat = () => {
             modalController.addModal((new ModalPrompt({
@@ -27,7 +27,9 @@ export class ChatList extends Block {
                 okText: 'Add Chat',
                 ref: "modal",
                 okClick: (result: string) => {
-                    createChat(result).then(async () => await updateChats())
+                    createChat(result)
+                        .then(async () => await updateChats())
+                        .catch((error)=>console.warn(error));
                 },
             })) as unknown as Block);
             modalController.openModal();
@@ -45,7 +47,7 @@ export class ChatList extends Block {
         })
 
         window.store.on(StoreEvents.Updated, () => {
-            this.props.currentUser = window.store.getState().user;
+            this.props.currentUser = window.store.getState().user||null;
             this.props.list = window.store.getState().chats || [];
             this.setProps(this.props);
         });
@@ -56,7 +58,7 @@ export class ChatList extends Block {
     }
 
     getChats(list: IChat[]): string {
-        if (!list || list.length === 0) return '';
+        if (!list || list.length === 0) return `<li class="chat-list__chats-empty">{{{Button caption="Add chat" type='link' onClick=showModalAddChat }}}</li>`;
         return list.map(chat => {
             return (`  {{{ChatItem 
                     onClick=setCurrentChat 
@@ -76,7 +78,7 @@ export class ChatList extends Block {
                  {{{Loader }}}
             </div>`
 
-        //if (!list || list.length === 0) return '';
+        //if (!list || list.length === 0) return 'Add chat';
         return (`            
             <div class="chat-list">
                 <nav class="chat-list__header">

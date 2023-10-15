@@ -35,6 +35,13 @@ export class MessageListFooter extends Block {
             this.props.isOpenedMenuMessage = !this.props.isOpenedMenuMessage;
             this.setProps(this.props);
         }
+        props.events={
+            submit:(event: Event)=>{
+                event.stopPropagation();
+                event.preventDefault();
+                this.props.onClickSend&&this.props.onClickSend();
+            }
+        }
         super(props);
     }
 
@@ -50,7 +57,7 @@ export class MessageListFooter extends Block {
         const { message = '',isOpenedMenuMessage} = this.props;
 
         return (`
-                <div class="message-list__footer">
+                <form class="message-list__footer">
                     {{{ MenuMessage isOpenedMenu=${isOpenedMenuMessage } closeMenu=openMenuMessage}}}
                     {{{ Button type="paperclip" onClick=openMenuMessage}}}
                     {{{ Input 
@@ -62,8 +69,8 @@ export class MessageListFooter extends Block {
                         name="message"
                         onBlur=onBlurMessage
                     }}}
-                    {{{ Button type="arrow" onClick=onClickSend}}}
-                </div>
+                    {{{ Button type="arrow" onClick=onClickSend isSubmit=true}}}
+                </form>
         `)
     }
 }
