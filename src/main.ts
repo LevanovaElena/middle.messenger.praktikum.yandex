@@ -40,8 +40,6 @@ router/*.use(BASE_URLS['page-default'], Pages.PageChat)*/
     .use(BASE_URLS['page-login'], Pages.LoginPage)
     .use(BASE_URLS['page-sign-up'], Pages.PageRegistration)
     .use(BASE_URLS['page-profile'], Pages.PageProfile)
-    .use(BASE_URLS['page-profile-edit'], Pages.PageProfileEdit)
-    .use(BASE_URLS['page-password-edit'], Pages.PagePasswordEdit)
     .use(BASE_URLS['page-404'], Pages.Page404)
     .use(BASE_URLS['page-500'], Pages.Page500)
     .use(BASE_URLS['page-chat'], Pages.PageChat)
