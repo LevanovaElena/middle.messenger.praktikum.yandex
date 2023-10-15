@@ -55,8 +55,8 @@ export class FormProfile extends Block {
                     {{{ Button caption="${buttonText}" onClick=onClickOkButton }}}
                 </div>` :
             `<div class="profile__buttons">
-                    {{{Link caption="Change IUser Data" href='/settings-edit' type='success' linkLine=true  }}}
-                    {{{Link caption="Change Password" href='/password-edit' type='success' linkLine=true  }}}
+                    {{{Link caption="Change IUser Data" href='/settings?edit=profile' type='success' linkLine=true  }}}
+                    {{{Link caption="Change Password" href='/settings?edit=password' type='success' linkLine=true  }}}
                     {{{Button caption="Logout" onClick=onLogOut type='link' }}}
                 </div>`
         }

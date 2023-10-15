@@ -48,7 +48,7 @@ export class PagePasswordEdit extends Block {
     protected render(): string {
         return (`
             <form class="container">
-                {{{ FormProfile user=user withButton=true  children="${this.getChildren()}" ref="form" buttonPage='pageProfile' onClickOkButton=onChange buttonText='Save Password' }}}
+                {{{ FormProfile user=user withButton=true  children="${this.getChildren()}" ref="form" onClickOkButton=onChange buttonText='Save Password' }}}
             </form>`)
     }
 }
