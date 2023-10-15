@@ -1,17 +1,18 @@
 import {IProps, Block} from "../../core/block.ts";
 import {IUser} from "../../models/IUser.ts";
 import {StoreEvents} from "../../core/store.ts";
-import Router from "../../core/router.ts";
 import {showAlert} from "../../utils/api.utils.ts";
 import {updateUserPassword, updateUserProfile} from "../../services/user-settings.ts";
+import Router from "../../core/router.ts";
 
 export interface IPageProfileProps extends IProps {
     user: IUser | null;
     isEditPassword?: boolean;
     isEditProfile?: boolean;
-    onChangePassword:(event:Event)=>void,
-    onChangeProfile:(event:Event)=>void,
-    onChangeStateForm:(isEditPassword:boolean,isEditProfile:boolean)=>void,
+    onChangePassword: (event: Event) => void,
+    onChangeProfile: (event: Event) => void,
+    onChangeStateForm: (isEditPassword: boolean, isEditProfile: boolean) => void,
+    onCancel: () => void,
 }
 
 export class PageProfile extends Block {
@@ -20,10 +21,28 @@ export class PageProfile extends Block {
 
         const props: IPageProfileProps = {
             user: window.store.getState().user,
-            events: {},
-            onChangeStateForm:(isEditPassword:boolean,isEditProfile:boolean)=>{
-                this.props.isEditProfile=isEditProfile;
-                this.props.isEditPassword=isEditPassword;
+            events: {
+                submit: (event: Event) => {
+                    console.log('sub')
+                    if (this.props.isEditPassword) {
+                        this.props.onChangeProfile(event)
+                    }
+                    if (this.props.isEditProfile) {
+                        this.props.onChangeProfile(event)
+                    }
+                }
+            },
+            onCancel: () => {
+                if (this.props.isEditProfile || this.props.isEditPassword) {
+                    this.props.onChangeStateForm(false, false);
+                    return;
+                }
+                Router.getRouter().back();
+            },
+            onChangeStateForm: (isEditPassword: boolean, isEditProfile: boolean) => {
+                this.props.isEditProfile = isEditProfile;
+                this.props.isEditPassword = isEditPassword;
+                this.setProps(this.props);
             },
             onChangePassword: async (event: Event) => {
                 event.preventDefault();
@@ -31,13 +50,13 @@ export class PageProfile extends Block {
                 const newPassword = this.refs.form.getRefs()?.newPassword.value();
                 const repeatPassword = this.refs.form.getRefs()?.repeatPassword.value();
 
-                if(newPassword !== repeatPassword)showAlert('Repeat new password correct!');
+                if (newPassword !== repeatPassword) showAlert('Repeat new password correct!');
                 if (oldPassword && newPassword && newPassword === repeatPassword) {
                     await updateUserPassword({
                         oldPassword,
                         newPassword
                     });
-                    Router.getRouter().back();
+                    this.props.onChangeStateForm(false, false);
                 }
             },
             onChangeProfile: async (event: Event) => {
@@ -59,7 +78,7 @@ export class PageProfile extends Block {
                 }
                 if (login && first_name && second_name && phone && email) {
                     await updateUserProfile(userData);
-                    Router.getRouter().back();
+                    this.props.onChangeStateForm(false, false);
                 }
             }
         }
@@ -93,7 +112,7 @@ export class PageProfile extends Block {
             {{{ InputWide label='Login' type='text' name='login' validate=validate.login ref='login' readOnly=${!isEditProfile} value='${login}'  }}}
             {{{ InputWide label='First Name' type='first_name' name='first_name' validate=validate.name ref='first_name' readOnly=${!isEditProfile} value='${first_name}'  }}}
             {{{ InputWide label='Second Name' name='second_name' validate=validate.name ref='second_name' readOnly=${!isEditProfile} value='${second_name}'  }}}
-            {{{ InputWide label='Name in Chat' name='display_name' validate=validate.name ref='display_name' readOnly=${!isEditProfile}  value='${display_name || ''}' }}}
+            {{{ InputWide label='Name in Chat' name='display_name' validate=validate.displayName ref='display_name' readOnly=${!isEditProfile}  value='${display_name || ''}' }}}
             {{{ InputWide label='Phone'  name='phone' validate=validate.phone ref='phone' readOnly=${!isEditProfile}  value='${phone}' }}} 
                     
             `
@@ -110,10 +129,19 @@ export class PageProfile extends Block {
         `);
         return (`
             <form class="container">
-                {{{ FormProfile user=user withButton=${isEditProfile || isEditPassword}  children="${isEditPassword ? this.getChildrenPassword() : this.getChildrenEditProfile()}" ref="form"  
-                ${isEditProfile ? `onClickOkButton=onChangeProfile buttonText='Save User Profile' ` :
-                    isEditPassword ? `onClickOkButton=onChangePassword buttonText='Save Password'` : ''}
-                onChangeStateForm=onChangeStateForm
+                {{{ FormProfile user=user 
+                    withButton=${isEditProfile || isEditPassword}  
+                    children="${isEditPassword ? this.getChildrenPassword() : this.getChildrenEditProfile()}"
+                    ref="form"
+                    onChangeStateForm=onChangeStateForm
+                    onCancel=onCancel
+                    ${isEditProfile ?
+            `onClickOkButton=onChangeProfile buttonText='Save User Profile' ` :
+            isEditPassword ?
+                `onClickOkButton=onChangePassword buttonText='Save Password'` : ''
+        }
+                    
+                   
                 }}}
             </form>`)
     }

@@ -11,7 +11,7 @@ const  updateUserProfile=async (newUserData: IUser) => {
     const result= await userApi.changeUserProfile(newUserData);
     const error=responseHasError(result);
     if(error) throw Error(error);
-    setStateUser(JSON.parse(result.responseText));
+    if(!error)setStateUser(JSON.parse(result.responseText));
 
 }
 const  updateUserPassword=async (newUserPasswords: IPasswords) => {
