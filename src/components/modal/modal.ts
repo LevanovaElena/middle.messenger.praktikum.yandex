@@ -18,7 +18,8 @@ export class Modal extends Block {
             ...props,
             events:{
                 submit:(event: Event)=>{
-                    console.log('submit_form')
+                    event.stopPropagation();
+                    event.preventDefault();
                     this.props.okClick(event);
                 }
             }

@@ -39,6 +39,7 @@ export class ModalAvatar extends Block {
                             modalController.closeModal();
                         });
                     }
+                    modalController.closeModal();
                     break;
                 }
                 case "chat": {
@@ -51,6 +52,7 @@ export class ModalAvatar extends Block {
                          });*/
                         modalController.closeModal();
                     }
+                    modalController.closeModal();
                     break;
                 }
             }

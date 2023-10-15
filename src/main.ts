@@ -24,9 +24,9 @@ declare global {
 
 const initState: IAppState = {
     error: null,
-    user: null,
+    user: undefined,
     currentChat: null,
-    chats: []
+    chats: [],
 }
 
 window.store = new Store<IAppState>(initState);
@@ -35,7 +35,7 @@ const router = new Router(".app");
 initialStateApp();
 
 
-router.use(BASE_URLS['page-default'], Pages.PageChat)
+router/*.use(BASE_URLS['page-default'], Pages.PageChat)*/
     .use(BASE_URLS['page-all-components'], Pages.AllComponentsPage)
     .use(BASE_URLS['page-login'], Pages.LoginPage)
     .use(BASE_URLS['page-sign-up'], Pages.PageRegistration)

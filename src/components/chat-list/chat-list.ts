@@ -56,7 +56,7 @@ export class ChatList extends Block {
     }
 
     getChats(list: IChat[]): string {
-        if (!list || list.length === 0) return '';
+        if (!list || list.length === 0) return `<li class="chat-list__chats-empty">{{{Button caption="Add chat" type='link' onClick=showModalAddChat }}}</li>`;
         return list.map(chat => {
             return (`  {{{ChatItem 
                     onClick=setCurrentChat 
@@ -76,7 +76,7 @@ export class ChatList extends Block {
                  {{{Loader }}}
             </div>`
 
-        //if (!list || list.length === 0) return '';
+        //if (!list || list.length === 0) return 'Add chat';
         return (`            
             <div class="chat-list">
                 <nav class="chat-list__header">
