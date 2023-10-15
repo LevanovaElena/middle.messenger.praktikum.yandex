@@ -27,6 +27,7 @@ export class MessageListFooter extends Block {
         props.onClickSend = () => {
             const error=validateMessage(this.valueMessage());
             if (!error) {
+
                 sendMessage( this.valueMessage());
             }
             else showAlert(error);
@@ -39,6 +40,7 @@ export class MessageListFooter extends Block {
             submit:(event: Event)=>{
                 event.stopPropagation();
                 event.preventDefault();
+                console.log('submit')
                 this.props.onClickSend&&this.props.onClickSend();
             }
         }
@@ -69,7 +71,7 @@ export class MessageListFooter extends Block {
                         name="message"
                         onBlur=onBlurMessage
                     }}}
-                    {{{ Button type="arrow" onClick=onClickSend isSubmit=true}}}
+                    {{{ Button type="arrow"  isSubmit=true}}}
                 </form>
         `)
     }

@@ -30,9 +30,9 @@ export const openConnectMessages = (chat: IChat, currentUser: IUser) => {
             if (!chat.messages) chat.messages = [];
             if (Array.isArray(message)) {
                 message.reverse();
-                chat.messages = [...chat.messages, ...message];
+                chat.messages =chat.messages.concat(message);
             } else chat.messages.push(message);
-            if (chat.id === window.store.getState().currentChat?.id) window.store.set({currentChat: {...chat}});
+            if (chat.id === window.store.getState().currentChat?.id) window.store.set({currentChat:chat});
             else {
                 const foundedChat = window.store.getState().chats?.find(_chat => _chat.id === chat.id);
                 if (foundedChat) {
@@ -58,10 +58,12 @@ export const openConnectMessages = (chat: IChat, currentUser: IUser) => {
 
 export const sendMessage = (message: string) => {
     const chat = window.store.getState().currentChat;
+    const user =window.store.getState().user;
     if (!chat) throw Error('Select Chat!');
-    if (chat.connection) {
+    if (chat.connection&&chat.connection.getState()==='OPEN') {
         chat.connection.sendMessage(message);
     }
+    else if(user)openConnectMessages(chat,user)
 }
 
 export const getAllNewMessage = (limit: number, chat: IChat | null) => {
