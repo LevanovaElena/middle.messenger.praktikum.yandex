@@ -10,9 +10,10 @@ const authApi = new AuthApi('/auth');
 const signUp = async (data: IUser) => {
     const result = await authApi.signUp(data);
     const error=responseHasError(result);
+    if (error) throw Error(error);
     if(!error) {
-        setStateUser(JSON.parse(result.responseText));
-
+        const newUser=await getUser();
+        setStateUser(newUser);
     }
     return JSON.parse(result.responseText);
 }

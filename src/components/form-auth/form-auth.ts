@@ -28,7 +28,7 @@ export class FormAuth extends Block {
                 ${children}
             </div>
             <div class="container-form__buttons">
-                {{{ Button caption="${captionOk}"  onClick=onClickOkButton }}}
+                {{{ Button caption="${captionOk}"  onClick=onClickOkButton isSubmit=true}}}
                 {{{ Link caption="${captionCancel}" href="${cancelLink}" }}}
             </div>
         </div>
