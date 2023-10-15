@@ -6,7 +6,7 @@ import {updateUserPassword, updateUserProfile} from "../../services/user-setting
 import Router from "../../core/router.ts";
 
 export interface IPageProfileProps extends IProps {
-    user: IUser | null;
+    user?: IUser | null;
     isEditPassword?: boolean;
     isEditProfile?: boolean;
     onChangePassword: (event: Event) => void,
@@ -23,7 +23,6 @@ export class PageProfile extends Block {
             user: window.store.getState().user,
             events: {
                 submit: (event: Event) => {
-                    console.log('sub')
                     if (this.props.isEditPassword) {
                         this.props.onChangeProfile(event)
                     }
@@ -52,11 +51,16 @@ export class PageProfile extends Block {
 
                 if (newPassword !== repeatPassword) showAlert('Repeat new password correct!');
                 if (oldPassword && newPassword && newPassword === repeatPassword) {
-                    await updateUserPassword({
-                        oldPassword,
-                        newPassword
-                    });
-                    this.props.onChangeStateForm(false, false);
+
+                    try {
+                        await updateUserPassword({
+                            oldPassword,
+                            newPassword
+                        });
+                        this.props.onChangeStateForm(false, false);
+                    } catch (e) {
+                        console.warn(e)
+                    }
                 }
             },
             onChangeProfile: async (event: Event) => {
@@ -77,8 +81,12 @@ export class PageProfile extends Block {
                     email
                 }
                 if (login && first_name && second_name && phone && email) {
-                    await updateUserProfile(userData);
-                    this.props.onChangeStateForm(false, false);
+                    try {
+                        await updateUserProfile(userData);
+                        this.props.onChangeStateForm(false, false);
+                    } catch (e) {
+                        console.warn(e)
+                    }
                 }
             }
         }

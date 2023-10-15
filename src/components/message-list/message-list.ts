@@ -22,7 +22,7 @@ export class MessageList extends Block {
         props.messageList = window.store.getState().currentChat?.messages || [];
         super(props);
         window.store.on(StoreEvents.Updated, () => {
-            this.props.currentUser = window.store.getState().user;
+            this.props.currentUser = window.store.getState().user||null;
             this.props.messageList = window.store.getState().currentChat?.messages || [];
             this.props.currentChat = window.store.getState().currentChat;
             this.setProps(this.props);

@@ -72,19 +72,21 @@ export class ModalAvatar extends Block {
                                 oldAvatar: window.store.getState().user?.avatar || '',
                                 type: 'user'
                             })) as unknown as Block);
-                        });
+                        }).catch((error)=>console.warn(error));
                         break;
                     }
                     case "chat": {
                         const _chat = window.store.getState().currentChat;
                         if (!_chat) break;
-                        updateChatAvatar(formData, _chat.id).then(chat => {
-                            this.props.newAvatar = chat.avatar;
-                            modalController.addModal((new ModalAvatar({
-                                oldAvatar: window.store.getState().currentChat?.avatar || '',
-                                type: 'chat'
-                            })) as unknown as Block);
-                        });
+                        updateChatAvatar(formData, _chat.id)
+                            .then(chat => {
+                                this.props.newAvatar = chat.avatar;
+                                modalController.addModal((new ModalAvatar({
+                                    oldAvatar: window.store.getState().currentChat?.avatar || '',
+                                    type: 'chat'
+                                })) as unknown as Block);
+                            })
+                            .catch((error)=>console.warn(error));;
                         break;
                     }
                 }

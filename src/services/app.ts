@@ -19,7 +19,7 @@ const initialStateApp = async () => {
         setStateUser(null);
         return;
     }
-    store.user = user;
+    store.user = user as IUser;
     await updateChats();
 
 }
@@ -53,7 +53,7 @@ const initChatToken = async (chat: IChat | null) => {
     }
     setStateToken(chat, token)
 }
-const setStateUser = (user: IUser | null) => {
+const setStateUser = (user?: IUser | null) => {
     window.store.set({user: user});
 }
 const setStateChats = (chats: IChat[] | null) => {

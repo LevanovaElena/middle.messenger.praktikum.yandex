@@ -27,12 +27,12 @@ export class ModalChatUsers extends Block {
                     return;
                 }
                 searchUsersByLogin(input).then((users) => {
-                    if(!users||users.length===0){
+                    if (!users || users.length === 0) {
                         showModalAlert('Not Found users')
                     }
                     this.props.users = users;
                     this.setProps(this.props)
-                })
+                }).catch(error => console.warn(error))
             } else modalController.closeModal();
 
         }
@@ -55,6 +55,7 @@ export class ModalChatUsers extends Block {
                         }).then(() => {
                             setStateCurrentChat(chat).then(() => modalController.closeModal());
                         })
+                            .catch((error) => console.warn(error));
                     }
                     if (props.type === 'delete' && chat) {
                         deleteChatUsers({
@@ -62,7 +63,7 @@ export class ModalChatUsers extends Block {
                             chatId: chat.id
                         }).then(() => {
                             setStateCurrentChat(chat).then(() => modalController.closeModal());
-                        })
+                        }).catch((error) => console.warn(error));
                     }
                 }
             }

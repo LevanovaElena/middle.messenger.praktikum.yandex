@@ -4,7 +4,7 @@ import {ALL_VALIDATE_FIELDS, IValidateType} from "../../models/IValidateType.ts"
 import {logOut} from "../../services/auth.ts";
 
 interface IFormProfileProps extends IProps {
-    user: IUser | null,
+    user?: IUser | null,
     withButton: boolean,
     children: string,
     buttonText: string,
@@ -24,7 +24,7 @@ export class FormProfile extends Block {
         props.validate = ALL_VALIDATE_FIELDS;
         props.onLogOut = (event: Event) => {
             event.preventDefault();
-            logOut().catch((error) => console.log(error))
+            logOut().catch((error) => console.warn(error))
         };
         props.onClickLink = (event: Event) => {
             event.preventDefault();

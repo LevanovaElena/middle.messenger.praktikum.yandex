@@ -9,7 +9,6 @@ import {StoreEvents} from "../../core/store.ts";
 export interface ILoginPageProps extends IProps {
     onLogin: (event: Event) => void;
     currentUser?: IUser|null;
-    isLoading?: boolean;
 }
 
 export class LoginPage extends Block {
@@ -25,7 +24,7 @@ export class LoginPage extends Block {
             if (!password) {
                 return;
             }
-            signIn({login, password}).catch((error)=>console.log('login',error))
+            signIn({login, password}).catch((error)=>console.warn('login',error));
 
         };
         const props: ILoginPageProps = {
@@ -36,13 +35,9 @@ export class LoginPage extends Block {
             },
             onLogin: onLogin,
             currentUser:undefined,
-            isLoading:window.store.getState().isLoading
-
         }
         window.store.on(StoreEvents.Updated, () => {
             this.props.currentUser = window.store.getState().user;
-            this.props.isLoading = window.store.getState().isLoading;
-            console.log( window.store.getState().user)
            this.setProps(this.props);
         });
         super(props);

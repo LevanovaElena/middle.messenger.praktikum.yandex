@@ -6,8 +6,6 @@ export const BASE_URLS={
     'page-login':"/",
     'page-sign-up':"/sign-up",
     'page-profile':"/settings",
-    'page-profile-edit':"/settings-edit",
-    'page-password-edit':"/password-edit",
     'page-404':"/404",
     'page-500':"/500",
     'page-chat':"/messenger",

@@ -11,7 +11,7 @@ export interface IPageRegistrationProps extends IProps {
 
 export class PageRegistration extends Block {
     constructor() {
-        const onLogin = async (event: Event) => {
+        const onLogin = (event: Event) => {
             event.preventDefault();
             const login = this.refs.form.getRefs()?.login.value();
             const email = this.refs.form.getRefs()?.email.value();
@@ -32,10 +32,11 @@ export class PageRegistration extends Block {
                 password,
                 phone
             } as IUser;
-            if (Object.values(data).findIndex(value=>value==='')===-1) {
+            if (Object.values(data).findIndex(value => value === '') === -1) {
+                signUp(data)
+                    .then(() => Router.getRouter().go(BASE_URLS['page-chat']))
+                    .catch((error) => console.warn('login', error));
 
-                await signUp(data);
-                Router.getRouter().go(BASE_URLS['page-chat']);
             }
 
         }
