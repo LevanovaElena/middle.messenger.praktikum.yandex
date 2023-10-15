@@ -36,11 +36,11 @@ export class ModalLoadFile extends Block {
             const formData = loadNewFileFromDrag<TEvent>(e,'resource');
             if (formData) {
                 uploadResource(formData).then(file => {
-                    this.props.file=file;
+                    this.props.file=file as IFile;
                     this.setProps(this.props)
 
                 })
-                    .catch((error)=>console.warn(error));;
+                    .catch((error)=>console.warn(error));
 
             }
         }

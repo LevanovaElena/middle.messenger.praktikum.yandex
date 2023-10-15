@@ -86,7 +86,7 @@ export class ModalAvatar extends Block {
                                     type: 'chat'
                                 })) as unknown as Block);
                             })
-                            .catch((error)=>console.warn(error));;
+                            .catch((error)=>console.warn(error));
                         break;
                     }
                 }
