@@ -5,8 +5,9 @@ export interface IChatMessage {
     user_id: number;
     chat_id: number;
     time: string;
-    type: string;
+    type: string|'message'|'file';
     content: number | string;
     file?: IFile;
     main?: boolean;
+    is_read?:boolean;
 }

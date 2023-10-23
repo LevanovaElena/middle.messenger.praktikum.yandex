@@ -1,7 +1,7 @@
-import EventBus from "./EventBus";
+import EventBus from "./event-bus.ts";
 import {v4 as uuidv4} from 'uuid';
 import Handlebars from "handlebars";
-import {isDeepEqual} from "./object.utils.ts";
+import {isDeepEqual} from "../utils/object.utils.ts";
 
 export interface IProps {
     events?: object
@@ -34,8 +34,6 @@ export class Block {
 
         this.children = children;
         this._props = this._makePropsProxy(props, this);
-        // console.log('init props',props,this.props)
-
         this._eventBus = () => eventBus;
 
         this._registerEvents(eventBus);
@@ -129,17 +127,24 @@ export class Block {
     }
 
     private _render() {
-        const fragment = this.compile(this.render(), this._props);
+        try{
+            const fragment = this.compile(this.render(), this._props);
 
-        const newElement = fragment.firstElementChild as HTMLElement;
+            const newElement = fragment.firstElementChild as HTMLElement;
 
-        if (this._element) {
-            this._element.replaceWith(newElement);
+            if (this._element&&newElement) {
+                this._element.replaceWith(newElement);
+            }
+
+            this._element = newElement;
+
+            this._addEvents();
+
+        }
+        catch (err:unknown) {
+            //console.log('error',err)
         }
 
-        this._element = newElement;
-
-        this._addEvents();
     }
 
     _addEvents() {
@@ -201,6 +206,16 @@ export class Block {
                 throw new Error("Нет доступа");
             }
         });
+    }
+
+    public hide(){
+    }
+    public show(){
+        const app = document.getElementById('app');
+        const htmlElement = this.getContent();
+        if (!app?.firstElementChild) app?.append(document.createElement('div'));
+        if(htmlElement)
+            app?.firstElementChild?.replaceWith(htmlElement);
     }
 
 

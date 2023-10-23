@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps,Block} from "../../core/block.ts";
 
 interface IInputProps extends IProps{
     type: 'text' | 'password',

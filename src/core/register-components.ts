@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import Block from "./Block";
+import Block from "./block.ts";
 import {HelperOptions} from "handlebars";
 
 export function registerComponent(name: string, Component: typeof Block) {

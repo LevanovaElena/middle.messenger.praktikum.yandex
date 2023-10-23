@@ -1,88 +1,83 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps, Block} from "../../core/block.ts";
 import {IChatMessage} from "../../models/IChatMessage.ts";
 import {IUser} from "../../models/IUser.ts";
-import { Message} from "../index.ts";
+import {Message} from "../index.ts";
 import {IMessageProps} from "../message/message.ts";
-import {validateMessage} from "../../utils/validates.utils.ts";
+import {IChat} from "../../models/IChat.ts";
+import {StoreEvents} from "../../core/store.ts";
+import {getUserName} from "../../utils/user.utils.ts";
 
-interface IMessageListProps extends IProps{
-    messageList:IChatMessage[];
-    currentUser:IUser;
-    onBlurMessage?:()=>void;
-    message?:string;
-    onClickSend?:()=>void;
+interface IMessageListProps extends IProps {
+    messageList: IChatMessage[];
+    currentUser: IUser|null;
+    currentChat: IChat | null;
+    openMenuMessage?: () => void;
+    openMenuChat?: () => void;
+    isOpenedMenuChat: boolean;
 }
 
 export class MessageList extends Block {
     constructor(props: IMessageListProps) {
-        props.onBlurMessage= () => this.validate();
-        props.onClickSend= () => {
-            if(!validateMessage(this.valueMessage()))console.log('Send Message:'+this.valueMessage());
-            else console.log('Error! Can not send!')
-        }
+        props.currentChat = window.store.getState().currentChat;
+        props.messageList = window.store.getState().currentChat?.messages || [];
         super(props);
+        window.store.on(StoreEvents.Updated, () => {
+            this.props.currentUser = window.store.getState().user||null;
+            this.props.messageList = window.store.getState().currentChat?.messages || [];
+            this.props.currentChat = window.store.getState().currentChat;
+            this.setProps(this.props);
+        });
     }
-    public get props(){
+
+    public get props() {
         return this._props as IMessageListProps;
     }
-    public valueMessage() {
-        if (!this.validate()) {
-            return '';
-        }
-        return this.refs?.message.value()
-    }
-    private validate() {
-        const value =this.refs?.message.value();
-        const error = validateMessage(value);
 
-        this.props.message=value;
-        if (error) {
-            console.log('Message can not be blank')
-            this.setProps(this.props);
-            return false;
+    getListMessages(list: IChatMessage[]): string {
+        const users = this.props.currentChat?.users;
+        const mapUsers = new Map();
+        if (users) {
+            users.forEach(user => mapUsers.set(user.id, getUserName(user)));
         }
-        this.setProps(this.props);
-        return true;
-    }
-    getListMessages(list:IChatMessage[]):string{
-        if(!list||list.length===0)return '';
-        return list.map(message=>{
-            const messageBlock=new Message({message:message,myMessage:message.main||false} as IMessageProps)
-            return(`
+
+        if (!list || list.length === 0) return '';
+        return list.map(message => {
+
+            const messageBlock = new Message({
+                userName: mapUsers.size ? mapUsers.get(message.user_id) : '',
+                message: message,
+                myMessage: String(message.user_id) === String(this.props.currentUser?.id)
+            } as IMessageProps)
+            return (`
             <div class="message-list__main__message">
                 ${messageBlock.renderForList()}
                 </div>
             `)
         }).join('')
     }
+
     protected render(): string {
-        const { messageList,currentUser,message='' } = this.props;
-        const {avatar,display_name}=currentUser;
+        const {messageList, currentChat, currentUser} = this.props;
+        if (!currentChat)
+            return (`<div class="message-list__empty">
+                        ${currentUser?`<p class="">Select a chat to write a message</p>`:``}
+                    </div>`)
+        const users = currentChat.users?.length || 0;
         return (`
            <div class="message-list">
-                <div class="message-list__header">
-                    <div class="message-list__header__avatar">
-                        {{{ Avatar image=${avatar} size='sm'}}}
-                        <span>${display_name}</span>
-                    </div>
-                    {{{ Button type="dots"}}}
-                </div>
-                <ul class="message-list__main">
-                    ${this.getListMessages(messageList)}                   
-                </ul>
-                <div class="message-list__footer">
-                    {{{ Button type="paperclip"}}}
-                    {{{ Input 
-                        ref="message"
-                        type="text" 
-                        classes="message-list__footer__input" 
-                        value='${message}'
-                        placeholder="Message" 
-                        name="message"
-                        onBlur=onBlurMessage
-                    }}}
-                    {{{ Button type="arrow" onClick=onClickSend}}}
-                </div>
+              {{{ MessageListHeader }}}
+              ${users > 1 ?
+            ` <ul class="message-list__main">
+                    ${this.getListMessages(messageList)}        
+                    <li class="scroll-bottom"></li>           
+                    </ul>                    
+                     {{{MessageListFooter }}}
+                ` :
+            `<div class="message-list__empty">
+                     <p class="">Add users to chat</p>
+                </div>`
+        }
+               
             </div>
         `)
     }
