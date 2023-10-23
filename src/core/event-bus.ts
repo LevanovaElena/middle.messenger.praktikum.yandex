@@ -39,7 +39,8 @@ export default class EventBus {
      */
     emit(event: string, ...args: object[]) {
         if (!this.listeners[event]) {
-            throw new Error(`Нет события: ${event}`);
+            //throw new Error(`Нет события: ${event}`);ret
+            return;
         }
 
         this.listeners[event].forEach(listener => {

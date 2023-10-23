@@ -1,7 +1,8 @@
-import  {IProps,Block} from "../../utils/Block";
+import {IProps, Block} from "../../core/block.ts";
 
-interface IButtonProps extends IProps{
-    type: 'arrow' | 'dots'|'paperclip'|'cancel'|'number',
+interface IButtonProps extends IProps {
+    type: 'arrow' | 'dots' | 'paperclip' | 'cancel' | 'number' | 'close',
+    isSubmit?: boolean,
     caption: string,
     page: string,
     onClick: () => void
@@ -12,15 +13,16 @@ export class Button extends Block {
         super({
             ...props,
             events: {
-                click: props.onClick || (() => {})
+                click: props.onClick || (() => {
+                })
             }
         })
     }
 
     protected render(): string {
-        const { type='', caption='', page='' } = this._props as IButtonProps;
+        const {isSubmit = false, type = '', caption = '', page = ''} = this._props as IButtonProps;
         return (`
-            <button class="button ${type?"button-"+type:""}" 
+            <button type='${isSubmit ? 'submit' : `button`}' class="button ${type ? "button-" + type : ""}" 
             ${page ? `page="${page}"` : ''}> 
                 ${caption}
             </button>

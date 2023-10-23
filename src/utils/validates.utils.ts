@@ -95,3 +95,20 @@ export const validateMessage = (value: string) => {
     if (value.length === 0) return `Message can not be blank`;
     return '';
 }
+
+/**
+ * nameChat — не должно быть пустым.
+ */
+export const validateNameChat = (value: string) => {
+    if (value.length === 0) return `Chat Name can not be blank`;
+    return '';
+}
+
+/**
+ * DisplayName — не должно быть больше 50 букв.
+ */
+export const validateDisplayName = (value: string) => {
+    if (value.length > 50) return `Display Name can not be more then 50 letters`;
+    if(value.length===0)return ' ';
+    return '';
+}

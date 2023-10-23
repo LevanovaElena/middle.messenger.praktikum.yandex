@@ -1,4 +1,4 @@
-import {IProps,Block} from "../../utils/Block";
+import {IProps,Block} from "../../core/block.ts";
 import {ALL_VALIDATE_FIELDS, IValidateType} from "../../models/IValidateType.ts";
 
 interface IFormAuthProps extends IProps {
@@ -8,23 +8,17 @@ interface IFormAuthProps extends IProps {
     onClickCancelButton: (event:Event) => void,
     captionOk: string,
     captionCancel: string,
-    pageOk:string,
-    pageCancel:string,
     validate:IValidateType,
-    onClickOk:(event:Event) => void,
+    cancelLink:string
 }
 export class FormAuth extends Block {
     constructor(props:IFormAuthProps) {
         props.validate= ALL_VALIDATE_FIELDS;
-        /*props.onClickOk={
-            console.log('OK');
-            props.onClickOkButton(event)
-        }*/
         super(props);
     }
 
     protected render(): string {
-        const {caption='Login',children='',onClickCancelButton,captionOk,captionCancel,pageCancel}=this._props as IFormAuthProps;
+        const {caption='Login',children='',captionOk,captionCancel,cancelLink}=this._props as IFormAuthProps;
         return(`
             <div class="container-form container-shadow">
             <h2 class="container-form__header">
@@ -34,8 +28,8 @@ export class FormAuth extends Block {
                 ${children}
             </div>
             <div class="container-form__buttons">
-                {{{ Button caption="${captionOk}"  onClick=onClickOkButton }}}
-                {{{ Link caption="${captionCancel}" page="${pageCancel}" onClick=${onClickCancelButton} }}}
+                {{{ Button caption="${captionOk}"  onClick=onClickOkButton isSubmit=true}}}
+                {{{ Link caption="${captionCancel}" href="${cancelLink}" }}}
             </div>
         </div>
         `)

@@ -15,6 +15,7 @@
     &:hover {
         opacity: 0.8;
     }
+
 }
 
 .button-arrow {
@@ -59,6 +60,17 @@
     height: 36px;
 }
 
+.button-close {
+    padding: 0;
+    background-image: url("../../assets/icons/close.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;
+    background-color:transparent;
+    width: 36px;
+    height: 36px;
+}
+
 .button-number {
     padding: 10px;
     max-width: 36px;
@@ -69,5 +81,19 @@
     height: 25px;
 }
 
+.button-link {
+    padding: 5px;
+    background-color: transparent;
+    color: var(--red);
+    text-transform: none;
+    width: auto;
 
+    &:hover {
+        text-decoration: underline;
+    }
+}
 
+button:focus-visible {
+    outline: none;
+    opacity: 0.8;
+}

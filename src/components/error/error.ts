@@ -1,4 +1,4 @@
-import{IProps,Block} from "../../utils/Block";
+import{IProps,Block} from "../../core/block.ts";
 
 interface IErrorProps extends IProps{
     errorNumber: string,

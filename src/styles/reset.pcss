@@ -1,14 +1,31 @@
 * {
     box-sizing: border-box!important;
-    color: var(--gray-dark);
-    font-size: 14px;
-    font-family: Arial, serif;
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
+    scrollbar-color: var(--red-light);
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: var(--white);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--red-light);
+        border-radius: 10px;
+    }
 }
 
 input, select { width: 100% }
 
 input:focus-visible {
+    outline: none;
+}
+
+button:focus-visible {
     outline: none;
 }
