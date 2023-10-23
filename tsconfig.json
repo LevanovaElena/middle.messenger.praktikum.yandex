@@ -22,5 +22,8 @@
 
     "typeRoots": ["node_modules/@types", "models"]
   },
-  "include": ["src"]
+  "include": ["src"],
+  "ts-node": {
+    "esm": true
+  }
 }

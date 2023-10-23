@@ -6,7 +6,7 @@ class Router {
     private routes: Route[] | undefined;
     private history: History | undefined;
     private _currentRoute: null | Route=null;
-    private _rootQuery: string | undefined;
+    private readonly _rootQuery: string | undefined;
     constructor(rootQuery:string) {
         if (Router.__instance) {
             return Router.__instance;
