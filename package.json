@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "eslint . &&tsc && vite build",
     "preview": "vite preview",
-    "start": "tsc && vite build &&  node ./server.js",
+    "start": "tsc && vite build &&  node ./server.cjs",
     "stylelint": "stylelint src/**/*.pcss ",
     "eslint": "eslint . ",
     "test": "mocha",
