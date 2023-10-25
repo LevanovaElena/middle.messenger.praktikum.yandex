@@ -25,7 +25,10 @@ class Router {
     }
 
     public get currentRoute(){
-        return this._currentRoute?.pathname;
+        return this._currentRoute;
+    }
+    public currentRoutePathName(){
+        return this._currentRoute?this._currentRoute.pathname:null;
     }
     /**
      * use — регистрирует блок по пути в роут и возвращает себя — чтобы можно было выстроить в цепочку;
@@ -42,13 +45,13 @@ class Router {
      * start — по событию onpopstate запускает приложение.
      */
     start() {
-        window.onpopstate = event => {
+        window.onpopstate = (event) => {
             this._onRoute((event?.currentTarget as Window)?.location?.pathname);
         };
         this._onRoute(window.location.pathname);
     }
 
-    _onRoute(pathname:string) {
+   private _onRoute(pathname:string) {
         const route = this.getRoute(pathname);
         if (!route) {
             return;
@@ -59,7 +62,7 @@ class Router {
         }
 
         this._currentRoute = route;
-        route.render();
+        route.navigate(pathname);
     }
 
     /**
@@ -76,7 +79,6 @@ class Router {
      */
     back() {
         this.history?.back();
-
     }
 
     /**
@@ -86,13 +88,10 @@ class Router {
         this.history?.forward();
 
     }
-    update() {
-        this.history?.go(0);
-
-    }
 
     getRoute(pathname:string) {
-        return this.routes?.find(route => route.match(pathname));
+        if(!this.routes||this.routes.length===0)return null;
+        return this.routes.find(route => route.match(pathname));
     }
 }
 
