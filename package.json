@@ -10,7 +10,8 @@
     "start": "tsc && vite build &&  node ./server.js",
     "stylelint": "stylelint src/**/*.pcss ",
     "eslint": "eslint . ",
-    "test": "mocha"
+    "test": "mocha",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/chai": "^4.3.9",
@@ -42,11 +43,5 @@
   },
   "engines": {
     "node": ">= 14.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm-run-all test lint:all",
-      "pre-push": "npm run other command",
-    }
   }
 }
