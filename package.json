@@ -30,6 +30,7 @@
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
     "mocha": "^10.2.0",
+    "npm-run-all": "1.5.2",
     "postcss-preset-env": "^9.1.2",
     "sinon": "^17.0.0",
     "stylelint": "^15.10.3",
@@ -40,8 +41,7 @@
     "typescript": "^5.2.2",
     "uuid": "^9.0.1",
     "vite": "^4.4.9",
-    "vite-plugin-handlebars": "^1.6.0",
-    "npm-run-all": "1.5.2"
+    "vite-plugin-handlebars": "^1.6.0"
   },
   "engines": {
     "node": ">= 14.0.0"
