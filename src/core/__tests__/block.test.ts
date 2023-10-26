@@ -29,6 +29,8 @@ describe('Block', () => {
        const render= sinon.spy(block,'render');
         expect(render.calledOnce);
     });
+
+
     it('Component should render again after change props', () => {
 
         const block=new Component({text:'text'});
