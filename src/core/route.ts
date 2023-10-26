@@ -44,9 +44,8 @@ class Route {
  * render — создаёт блок, если тот ещё не был создан (нужно создавать блок только после первого
  * перехода на страницу), иначе вызывает у блока метод show.
  * */
-    render() {
+    private render() {
         if (!this._block) {
-
             this._block = new this._blockClass(this._props);
             this.render();
             return;
