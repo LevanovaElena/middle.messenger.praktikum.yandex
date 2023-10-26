@@ -16,6 +16,9 @@ export class ChatApi {
     public createChat(title: string) {
         return this.httpTransport.post(this.baseUrl, {data: {title: title}});
     }
+    public deleteChat(id: number) {
+        return this.httpTransport.delete(this.baseUrl, {data: {chatId: id}});
+    }
 
     public addChatUsers(userData: IChatUsersData) {
         return this.httpTransport.put(this.baseUrl + '/users', {data: userData});

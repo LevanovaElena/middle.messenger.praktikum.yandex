@@ -17,6 +17,12 @@ const createChat = async (title: string): Promise<IChat> => {
     if (error) throw Error(error);
      return result.data as IChat;
 }
+const deleteChat = async (id: number): Promise<IChat> => {
+    const result = await chatApi.deleteChat(id);
+    const error = responseHasError(result);
+    if (error) throw Error(error);
+     return result.data as IChat;
+}
 
 const addChatUser = async (data: IChatUsersData) => {
     const result = await chatApi.addChatUsers(data);
@@ -59,5 +65,6 @@ export {
     getChatUsers,
     deleteChatUsers,
     getChatToken,
-    updateChatAvatar
+    updateChatAvatar,
+    deleteChat
 }

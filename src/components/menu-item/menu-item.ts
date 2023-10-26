@@ -3,7 +3,7 @@ import {IProps, Block} from "../../core/block.ts";
 
 export interface IMenuItemProps extends IProps {
     caption: string,
-    icon: 'media' | 'file' | 'location' | 'plus' | 'delete' | 'avatar';
+    icon: 'media' | 'file' | 'location' | 'plus' | 'delete' | 'avatar'|'danger';
     onClick: () => void;
     disabled?: boolean;
 }

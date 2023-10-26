@@ -2,6 +2,9 @@ import {IProps, Block} from "../../core/block.ts";
 import {IChat} from "../../models/IChat.ts";
 import modalController from "../../core/modal-controller.ts";
 import {ModalAvatar, ModalChatUsers} from "../index.ts";
+import ModalPrompt from "../modal-prompt";
+import {deleteChat} from "../../services/chat.ts";
+import {setStateCurrentChat, updateChats} from "../../services/app.ts";
 
 
 interface IMenuChatProps extends IProps {
@@ -11,6 +14,7 @@ interface IMenuChatProps extends IProps {
     deleteUser: () => void,
     changeAvatarChat: () => void,
     closeMenu: () => void,
+    deleteChat: () => void,
 }
 
 export class MenuChat extends Block {
@@ -42,13 +46,35 @@ export class MenuChat extends Block {
         }
         props.changeAvatarChat = () => {
             modalController.addModal((new ModalAvatar({
-                oldAvatar:window.store.getState().currentChat?.avatar||'',
-                type:'chat'
+                oldAvatar: window.store.getState().currentChat?.avatar || '',
+                type: 'chat'
             })) as unknown as Block);
             modalController.openModal();
             this.props.closeMenu();
         }
 
+        props.deleteChat = () => {
+            modalController.addModal((new ModalPrompt({
+                caption: 'Delete Chat',
+                labelText: 'Are you sure you want to delete the chat?',
+                okText: 'Delete Chat',
+                ref: "modal",
+                info: true,
+                okClick: () => {
+                    if (!window.store.getState().currentChat) return;
+                    const id = window.store.getState().currentChat?.id;
+                    if (!id) return;
+                    deleteChat(id)
+                        .then(async () => {
+                            await updateChats();
+                            await setStateCurrentChat(null);
+                            modalController.closeModal();
+                        })
+                        .catch((error) => console.warn(error));
+                },
+            })) as unknown as Block);
+            modalController.openModal();
+        }
         super({
             ...props
         })
@@ -66,6 +92,7 @@ export class MenuChat extends Block {
                     {{{ MenuItem caption='Add User' onClick=addUser icon='plus' }}}
                     {{{ MenuItem caption='Delete User' onClick=deleteUser icon='delete' }}}
                     {{{ MenuItem caption='Change Chat Avatar' onClick=changeAvatarChat icon='avatar' }}}
+                    {{{ MenuItem caption='Delete Chat' onClick=deleteChat icon='danger' }}}
                 </ul>
             </nav>
         `)
