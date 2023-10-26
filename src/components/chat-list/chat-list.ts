@@ -26,7 +26,8 @@ export class ChatList extends Block {
                 labelText: 'Title Chat',
                 okText: 'Add Chat',
                 ref: "modal",
-                okClick: (result: string) => {
+                okClick: (result?: string) => {
+                    if(!result)return;
                     createChat(result)
                         .then(async () => await updateChats())
                         .catch((error)=>console.warn(error));

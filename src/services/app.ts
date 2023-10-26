@@ -15,7 +15,7 @@ const initialStateApp = async () => {
             Router.getRouter().go(BASE_URLS['page-chat']);
         }
     } catch (error) {
-        if (Router.getRouter().currentRoute !== BASE_URLS['page-sign-up']) Router.getRouter().go(BASE_URLS['page-login']);
+        if (Router.getRouter().currentRoutePathName() !== BASE_URLS['page-sign-up']) Router.getRouter().go(BASE_URLS['page-login']);
         setStateUser(null);
         return;
     }

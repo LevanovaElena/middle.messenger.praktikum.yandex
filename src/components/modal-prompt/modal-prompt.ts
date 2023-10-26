@@ -5,16 +5,21 @@ interface IModalPromptProps extends IProps {
     caption: string,
     labelText: string,
     okText: string,
-    okClick?: (result:string) => void,
+    okClick?: (result?:string) => void,
     okInputClick?: (event:Event) => void,
     cancelClick?: () => void,
-    ref?:string
+    ref?:string,
+    info?:boolean
 }
 
 export class ModalPrompt extends Block {
     constructor(props: IModalPromptProps) {
         props.okInputClick = (event:Event) => {
             event.preventDefault();
+            if(props.info){
+                this.props.okClick&&this.props.okClick();
+                return;
+            }
             const input = this.refs.modal.getRefs().input.value();
             if (!input) {
                 return;
@@ -25,6 +30,7 @@ export class ModalPrompt extends Block {
         props.cancelClick = () => {
             modalController.closeModal();
         }
+
 
 
         super({
@@ -38,7 +44,9 @@ export class ModalPrompt extends Block {
     }
 
     getChildren() {
-        const {labelText = ''} = this.props;
+        const {labelText = '',info=false} = this.props;
+        if(info)
+            return `<h6>${labelText}</h6>`
         return (
             `
                 {{{ InputShort label='${labelText}' type='text' name='input' validate=validate.nameChat ref='input' }}}             
